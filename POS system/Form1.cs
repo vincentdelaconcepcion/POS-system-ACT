@@ -16,5 +16,28 @@ namespace POS_system
         {
             InitializeComponent();
         }
+
+        private void label1_Click(object sender, EventArgs e)
+        {
+
+        }
+
+        private void flowLayoutPanel1_Paint(object sender, PaintEventArgs e)
+        {
+
+        }
+
+        private void label1_Click_1(object sender, EventArgs e)
+        {
+
+        }
+
+        private void button14_Click(object sender, EventArgs e)
+        {
+            Stock productsForm = new Stock();
+            productsForm.Show();
+            this.Hide();
+            
+        }
     }
 }
