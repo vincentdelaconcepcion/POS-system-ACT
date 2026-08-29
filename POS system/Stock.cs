@@ -74,7 +74,7 @@
             form1.Show();
             this.Hide();
         }
-        x`
+        
         private void dgtStock_CellContentClick(object sender, DataGridViewCellEventArgs e)
         {
 
