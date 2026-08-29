@@ -1,0 +1,23 @@
+﻿<?xml version="1.0" encoding="utf-8"?><Database Name="StockDB" Class="SP_StockDataContext" xmlns="http://schemas.microsoft.com/linqtosql/dbml/2007">
+  <Connection Mode="AppSettings" ConnectionString="Data Source=.\SQLEXPRESS;Initial Catalog=StockDB;Integrated Security=True;Trust Server Certificate=True" SettingsObjectName="POS_system.Properties.Settings" SettingsPropertyName="StockDBConnectionString3" Provider="System.Data.SqlClient" />
+  <Table Name="dbo.Stock" Member="Stocks">
+    <Type Name="Stock">
+      <Column Name="StockID" Type="System.Int32" DbType="Int NOT NULL IDENTITY" IsPrimaryKey="true" IsDbGenerated="true" CanBeNull="false" />
+      <Column Name="ProductName" Type="System.String" DbType="NVarChar(100) NOT NULL" CanBeNull="false" />
+      <Column Name="Category" Type="System.String" DbType="NVarChar(50) NOT NULL" CanBeNull="false" />
+      <Column Name="UnitPrice" Type="System.Decimal" DbType="Decimal(10,2) NOT NULL" CanBeNull="false" />
+      <Column Name="Material" Type="System.String" DbType="NVarChar(100)" CanBeNull="true" />
+      <Column Name="DateAdded" Type="System.DateTime" DbType="DateTime NOT NULL" CanBeNull="false" />
+    </Type>
+  </Table>
+  <Function Name="dbo.sp_Stock" Method="sp_Stock">
+    <Parameter Name="ProductName" Parameter="productName" Type="System.String" DbType="VarChar(100)" />
+    <Parameter Name="Category" Parameter="category" Type="System.String" DbType="VarChar(50)" />
+    <Parameter Name="UnitPrice" Parameter="unitPrice" Type="System.Decimal" DbType="Decimal(10,2)" />
+    <Parameter Name="Material" Parameter="material" Type="System.String" DbType="NVarChar(100)" />
+    <Parameter Name="DateAdded" Parameter="dateAdded" Type="System.DateTime" DbType="DateTime" />
+    <ElementType Name="sp_StockResult">
+      <Column Name="NewStockID" Type="System.Decimal" DbType="Decimal(38,0)" CanBeNull="true" />
+    </ElementType>
+  </Function>
+</Database>
