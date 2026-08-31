@@ -43,18 +43,26 @@
 
         private void btnAdd_Click(object sender, EventArgs e)
         {
-            // declaring a new instance of the data context to ensure we have a fresh context for the operation
-            db = new SP_StockDataContext();\
-            // calling the stored procedure to add a new stock item
-            db.sp_Stock(
-                txtProductname.Text,
-                txtCategory.Text,
-                Convert.ToDecimal(txtunitPrice.Text),
-                txtMaterial.Text,
-                dtpDateAdded.Value          
-            );
-            LoadStock(); 
-            ClearInputs();   
+            try
+            {
+                // declaring a new instance of the data context to ensure we have a fresh context for the operation
+                db = new SP_StockDataContext();
+                // calling the stored procedure to add a new stock item
+                db.sp_Stock(
+                    txtProductname.Text,
+                    cmbCategory.SelectedItem.ToString(),
+                    Convert.ToDecimal(txtunitPrice.Text),
+                    txtMaterial.Text,
+                    dtpDateAdded.Value
+                );
+                LoadStock();
+                ClearInputs();
+                MessageBox.Show("Stock added successfully.", "Success", MessageBoxButtons.OK, MessageBoxIcon.Information);
+            }
+            catch (Exception ex)
+            {
+                MessageBox.Show("Error adding stock:\n\n" + ex.Message, "Error", MessageBoxButtons.OK, MessageBoxIcon.Error);
+            }
         }
 
         private void ClearInputs()

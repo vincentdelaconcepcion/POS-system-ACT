@@ -58,8 +58,9 @@
             this.button3 = new System.Windows.Forms.Button();
             this.button4 = new System.Windows.Forms.Button();
             this.button5 = new System.Windows.Forms.Button();
-            this.textBox1 = new System.Windows.Forms.TextBox();
-            this.label6 = new System.Windows.Forms.Label();
+            this.dgtStock = new System.Windows.Forms.DataGridView();
+            this.txtS_search = new System.Windows.Forms.TextBox();
+            this.labelSearch = new System.Windows.Forms.Label();
             flowLayoutPanel1 = new System.Windows.Forms.FlowLayoutPanel();
             flowLayoutPanel2 = new System.Windows.Forms.FlowLayoutPanel();
             flowLayoutPanel3 = new System.Windows.Forms.FlowLayoutPanel();
@@ -79,6 +80,7 @@
             this.panel2.SuspendLayout();
             this.panel3.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.pictureBox7)).BeginInit();
+            ((System.ComponentModel.ISupportInitialize)(this.dgtStock)).BeginInit();
             this.SuspendLayout();
             // 
             // flowLayoutPanel1
@@ -270,7 +272,7 @@
             this.panel1.Controls.Add(flowLayoutPanel3);
             this.panel1.Location = new System.Drawing.Point(325, 166);
             this.panel1.Name = "panel1";
-            this.panel1.Size = new System.Drawing.Size(667, 400);
+            this.panel1.Size = new System.Drawing.Size(430, 400);
             this.panel1.TabIndex = 92;
             // 
             // button11
@@ -406,7 +408,7 @@
             this.button4.Name = "button4";
             this.button4.Size = new System.Drawing.Size(69, 27);
             this.button4.TabIndex = 101;
-            this.button4.Text = "Foot Wear";
+            this.button4.Text = "Footwear";
             this.button4.UseVisualStyleBackColor = true;
             this.button4.Click += new System.EventHandler(this.button4_Click);
             // 
@@ -417,26 +419,43 @@
             this.button5.Name = "button5";
             this.button5.Size = new System.Drawing.Size(135, 27);
             this.button5.TabIndex = 102;
-            this.button5.Text = "RTW(Ready to Wear";
+            this.button5.Text = "RTW";
             this.button5.UseVisualStyleBackColor = true;
             // 
-            // textBox1
+            // txtS_search
             // 
-            this.textBox1.Location = new System.Drawing.Point(463, 34);
-            this.textBox1.Multiline = true;
-            this.textBox1.Name = "textBox1";
-            this.textBox1.Size = new System.Drawing.Size(291, 20);
-            this.textBox1.TabIndex = 103;
+            this.txtS_search.Location = new System.Drawing.Point(836, 166);
+            this.txtS_search.Name = "txtS_search";
+            this.txtS_search.Size = new System.Drawing.Size(334, 20);
+            this.txtS_search.TabIndex = 105;
+            this.txtS_search.TextChanged += new System.EventHandler(this.txtS_search_TextChanged);
             // 
-            // label6
+            // labelSearch
             // 
-            this.label6.AutoSize = true;
-            this.label6.Location = new System.Drawing.Point(397, 37);
-            this.label6.Name = "label6";
-            this.label6.Size = new System.Drawing.Size(51, 13);
-            this.label6.TabIndex = 104;
-            this.label6.Text = "SEARCH";
-            this.label6.Click += new System.EventHandler(this.label6_Click);
+            this.labelSearch.AutoSize = true;
+            this.labelSearch.BackColor = System.Drawing.Color.Transparent;
+            this.labelSearch.Font = new System.Drawing.Font("Microsoft Sans Serif", 9.75F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.labelSearch.ForeColor = System.Drawing.Color.WhiteSmoke;
+            this.labelSearch.Location = new System.Drawing.Point(770, 169);
+            this.labelSearch.Name = "labelSearch";
+            this.labelSearch.Size = new System.Drawing.Size(60, 16);
+            this.labelSearch.TabIndex = 107;
+            this.labelSearch.Text = "SEARCH";
+            // 
+            // dgtStock
+            // 
+            this.dgtStock.AllowUserToAddRows = false;
+            this.dgtStock.AllowUserToDeleteRows = false;
+            this.dgtStock.ColumnHeadersHeightSizeMode = System.Windows.Forms.DataGridViewColumnHeadersHeightSizeMode.AutoSize;
+            this.dgtStock.BackgroundColor = System.Drawing.Color.White;
+            this.dgtStock.Location = new System.Drawing.Point(770, 196);
+            this.dgtStock.Margin = new System.Windows.Forms.Padding(2);
+            this.dgtStock.Name = "dgtStock";
+            this.dgtStock.ReadOnly = true;
+            this.dgtStock.RowHeadersWidth = 51;
+            this.dgtStock.RowTemplate.Height = 24;
+            this.dgtStock.Size = new System.Drawing.Size(400, 370);
+            this.dgtStock.TabIndex = 106;
             // 
             // Form1
             // 
@@ -446,20 +465,21 @@
             this.BackgroundImage = global::POS_system.Properties.Resources.bjs;
             this.BackgroundImageLayout = System.Windows.Forms.ImageLayout.Stretch;
             this.ClientSize = new System.Drawing.Size(1178, 654);
-            this.Controls.Add(this.label6);
-            this.Controls.Add(this.textBox1);
             this.Controls.Add(this.button5);
             this.Controls.Add(this.button4);
             this.Controls.Add(this.button3);
             this.Controls.Add(this.button1);
             this.Controls.Add(this.button2);
+            this.Controls.Add(this.labelSearch);
+            this.Controls.Add(this.txtS_search);
+            this.Controls.Add(this.dgtStock);
             this.Controls.Add(this.panel2);
             this.Controls.Add(this.Savebtn);
             this.Controls.Add(this.btnStock);
             this.Controls.Add(this.panel1);
             this.Name = "Form1";
             this.Text = "Form1";
-            this.TransparencyKey = System.Drawing.Color.Transparent;
+            this.WindowState = System.Windows.Forms.FormWindowState.Maximized;
             flowLayoutPanel1.ResumeLayout(false);
             flowLayoutPanel1.PerformLayout();
             ((System.ComponentModel.ISupportInitialize)(this.pictureBox2)).EndInit();
@@ -480,6 +500,7 @@
             this.panel3.ResumeLayout(false);
             this.panel3.PerformLayout();
             ((System.ComponentModel.ISupportInitialize)(this.pictureBox7)).EndInit();
+            ((System.ComponentModel.ISupportInitialize)(this.dgtStock)).EndInit();
             this.ResumeLayout(false);
             this.PerformLayout();
 
@@ -511,8 +532,9 @@
         private System.Windows.Forms.Button button3;
         private System.Windows.Forms.Button button4;
         private System.Windows.Forms.Button button5;
-        private System.Windows.Forms.TextBox textBox1;
-        private System.Windows.Forms.Label label6;
+        private System.Windows.Forms.DataGridView dgtStock;
+        private System.Windows.Forms.TextBox txtS_search;
+        private System.Windows.Forms.Label labelSearch;
     }
 }
 

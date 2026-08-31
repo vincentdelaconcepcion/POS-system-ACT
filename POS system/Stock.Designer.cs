@@ -31,7 +31,6 @@
             this.txtProductname = new System.Windows.Forms.TextBox();
             this.label1 = new System.Windows.Forms.Label();
             this.label2 = new System.Windows.Forms.Label();
-            this.txtCategory = new System.Windows.Forms.TextBox();
             this.txtunitPrice = new System.Windows.Forms.TextBox();
             this.txtMaterial = new System.Windows.Forms.TextBox();
             this.label3 = new System.Windows.Forms.Label();
@@ -43,6 +42,7 @@
             this.dgtStock = new System.Windows.Forms.DataGridView();
             this.dtpDateAdded = new System.Windows.Forms.DateTimePicker();
             this.txtS_search = new System.Windows.Forms.TextBox();
+            this.cmbCategory = new System.Windows.Forms.ComboBox();
             ((System.ComponentModel.ISupportInitialize)(this.dgtStock)).BeginInit();
             this.SuspendLayout();
             // 
@@ -75,13 +75,19 @@
             this.label2.Text = "Stock";
             this.label2.Click += new System.EventHandler(this.label2_Click);
             // 
-            // txtCategory
+            // cmbCategory
             // 
-            this.txtCategory.Location = new System.Drawing.Point(198, 238);
-            this.txtCategory.Multiline = true;
-            this.txtCategory.Name = "txtCategory";
-            this.txtCategory.Size = new System.Drawing.Size(228, 24);
-            this.txtCategory.TabIndex = 3;
+            this.cmbCategory.DropDownStyle = System.Windows.Forms.ComboBoxStyle.DropDownList;
+            this.cmbCategory.FormattingEnabled = true;
+            this.cmbCategory.Items.AddRange(new object[] {
+            "Garments",
+            "School Supplies",
+            "Footwear",
+            "RTW"});
+            this.cmbCategory.Location = new System.Drawing.Point(198, 238);
+            this.cmbCategory.Name = "cmbCategory";
+            this.cmbCategory.Size = new System.Drawing.Size(228, 21);
+            this.cmbCategory.TabIndex = 3;
             // 
             // txtunitPrice
             // 
@@ -204,12 +210,13 @@
             this.Controls.Add(this.label3);
             this.Controls.Add(this.txtMaterial);
             this.Controls.Add(this.txtunitPrice);
-            this.Controls.Add(this.txtCategory);
+            this.Controls.Add(this.cmbCategory);
             this.Controls.Add(this.label2);
             this.Controls.Add(this.label1);
             this.Controls.Add(this.txtProductname);
             this.Name = "StockForm";
             this.Text = "Stock";
+            this.WindowState = System.Windows.Forms.FormWindowState.Maximized;
             ((System.ComponentModel.ISupportInitialize)(this.dgtStock)).EndInit();
             this.ResumeLayout(false);
             this.PerformLayout();
@@ -221,7 +228,6 @@
         private System.Windows.Forms.TextBox txtProductname;
         private System.Windows.Forms.Label label1;
         private System.Windows.Forms.Label label2;
-        private System.Windows.Forms.TextBox txtCategory;
         private System.Windows.Forms.TextBox txtunitPrice;
         private System.Windows.Forms.TextBox txtMaterial;
         private System.Windows.Forms.Label label3;
@@ -233,5 +239,6 @@
         private System.Windows.Forms.DataGridView dgtStock;
         private System.Windows.Forms.DateTimePicker dtpDateAdded;
         private System.Windows.Forms.TextBox txtS_search;
+        private System.Windows.Forms.ComboBox cmbCategory;
     }
 }
