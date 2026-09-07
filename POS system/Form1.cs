@@ -35,17 +35,15 @@ namespace POS_system
 
         private void txtS_search_TextChanged(object sender, EventArgs e)
         {
-            string search = txtS_search.Text.Trim().ToLower();
+            string search = txtS_search.Text.Trim();
 
-            var filtered = allStock.Where(s =>
-                s.ProductName.ToLower().Contains(search) ||
-                s.Category.ToLower().Contains(search) ||
-                (s.Material != null && s.Material.ToLower().Contains(search)) ||
-                s.UnitPrice.ToString().Contains(search) ||
-                s.DateAdded.ToString().ToLower().Contains(search)
-            ).ToList();
+            db = new SP_StockDataContext();
+            dgtStock.DataSource = db.sp_Search(search).ToList();
 
-            dgtStock.DataSource = filtered;
+            dgtStock.Columns["StockID"].Visible = false;
+            dgtStock.Columns["ProductName"].HeaderText = "Product Name";
+            dgtStock.Columns["UnitPrice"].HeaderText = "Unit Price";
+            dgtStock.Columns["DateAdded"].HeaderText = "Date Added";
         }
 
         private void label1_Click(object sender, EventArgs e)

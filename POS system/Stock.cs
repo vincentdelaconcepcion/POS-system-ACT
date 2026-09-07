@@ -32,7 +32,7 @@
         private void LoadStock()
         {
             db = new SP_StockDataContext();
-            allStock = db.Stocks.ToList(); // load all teh items at once
+            allStock = db.sp_Search(null).ToList(); // load all items at once
             dgtStock.DataSource = allStock;
 
             dgtStock.Columns["StockID"].Visible = false;
@@ -90,18 +90,15 @@
 
         private void txtS_search_TextChanged(object sender, EventArgs e)
         {
-            string search = txtS_search.Text.Trim().ToLower();
+            string search = txtS_search.Text.Trim();
 
-            var filtered = allStock.Where(s =>
-                s.ProductName.ToLower().Contains(search) ||
-                s.Category.ToLower().Contains(search) ||
-                (s.Material != null && s.Material.ToLower().Contains(search)) ||
-                s.UnitPrice.ToString().Contains(search) ||
-                s.DateAdded.ToString().ToLower().Contains(search)
-            ).ToList();
+            db = new SP_StockDataContext();
+            dgtStock.DataSource = db.sp_Search(search).ToList();
 
-            dgtStock.DataSource = filtered;
-
+            dgtStock.Columns["StockID"].Visible = false;
+            dgtStock.Columns["ProductName"].HeaderText = "Product Name";
+            dgtStock.Columns["UnitPrice"].HeaderText = "Unit Price";
+            dgtStock.Columns["DateAdded"].HeaderText = "Date Added";
         }
     }
 }
