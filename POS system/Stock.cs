@@ -83,6 +83,27 @@
             this.Hide();
         }
         
+        private void dgtStock_CellClick(object sender, DataGridViewCellEventArgs e)
+        {
+            if (e.RowIndex < 0)
+                return;
+
+            Stock selected = dgtStock.Rows[e.RowIndex].DataBoundItem as Stock;
+            if (selected == null)
+                return;
+
+            txtProductname.Text = selected.ProductName;
+
+            if (selected.Category != null && cmbCategory.Items.Contains(selected.Category))
+                cmbCategory.SelectedItem = selected.Category;
+            else
+                cmbCategory.SelectedIndex = -1;
+
+            txtunitPrice.Text = selected.UnitPrice.ToString("0.00");
+            txtMaterial.Text = selected.Material ?? string.Empty;
+            dtpDateAdded.Value = selected.DateAdded;
+        }
+
         private void dgtStock_CellContentClick(object sender, DataGridViewCellEventArgs e)
         {
 
