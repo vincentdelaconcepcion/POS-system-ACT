@@ -1,1 +1,1 @@
-This is a Project 5 idiots 
+This is a Project on a course subject that is made by 5 stupid individuals
