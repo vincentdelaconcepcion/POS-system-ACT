@@ -43,13 +43,14 @@
             this.dtpDateAdded = new System.Windows.Forms.DateTimePicker();
             this.txtS_search = new System.Windows.Forms.TextBox();
             this.cmbCategory = new System.Windows.Forms.ComboBox();
+            this.btnDelete = new System.Windows.Forms.Button();
             ((System.ComponentModel.ISupportInitialize)(this.dgtStock)).BeginInit();
             this.SuspendLayout();
             // 
             // txtProductname
             // 
             this.txtProductname.Location = new System.Drawing.Point(264, 231);
-            this.txtProductname.Margin = new System.Windows.Forms.Padding(4, 4, 4, 4);
+            this.txtProductname.Margin = new System.Windows.Forms.Padding(4);
             this.txtProductname.Multiline = true;
             this.txtProductname.Name = "txtProductname";
             this.txtProductname.Size = new System.Drawing.Size(303, 29);
@@ -81,7 +82,7 @@
             // txtunitPrice
             // 
             this.txtunitPrice.Location = new System.Drawing.Point(264, 353);
-            this.txtunitPrice.Margin = new System.Windows.Forms.Padding(4, 4, 4, 4);
+            this.txtunitPrice.Margin = new System.Windows.Forms.Padding(4);
             this.txtunitPrice.Multiline = true;
             this.txtunitPrice.Name = "txtunitPrice";
             this.txtunitPrice.Size = new System.Drawing.Size(303, 29);
@@ -90,7 +91,7 @@
             // txtMaterial
             // 
             this.txtMaterial.Location = new System.Drawing.Point(264, 417);
-            this.txtMaterial.Margin = new System.Windows.Forms.Padding(4, 4, 4, 4);
+            this.txtMaterial.Margin = new System.Windows.Forms.Padding(4);
             this.txtMaterial.Multiline = true;
             this.txtMaterial.Name = "txtMaterial";
             this.txtMaterial.Size = new System.Drawing.Size(303, 29);
@@ -144,7 +145,7 @@
             // 
             this.btnAdd.Font = new System.Drawing.Font("Microsoft Sans Serif", 11.25F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.btnAdd.Location = new System.Drawing.Point(191, 565);
-            this.btnAdd.Margin = new System.Windows.Forms.Padding(4, 4, 4, 4);
+            this.btnAdd.Margin = new System.Windows.Forms.Padding(4);
             this.btnAdd.Name = "btnAdd";
             this.btnAdd.Size = new System.Drawing.Size(140, 49);
             this.btnAdd.TabIndex = 11;
@@ -156,7 +157,7 @@
             // 
             this.btnBack.Font = new System.Drawing.Font("Microsoft Sans Serif", 11.25F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.btnBack.Location = new System.Drawing.Point(403, 565);
-            this.btnBack.Margin = new System.Windows.Forms.Padding(4, 4, 4, 4);
+            this.btnBack.Margin = new System.Windows.Forms.Padding(4);
             this.btnBack.Name = "btnBack";
             this.btnBack.Size = new System.Drawing.Size(140, 49);
             this.btnBack.TabIndex = 12;
@@ -183,7 +184,7 @@
             // dtpDateAdded
             // 
             this.dtpDateAdded.Location = new System.Drawing.Point(264, 489);
-            this.dtpDateAdded.Margin = new System.Windows.Forms.Padding(4, 4, 4, 4);
+            this.dtpDateAdded.Margin = new System.Windows.Forms.Padding(4);
             this.dtpDateAdded.Name = "dtpDateAdded";
             this.dtpDateAdded.Size = new System.Drawing.Size(303, 22);
             this.dtpDateAdded.TabIndex = 14;
@@ -191,7 +192,7 @@
             // txtS_search
             // 
             this.txtS_search.Location = new System.Drawing.Point(800, 38);
-            this.txtS_search.Margin = new System.Windows.Forms.Padding(4, 4, 4, 4);
+            this.txtS_search.Margin = new System.Windows.Forms.Padding(4);
             this.txtS_search.Name = "txtS_search";
             this.txtS_search.Size = new System.Drawing.Size(503, 22);
             this.txtS_search.TabIndex = 15;
@@ -207,16 +208,29 @@
             "Footwear",
             "RTW"});
             this.cmbCategory.Location = new System.Drawing.Point(264, 293);
-            this.cmbCategory.Margin = new System.Windows.Forms.Padding(4, 4, 4, 4);
+            this.cmbCategory.Margin = new System.Windows.Forms.Padding(4);
             this.cmbCategory.Name = "cmbCategory";
             this.cmbCategory.Size = new System.Drawing.Size(303, 24);
             this.cmbCategory.TabIndex = 3;
+            // 
+            // btnDelete
+            // 
+            this.btnDelete.Font = new System.Drawing.Font("Microsoft Sans Serif", 11.25F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.btnDelete.Location = new System.Drawing.Point(191, 647);
+            this.btnDelete.Margin = new System.Windows.Forms.Padding(4);
+            this.btnDelete.Name = "btnDelete";
+            this.btnDelete.Size = new System.Drawing.Size(140, 49);
+            this.btnDelete.TabIndex = 16;
+            this.btnDelete.Text = "Delete";
+            this.btnDelete.UseVisualStyleBackColor = true;
+            this.btnDelete.Click += new System.EventHandler(this.btnDelete_Click);
             // 
             // StockForm
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(8F, 16F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.ClientSize = new System.Drawing.Size(1580, 811);
+            this.Controls.Add(this.btnDelete);
             this.Controls.Add(this.txtS_search);
             this.Controls.Add(this.dtpDateAdded);
             this.Controls.Add(this.dgtStock);
@@ -232,7 +246,7 @@
             this.Controls.Add(this.label2);
             this.Controls.Add(this.label1);
             this.Controls.Add(this.txtProductname);
-            this.Margin = new System.Windows.Forms.Padding(4, 4, 4, 4);
+            this.Margin = new System.Windows.Forms.Padding(4);
             this.Name = "StockForm";
             this.Text = "Stock";
             this.WindowState = System.Windows.Forms.FormWindowState.Maximized;
@@ -259,5 +273,6 @@
         private System.Windows.Forms.DateTimePicker dtpDateAdded;
         private System.Windows.Forms.TextBox txtS_search;
         private System.Windows.Forms.ComboBox cmbCategory;
+        private System.Windows.Forms.Button btnDelete;
     }
 }

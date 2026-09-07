@@ -28,6 +28,7 @@
       
         SP_StockDataContext db = new SP_StockDataContext();
         private List<Stock> allStock; // displays all stock items in memory for filtering
+        private int selectedStockId = -1;
 
         private void LoadStock()
         {
@@ -92,6 +93,7 @@
             if (selected == null)
                 return;
 
+            selectedStockId = selected.StockID;
             txtProductname.Text = selected.ProductName;
 
             if (selected.Category != null && cmbCategory.Items.Contains(selected.Category))
@@ -107,6 +109,47 @@
         private void dgtStock_CellContentClick(object sender, DataGridViewCellEventArgs e)
         {
 
+        }
+
+        private void btnDelete_Click(object sender, EventArgs e)
+        {
+            if (selectedStockId < 0)
+            {
+                MessageBox.Show("Select a product from the list first.", "No Selection", MessageBoxButtons.OK, MessageBoxIcon.Warning);
+                return;
+            }
+
+            DialogResult confirm = MessageBox.Show(
+                "Are you sure you want to permanently delete this product?",
+                "Confirm Delete",
+                MessageBoxButtons.YesNo,
+                MessageBoxIcon.Warning);
+
+            if (confirm != DialogResult.Yes)
+                return;
+
+            try
+            {
+                db = new SP_StockDataContext();
+                using (SqlConnection conn = new SqlConnection(db.Connection.ConnectionString))
+                using (SqlCommand cmd = new SqlCommand("dbo.sp_DeleteStock", conn))
+                {
+                    cmd.CommandType = CommandType.StoredProcedure;
+                    cmd.Parameters.AddWithValue("@StockID", selectedStockId);
+
+                    conn.Open();
+                    cmd.ExecuteNonQuery();
+                }
+
+                selectedStockId = -1;
+                LoadStock();
+                ClearInputs();
+                MessageBox.Show("Stock deleted successfully.", "Success", MessageBoxButtons.OK, MessageBoxIcon.Information);
+            }
+            catch (Exception ex)
+            {
+                MessageBox.Show("Error deleting stock:\n\n" + ex.Message, "Error", MessageBoxButtons.OK, MessageBoxIcon.Error);
+            }
         }
 
         private void txtS_search_TextChanged(object sender, EventArgs e)
