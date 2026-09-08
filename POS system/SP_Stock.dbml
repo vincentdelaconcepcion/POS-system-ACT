@@ -29,4 +29,8 @@
     <Parameter Name="STOCKID" Parameter="sTOCKID" Type="System.Int32" DbType="Int" />
     <Return Type="System.Int32" />
   </Function>
+  <Function Name="dbo.sp_DeleteStock" Method="sp_DeleteStock">
+    <Parameter Name="StockID" Parameter="stockID" Type="System.Int32" DbType="Int" />
+    <Return Type="System.Int32" />
+  </Function>
 </Database>

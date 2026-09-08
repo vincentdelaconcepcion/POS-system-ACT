@@ -86,6 +86,13 @@ namespace POS_system
 			IExecuteResult result = this.ExecuteMethodCall(this, ((MethodInfo)(MethodInfo.GetCurrentMethod())), pRODUCTNAME, cATEGORY, uNITPRICE, mATERIAL, dATE, sTOCKID);
 			return ((int)(result.ReturnValue));
 		}
+		
+		[global::System.Data.Linq.Mapping.FunctionAttribute(Name="dbo.sp_DeleteStock")]
+		public int sp_DeleteStock([global::System.Data.Linq.Mapping.ParameterAttribute(Name="StockID", DbType="Int")] System.Nullable<int> stockID)
+		{
+			IExecuteResult result = this.ExecuteMethodCall(this, ((MethodInfo)(MethodInfo.GetCurrentMethod())), stockID);
+			return ((int)(result.ReturnValue));
+		}
 	}
 	
 	[global::System.Data.Linq.Mapping.TableAttribute(Name="dbo.Stock")]
