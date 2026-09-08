@@ -19,7 +19,6 @@
             InitializeComponent();
             LoadStock();
         }
-
         private void label2_Click(object sender, EventArgs e)
         {
 
@@ -163,6 +162,65 @@
             dgtStock.Columns["ProductName"].HeaderText = "Product Name";
             dgtStock.Columns["UnitPrice"].HeaderText = "Unit Price";
             dgtStock.Columns["DateAdded"].HeaderText = "Date Added";
+        }
+
+        private void btnUpdate_Click(object sender, EventArgs e)
+        {
+            if (selectedStockId < 0)
+            {
+                MessageBox.Show("Select a product from the list first.", "No Selection", MessageBoxButtons.OK, MessageBoxIcon.Warning);
+                return;
+            }
+
+            try
+            {
+                db = new SP_StockDataContext();
+                db.sp_UpdateProduct(
+                    txtProductname.Text,
+                    cmbCategory.SelectedItem != null ? cmbCategory.SelectedItem.ToString() : string.Empty,
+                    Convert.ToDecimal(txtunitPrice.Text),
+                    txtMaterial.Text,
+                    dtpDateAdded.Value,
+                    selectedStockId
+                );
+                LoadStock();
+                selectedStockId = -1;
+                ClearInputs();
+                btnUpdate.Hide();
+                btnAdd.Show();
+                MessageBox.Show("Successfully Updated!", "Success", MessageBoxButtons.OK, MessageBoxIcon.Information);
+            }
+            catch (Exception ex)
+            {
+                MessageBox.Show("Error updating stock:\n\n" + ex.Message, "Error", MessageBoxButtons.OK, MessageBoxIcon.Error);
+            }
+        }
+
+        private void StockForm_Load(object sender, EventArgs e)
+        {
+            btnUpdate.Hide();
+
+        }
+
+        private void dgtStock_CellDoubleClick(object sender, DataGridViewCellEventArgs e)
+        {
+            btnAdd.Hide();
+            btnUpdate.Show();
+            Stock selected = dgtStock.Rows[e.RowIndex].DataBoundItem as Stock;
+            if (selected == null)
+                return;
+
+            selectedStockId = selected.StockID;
+            txtProductname.Text = selected.ProductName;
+
+            if (selected.Category != null && cmbCategory.Items.Contains(selected.Category))
+                cmbCategory.SelectedItem = selected.Category;
+            else
+                cmbCategory.SelectedIndex = -1;
+
+            txtunitPrice.Text = selected.UnitPrice.ToString("0.00");
+            txtMaterial.Text = selected.Material ?? string.Empty;
+            dtpDateAdded.Value = selected.DateAdded;
         }
     }
 }

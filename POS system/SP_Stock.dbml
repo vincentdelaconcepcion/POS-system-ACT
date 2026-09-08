@@ -20,4 +20,13 @@
       <Column Name="NewStockID" Type="System.Decimal" DbType="Decimal(38,0)" CanBeNull="true" />
     </ElementType>
   </Function>
+  <Function Name="dbo.sp_UpdateProduct" Method="sp_UpdateProduct">
+    <Parameter Name="PRODUCTNAME" Parameter="pRODUCTNAME" Type="System.String" DbType="VarChar(50)" />
+    <Parameter Name="CATEGORY" Parameter="cATEGORY" Type="System.String" DbType="VarChar(50)" />
+    <Parameter Name="UNITPRICE" Parameter="uNITPRICE" Type="System.Decimal" DbType="Decimal(10,2)" />
+    <Parameter Name="MATERIAL" Parameter="mATERIAL" Type="System.String" DbType="VarChar(100)" />
+    <Parameter Name="DATE" Parameter="dATE" Type="System.DateTime" DbType="DateTime" />
+    <Parameter Name="STOCKID" Parameter="sTOCKID" Type="System.Int32" DbType="Int" />
+    <Return Type="System.Int32" />
+  </Function>
 </Database>

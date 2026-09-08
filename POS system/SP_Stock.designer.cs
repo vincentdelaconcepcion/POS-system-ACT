@@ -79,6 +79,13 @@ namespace POS_system
 			IExecuteResult result = this.ExecuteMethodCall(this, ((MethodInfo)(MethodInfo.GetCurrentMethod())), productName, category, unitPrice, material, dateAdded);
 			return ((ISingleResult<sp_StockResult>)(result.ReturnValue));
 		}
+		
+		[global::System.Data.Linq.Mapping.FunctionAttribute(Name="dbo.sp_UpdateProduct")]
+		public int sp_UpdateProduct([global::System.Data.Linq.Mapping.ParameterAttribute(Name="PRODUCTNAME", DbType="VarChar(50)")] string pRODUCTNAME, [global::System.Data.Linq.Mapping.ParameterAttribute(Name="CATEGORY", DbType="VarChar(50)")] string cATEGORY, [global::System.Data.Linq.Mapping.ParameterAttribute(Name="UNITPRICE", DbType="Decimal(10,2)")] System.Nullable<decimal> uNITPRICE, [global::System.Data.Linq.Mapping.ParameterAttribute(Name="MATERIAL", DbType="VarChar(100)")] string mATERIAL, [global::System.Data.Linq.Mapping.ParameterAttribute(Name="DATE", DbType="DateTime")] System.Nullable<System.DateTime> dATE, [global::System.Data.Linq.Mapping.ParameterAttribute(Name="STOCKID", DbType="Int")] System.Nullable<int> sTOCKID)
+		{
+			IExecuteResult result = this.ExecuteMethodCall(this, ((MethodInfo)(MethodInfo.GetCurrentMethod())), pRODUCTNAME, cATEGORY, uNITPRICE, mATERIAL, dATE, sTOCKID);
+			return ((int)(result.ReturnValue));
+		}
 	}
 	
 	[global::System.Data.Linq.Mapping.TableAttribute(Name="dbo.Stock")]

@@ -44,6 +44,7 @@
             this.txtS_search = new System.Windows.Forms.TextBox();
             this.cmbCategory = new System.Windows.Forms.ComboBox();
             this.btnDelete = new System.Windows.Forms.Button();
+            this.btnUpdate = new System.Windows.Forms.Button();
             ((System.ComponentModel.ISupportInitialize)(this.dgtStock)).BeginInit();
             this.SuspendLayout();
             // 
@@ -169,6 +170,7 @@
             // 
             this.dgtStock.AllowUserToAddRows = false;
             this.dgtStock.AllowUserToDeleteRows = false;
+            this.dgtStock.CellBorderStyle = System.Windows.Forms.DataGridViewCellBorderStyle.RaisedHorizontal;
             this.dgtStock.ColumnHeadersHeightSizeMode = System.Windows.Forms.DataGridViewColumnHeadersHeightSizeMode.AutoSize;
             this.dgtStock.Location = new System.Drawing.Point(599, 95);
             this.dgtStock.Margin = new System.Windows.Forms.Padding(3, 2, 3, 2);
@@ -180,6 +182,7 @@
             this.dgtStock.TabIndex = 13;
             this.dgtStock.CellClick += new System.Windows.Forms.DataGridViewCellEventHandler(this.dgtStock_CellClick);
             this.dgtStock.CellContentClick += new System.Windows.Forms.DataGridViewCellEventHandler(this.dgtStock_CellContentClick);
+            this.dgtStock.CellDoubleClick += new System.Windows.Forms.DataGridViewCellEventHandler(this.dgtStock_CellDoubleClick);
             // 
             // dtpDateAdded
             // 
@@ -225,11 +228,24 @@
             this.btnDelete.UseVisualStyleBackColor = true;
             this.btnDelete.Click += new System.EventHandler(this.btnDelete_Click);
             // 
+            // btnUpdate
+            // 
+            this.btnUpdate.Font = new System.Drawing.Font("Microsoft Sans Serif", 11.25F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.btnUpdate.Location = new System.Drawing.Point(191, 565);
+            this.btnUpdate.Margin = new System.Windows.Forms.Padding(4);
+            this.btnUpdate.Name = "btnUpdate";
+            this.btnUpdate.Size = new System.Drawing.Size(140, 49);
+            this.btnUpdate.TabIndex = 17;
+            this.btnUpdate.Text = "Update";
+            this.btnUpdate.UseVisualStyleBackColor = true;
+            this.btnUpdate.Click += new System.EventHandler(this.btnUpdate_Click);
+            // 
             // StockForm
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(8F, 16F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.ClientSize = new System.Drawing.Size(1580, 811);
+            this.Controls.Add(this.btnUpdate);
             this.Controls.Add(this.btnDelete);
             this.Controls.Add(this.txtS_search);
             this.Controls.Add(this.dtpDateAdded);
@@ -250,6 +266,7 @@
             this.Name = "StockForm";
             this.Text = "Stock";
             this.WindowState = System.Windows.Forms.FormWindowState.Maximized;
+            this.Load += new System.EventHandler(this.StockForm_Load);
             ((System.ComponentModel.ISupportInitialize)(this.dgtStock)).EndInit();
             this.ResumeLayout(false);
             this.PerformLayout();
@@ -274,5 +291,6 @@
         private System.Windows.Forms.TextBox txtS_search;
         private System.Windows.Forms.ComboBox cmbCategory;
         private System.Windows.Forms.Button btnDelete;
+        private System.Windows.Forms.Button btnUpdate;
     }
 }
