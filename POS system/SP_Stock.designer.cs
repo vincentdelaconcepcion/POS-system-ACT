@@ -93,6 +93,13 @@ namespace POS_system
 			IExecuteResult result = this.ExecuteMethodCall(this, ((MethodInfo)(MethodInfo.GetCurrentMethod())), stockID);
 			return ((int)(result.ReturnValue));
 		}
+		
+		[global::System.Data.Linq.Mapping.FunctionAttribute(Name="dbo.sp_Search")]
+		public ISingleResult<sp_SearchResult> sp_Search([global::System.Data.Linq.Mapping.ParameterAttribute(Name="SearchTerm", DbType="VarChar(100)")] string searchTerm)
+		{
+			IExecuteResult result = this.ExecuteMethodCall(this, ((MethodInfo)(MethodInfo.GetCurrentMethod())), searchTerm);
+			return ((ISingleResult<sp_SearchResult>)(result.ReturnValue));
+		}
 	}
 	
 	[global::System.Data.Linq.Mapping.TableAttribute(Name="dbo.Stock")]
@@ -298,6 +305,122 @@ namespace POS_system
 				if ((this._NewStockID != value))
 				{
 					this._NewStockID = value;
+				}
+			}
+		}
+	}
+	
+	public partial class sp_SearchResult
+	{
+		
+		private int _StockID;
+		
+		private string _ProductName;
+		
+		private string _Category;
+		
+		private decimal _UnitPrice;
+		
+		private string _Material;
+		
+		private System.DateTime _DateAdded;
+		
+		public sp_SearchResult()
+		{
+		}
+		
+		[global::System.Data.Linq.Mapping.ColumnAttribute(Storage="_StockID", DbType="Int NOT NULL")]
+		public int StockID
+		{
+			get
+			{
+				return this._StockID;
+			}
+			set
+			{
+				if ((this._StockID != value))
+				{
+					this._StockID = value;
+				}
+			}
+		}
+		
+		[global::System.Data.Linq.Mapping.ColumnAttribute(Storage="_ProductName", DbType="NVarChar(100) NOT NULL", CanBeNull=false)]
+		public string ProductName
+		{
+			get
+			{
+				return this._ProductName;
+			}
+			set
+			{
+				if ((this._ProductName != value))
+				{
+					this._ProductName = value;
+				}
+			}
+		}
+		
+		[global::System.Data.Linq.Mapping.ColumnAttribute(Storage="_Category", DbType="NVarChar(50) NOT NULL", CanBeNull=false)]
+		public string Category
+		{
+			get
+			{
+				return this._Category;
+			}
+			set
+			{
+				if ((this._Category != value))
+				{
+					this._Category = value;
+				}
+			}
+		}
+		
+		[global::System.Data.Linq.Mapping.ColumnAttribute(Storage="_UnitPrice", DbType="Decimal(10,2) NOT NULL")]
+		public decimal UnitPrice
+		{
+			get
+			{
+				return this._UnitPrice;
+			}
+			set
+			{
+				if ((this._UnitPrice != value))
+				{
+					this._UnitPrice = value;
+				}
+			}
+		}
+		
+		[global::System.Data.Linq.Mapping.ColumnAttribute(Storage="_Material", DbType="NVarChar(100)")]
+		public string Material
+		{
+			get
+			{
+				return this._Material;
+			}
+			set
+			{
+				if ((this._Material != value))
+				{
+					this._Material = value;
+				}
+			}
+		}
+		
+		[global::System.Data.Linq.Mapping.ColumnAttribute(Storage="_DateAdded", DbType="DateTime NOT NULL")]
+		public System.DateTime DateAdded
+		{
+			get
+			{
+				return this._DateAdded;
+			}
+			set
+			{
+				if ((this._DateAdded != value))
+				{
+					this._DateAdded = value;
 				}
 			}
 		}

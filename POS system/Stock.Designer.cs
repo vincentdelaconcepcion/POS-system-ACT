@@ -45,6 +45,9 @@
             this.cmbCategory = new System.Windows.Forms.ComboBox();
             this.btnDelete = new System.Windows.Forms.Button();
             this.btnUpdate = new System.Windows.Forms.Button();
+            this.btnArchive = new System.Windows.Forms.Button();
+            this.btnRestore = new System.Windows.Forms.Button();
+            this.btnViewArchived = new System.Windows.Forms.Button();
             ((System.ComponentModel.ISupportInitialize)(this.dgtStock)).BeginInit();
             this.SuspendLayout();
             // 
@@ -240,11 +243,50 @@
             this.btnUpdate.UseVisualStyleBackColor = true;
             this.btnUpdate.Click += new System.EventHandler(this.btnUpdate_Click);
             // 
+            // btnArchive
+            // 
+            this.btnArchive.Font = new System.Drawing.Font("Microsoft Sans Serif", 11.25F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.btnArchive.Location = new System.Drawing.Point(403, 647);
+            this.btnArchive.Margin = new System.Windows.Forms.Padding(4);
+            this.btnArchive.Name = "btnArchive";
+            this.btnArchive.Size = new System.Drawing.Size(140, 49);
+            this.btnArchive.TabIndex = 18;
+            this.btnArchive.Text = "Archive";
+            this.btnArchive.UseVisualStyleBackColor = true;
+            this.btnArchive.Click += new System.EventHandler(this.btnArchive_Click);
+            // 
+            // btnRestore
+            // 
+            this.btnRestore.Font = new System.Drawing.Font("Microsoft Sans Serif", 11.25F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.btnRestore.Location = new System.Drawing.Point(614, 647);
+            this.btnRestore.Margin = new System.Windows.Forms.Padding(4);
+            this.btnRestore.Name = "btnRestore";
+            this.btnRestore.Size = new System.Drawing.Size(140, 49);
+            this.btnRestore.TabIndex = 19;
+            this.btnRestore.Text = "Restore";
+            this.btnRestore.UseVisualStyleBackColor = true;
+            this.btnRestore.Click += new System.EventHandler(this.btnRestore_Click);
+            // 
+            // btnViewArchived
+            // 
+            this.btnViewArchived.Font = new System.Drawing.Font("Microsoft Sans Serif", 11.25F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.btnViewArchived.Location = new System.Drawing.Point(614, 565);
+            this.btnViewArchived.Margin = new System.Windows.Forms.Padding(4);
+            this.btnViewArchived.Name = "btnViewArchived";
+            this.btnViewArchived.Size = new System.Drawing.Size(140, 49);
+            this.btnViewArchived.TabIndex = 20;
+            this.btnViewArchived.Text = "View Archived";
+            this.btnViewArchived.UseVisualStyleBackColor = true;
+            this.btnViewArchived.Click += new System.EventHandler(this.btnViewArchived_Click);
+            // 
             // StockForm
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(8F, 16F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.ClientSize = new System.Drawing.Size(1580, 811);
+            this.Controls.Add(this.btnViewArchived);
+            this.Controls.Add(this.btnRestore);
+            this.Controls.Add(this.btnArchive);
             this.Controls.Add(this.btnUpdate);
             this.Controls.Add(this.btnDelete);
             this.Controls.Add(this.txtS_search);
@@ -292,5 +334,8 @@
         private System.Windows.Forms.ComboBox cmbCategory;
         private System.Windows.Forms.Button btnDelete;
         private System.Windows.Forms.Button btnUpdate;
+        private System.Windows.Forms.Button btnArchive;
+        private System.Windows.Forms.Button btnRestore;
+        private System.Windows.Forms.Button btnViewArchived;
     }
 }

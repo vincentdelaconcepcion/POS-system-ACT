@@ -26,19 +26,92 @@
 
       
         SP_StockDataContext db = new SP_StockDataContext();
-        private List<Stock> allStock; // displays all stock items in memory for filtering
+        private List<sp_SearchResult> allStock; // displays all stock items in memory for filtering
         private int selectedStockId = -1;
+        private bool isViewArchived = false;
+
+        private void ApplyGridFormatting()
+        {
+            if (dgtStock.Columns.Contains("StockID"))
+                dgtStock.Columns["StockID"].Visible = false;
+            if (dgtStock.Columns.Contains("ProductName"))
+                dgtStock.Columns["ProductName"].HeaderText = "Product Name";
+            if (dgtStock.Columns.Contains("UnitPrice"))
+                dgtStock.Columns["UnitPrice"].HeaderText = "Unit Price";
+            if (dgtStock.Columns.Contains("DateAdded"))
+                dgtStock.Columns["DateAdded"].HeaderText = "Date Added";
+        }
+
+        private List<sp_SearchResult> GetArchivedList()
+        {
+            List<sp_SearchResult> list = new List<sp_SearchResult>();
+
+            using (SqlConnection conn = new SqlConnection(db.Connection.ConnectionString))
+            using (SqlCommand cmd = new SqlCommand("dbo.sp_GetArchived", conn))
+            {
+                cmd.CommandType = CommandType.StoredProcedure;
+
+                conn.Open();
+                using (SqlDataReader reader = cmd.ExecuteReader())
+                {
+                    while (reader.Read())
+                    {
+                        list.Add(new sp_SearchResult
+                        {
+                            StockID = Convert.ToInt32(reader["StockID"]),
+                            ProductName = reader["ProductName"].ToString(),
+                            Category = reader["Category"].ToString(),
+                            UnitPrice = Convert.ToDecimal(reader["UnitPrice"]),
+                            Material = reader["Material"] == DBNull.Value ? null : reader["Material"].ToString(),
+                            DateAdded = Convert.ToDateTime(reader["DateAdded"])
+                        });
+                    }
+                }
+            }
+
+            return list;
+        }
+
+        private void RunStockAction(string procName, string paramName, int stockId)
+        {
+            using (SqlConnection conn = new SqlConnection(db.Connection.ConnectionString))
+            using (SqlCommand cmd = new SqlCommand(procName, conn))
+            {
+                cmd.CommandType = CommandType.StoredProcedure;
+                cmd.Parameters.AddWithValue(paramName, stockId);
+
+                conn.Open();
+                cmd.ExecuteNonQuery();
+            }
+        }
+
+        private void UpdateButtonVisibility()
+        {
+            if (isViewArchived)
+            {
+                btnAdd.Hide();
+                btnUpdate.Hide();
+                btnArchive.Hide();
+                btnRestore.Show();
+                btnViewArchived.Text = "View Stock";
+            }
+            else
+            {
+                btnAdd.Show();
+                btnUpdate.Hide();
+                btnArchive.Show();
+                btnRestore.Hide();
+                btnViewArchived.Text = "View Archived";
+            }
+        }
 
         private void LoadStock()
         {
             db = new SP_StockDataContext();
-            allStock = db.sp_Search(null).ToList(); // load all items at once
+            allStock = isViewArchived ? GetArchivedList() : db.sp_Search(null).ToList();
             dgtStock.DataSource = allStock;
 
-            dgtStock.Columns["StockID"].Visible = false;
-            dgtStock.Columns["ProductName"].HeaderText = "Product Name";
-            dgtStock.Columns["UnitPrice"].HeaderText = "Unit Price";
-            dgtStock.Columns["DateAdded"].HeaderText = "Date Added";
+            ApplyGridFormatting();
         }
 
         private void btnAdd_Click(object sender, EventArgs e)
@@ -88,7 +161,7 @@
             if (e.RowIndex < 0)
                 return;
 
-            Stock selected = dgtStock.Rows[e.RowIndex].DataBoundItem as Stock;
+            sp_SearchResult selected = dgtStock.Rows[e.RowIndex].DataBoundItem as sp_SearchResult;
             if (selected == null)
                 return;
 
@@ -156,12 +229,22 @@
             string search = txtS_search.Text.Trim();
 
             db = new SP_StockDataContext();
-            dgtStock.DataSource = db.sp_Search(search).ToList();
 
-            dgtStock.Columns["StockID"].Visible = false;
-            dgtStock.Columns["ProductName"].HeaderText = "Product Name";
-            dgtStock.Columns["UnitPrice"].HeaderText = "Unit Price";
-            dgtStock.Columns["DateAdded"].HeaderText = "Date Added";
+            if (isViewArchived)
+            {
+                dgtStock.DataSource = allStock
+                    .Where(s => string.IsNullOrEmpty(search)
+                        || (!string.IsNullOrEmpty(s.ProductName) && s.ProductName.IndexOf(search, StringComparison.OrdinalIgnoreCase) >= 0)
+                        || (!string.IsNullOrEmpty(s.Category) && s.Category.IndexOf(search, StringComparison.OrdinalIgnoreCase) >= 0)
+                        || (!string.IsNullOrEmpty(s.Material) && s.Material.IndexOf(search, StringComparison.OrdinalIgnoreCase) >= 0))
+                    .ToList();
+            }
+            else
+            {
+                dgtStock.DataSource = db.sp_Search(search).ToList();
+            }
+
+            ApplyGridFormatting();
         }
 
         private void btnUpdate_Click(object sender, EventArgs e)
@@ -186,8 +269,7 @@
                 LoadStock();
                 selectedStockId = -1;
                 ClearInputs();
-                btnUpdate.Hide();
-                btnAdd.Show();
+                UpdateButtonVisibility();
                 MessageBox.Show("Successfully Updated!", "Success", MessageBoxButtons.OK, MessageBoxIcon.Information);
             }
             catch (Exception ex)
@@ -198,15 +280,103 @@
 
         private void StockForm_Load(object sender, EventArgs e)
         {
-            btnUpdate.Hide();
+            isViewArchived = false;
+            UpdateButtonVisibility();
+        }
 
+        private void btnArchive_Click(object sender, EventArgs e)
+        {
+            if (selectedStockId < 0)
+            {
+                MessageBox.Show("Select a product from the list first.", "No Selection", MessageBoxButtons.OK, MessageBoxIcon.Warning);
+                return;
+            }
+
+            string productName = txtProductname.Text.Trim();
+            DialogResult confirm = MessageBox.Show(
+                string.IsNullOrEmpty(productName)
+                    ? "Are you sure you want to archive this product?"
+                    : "Are you sure you want to archive \"" + productName + "\"?",
+                "Confirm Archive",
+                MessageBoxButtons.YesNo,
+                MessageBoxIcon.Question);
+
+            if (confirm != DialogResult.Yes)
+                return;
+
+            try
+            {
+                db = new SP_StockDataContext();
+                RunStockAction("dbo.sp_ArchiveStock", "@StockID", selectedStockId);
+
+                selectedStockId = -1;
+                LoadStock();
+                ClearInputs();
+                MessageBox.Show("Product archived successfully.", "Success", MessageBoxButtons.OK, MessageBoxIcon.Information);
+            }
+            catch (Exception ex)
+            {
+                MessageBox.Show("Error archiving stock:\n\n" + ex.Message, "Error", MessageBoxButtons.OK, MessageBoxIcon.Error);
+            }
+        }
+
+        private void btnRestore_Click(object sender, EventArgs e)
+        {
+            if (selectedStockId < 0)
+            {
+                MessageBox.Show("Select a product from the list first.", "No Selection", MessageBoxButtons.OK, MessageBoxIcon.Warning);
+                return;
+            }
+
+            string productName = txtProductname.Text.Trim();
+            DialogResult confirm = MessageBox.Show(
+                string.IsNullOrEmpty(productName)
+                    ? "Are you sure you want to restore this product?"
+                    : "Are you sure you want to restore \"" + productName + "\"?",
+                "Confirm Restore",
+                MessageBoxButtons.YesNo,
+                MessageBoxIcon.Question);
+
+            if (confirm != DialogResult.Yes)
+                return;
+
+            try
+            {
+                db = new SP_StockDataContext();
+                RunStockAction("dbo.sp_RestoreStock", "@StockID", selectedStockId);
+
+                selectedStockId = -1;
+                LoadStock();
+                ClearInputs();
+                MessageBox.Show("Product restored successfully.", "Success", MessageBoxButtons.OK, MessageBoxIcon.Information);
+            }
+            catch (Exception ex)
+            {
+                MessageBox.Show("Error restoring stock:\n\n" + ex.Message, "Error", MessageBoxButtons.OK, MessageBoxIcon.Error);
+            }
+        }
+
+        private void btnViewArchived_Click(object sender, EventArgs e)
+        {
+            isViewArchived = !isViewArchived;
+            selectedStockId = -1;
+            LoadStock();
+            ClearInputs();
+            UpdateButtonVisibility();
         }
 
         private void dgtStock_CellDoubleClick(object sender, DataGridViewCellEventArgs e)
         {
-            btnAdd.Hide();
-            btnUpdate.Show();
-            Stock selected = dgtStock.Rows[e.RowIndex].DataBoundItem as Stock;
+            if (e.RowIndex < 0)
+                return;
+
+            if (!isViewArchived)
+            {
+                btnAdd.Hide();
+                btnUpdate.Show();
+            }
+
+            sp_SearchResult selected = dgtStock.Rows[e.RowIndex].DataBoundItem as sp_SearchResult;
             if (selected == null)
                 return;
 

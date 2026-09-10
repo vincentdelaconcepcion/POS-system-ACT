@@ -33,4 +33,15 @@
     <Parameter Name="StockID" Parameter="stockID" Type="System.Int32" DbType="Int" />
     <Return Type="System.Int32" />
   </Function>
+  <Function Name="dbo.sp_Search" Method="sp_Search">
+    <Parameter Name="SearchTerm" Parameter="searchTerm" Type="System.String" DbType="VarChar(100)" />
+    <ElementType Name="sp_SearchResult">
+      <Column Name="StockID" Type="System.Int32" DbType="Int NOT NULL" CanBeNull="false" />
+      <Column Name="ProductName" Type="System.String" DbType="NVarChar(100) NOT NULL" CanBeNull="false" />
+      <Column Name="Category" Type="System.String" DbType="NVarChar(50) NOT NULL" CanBeNull="false" />
+      <Column Name="UnitPrice" Type="System.Decimal" DbType="Decimal(10,2) NOT NULL" CanBeNull="false" />
+      <Column Name="Material" Type="System.String" DbType="NVarChar(100)" CanBeNull="true" />
+      <Column Name="DateAdded" Type="System.DateTime" DbType="DateTime NOT NULL" CanBeNull="false" />
+    </ElementType>
+  </Function>
 </Database>
