@@ -181,6 +181,7 @@
             this.dgtStock.ReadOnly = true;
             this.dgtStock.RowHeadersWidth = 51;
             this.dgtStock.RowTemplate.Height = 24;
+            this.dgtStock.SelectionMode = System.Windows.Forms.DataGridViewSelectionMode.FullRowSelect;
             this.dgtStock.Size = new System.Drawing.Size(957, 491);
             this.dgtStock.TabIndex = 13;
             this.dgtStock.CellClick += new System.Windows.Forms.DataGridViewCellEventHandler(this.dgtStock_CellClick);
