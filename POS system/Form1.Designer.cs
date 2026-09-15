@@ -69,7 +69,7 @@
             // 
             this.btnStock.BackColor = System.Drawing.SystemColors.ScrollBar;
             this.btnStock.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
-            this.btnStock.Font = new System.Drawing.Font("Microsoft Sans Serif", 12F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.btnStock.Font = new System.Drawing.Font("Segoe UI", 12F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.btnStock.ForeColor = System.Drawing.SystemColors.WindowText;
             this.btnStock.Location = new System.Drawing.Point(12, 225);
             this.btnStock.Name = "btnStock";
@@ -84,9 +84,9 @@
             this.Savebtn.BackColor = System.Drawing.Color.WhiteSmoke;
             this.Savebtn.Font = new System.Drawing.Font("Microsoft Sans Serif", 12F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.Savebtn.ForeColor = System.Drawing.SystemColors.WindowText;
-            this.Savebtn.Location = new System.Drawing.Point(872, 510);
+            this.Savebtn.Location = new System.Drawing.Point(1100, 730);
             this.Savebtn.Name = "Savebtn";
-            this.Savebtn.Size = new System.Drawing.Size(153, 53);
+            this.Savebtn.Size = new System.Drawing.Size(160, 50);
             this.Savebtn.TabIndex = 96;
             this.Savebtn.Text = "Save";
             this.Savebtn.UseVisualStyleBackColor = false;
@@ -100,7 +100,7 @@
             this.panel2.Dock = System.Windows.Forms.DockStyle.Left;
             this.panel2.Location = new System.Drawing.Point(0, 0);
             this.panel2.Name = "panel2";
-            this.panel2.Size = new System.Drawing.Size(236, 688);
+            this.panel2.Size = new System.Drawing.Size(236, 864);
             this.panel2.TabIndex = 97;
             this.panel2.Paint += new System.Windows.Forms.PaintEventHandler(this.panel2_Paint);
             // 
@@ -154,21 +154,21 @@
             this.dgtStock.AllowUserToDeleteRows = false;
             this.dgtStock.BackgroundColor = System.Drawing.Color.White;
             this.dgtStock.ColumnHeadersHeightSizeMode = System.Windows.Forms.DataGridViewColumnHeadersHeightSizeMode.AutoSize;
-            this.dgtStock.Location = new System.Drawing.Point(724, 125);
+            this.dgtStock.Location = new System.Drawing.Point(820, 120);
             this.dgtStock.Margin = new System.Windows.Forms.Padding(2);
             this.dgtStock.Name = "dgtStock";
             this.dgtStock.ReadOnly = true;
             this.dgtStock.RowHeadersWidth = 51;
-            this.dgtStock.RowTemplate.Height = 24;
-            this.dgtStock.Size = new System.Drawing.Size(442, 361);
+            this.dgtStock.RowTemplate.Height = 28;
+            this.dgtStock.Size = new System.Drawing.Size(680, 580);
             this.dgtStock.TabIndex = 106;
             // 
             // txtS_search
             // 
-            this.txtS_search.Location = new System.Drawing.Point(413, 40);
+            this.txtS_search.Location = new System.Drawing.Point(618, 40);
             this.txtS_search.Multiline = true;
             this.txtS_search.Name = "txtS_search";
-            this.txtS_search.Size = new System.Drawing.Size(426, 27);
+            this.txtS_search.Size = new System.Drawing.Size(500, 35);
             this.txtS_search.TabIndex = 105;
             this.txtS_search.TextChanged += new System.EventHandler(this.txtS_search_TextChanged);
             // 
@@ -178,7 +178,7 @@
             this.labelSearch.BackColor = System.Drawing.Color.WhiteSmoke;
             this.labelSearch.Font = new System.Drawing.Font("Microsoft Sans Serif", 14.25F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.labelSearch.ForeColor = System.Drawing.Color.Black;
-            this.labelSearch.Location = new System.Drawing.Point(418, 43);
+            this.labelSearch.Location = new System.Drawing.Point(628, 47);
             this.labelSearch.Name = "labelSearch";
             this.labelSearch.Size = new System.Drawing.Size(94, 24);
             this.labelSearch.TabIndex = 107;
@@ -190,9 +190,9 @@
             this.panel1.Controls.Add(this.label1);
             this.panel1.Controls.Add(this.pictureBox1);
             this.panel1.ForeColor = System.Drawing.Color.LightGray;
-            this.panel1.Location = new System.Drawing.Point(302, 125);
+            this.panel1.Location = new System.Drawing.Point(320, 120);
             this.panel1.Name = "panel1";
-            this.panel1.Size = new System.Drawing.Size(175, 152);
+            this.panel1.Size = new System.Drawing.Size(230, 280);
             this.panel1.TabIndex = 108;
             // 
             // label1
@@ -200,11 +200,11 @@
             this.label1.AutoSize = true;
             this.label1.Font = new System.Drawing.Font("Microsoft Sans Serif", 15.75F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.label1.ForeColor = System.Drawing.Color.Black;
-            this.label1.Location = new System.Drawing.Point(31, 109);
+            this.label1.Location = new System.Drawing.Point(50, 220);
             this.label1.Name = "label1";
-            this.label1.Size = new System.Drawing.Size(131, 25);
+            this.label1.Size = new System.Drawing.Size(130, 25);
             this.label1.TabIndex = 1;
-            this.label1.Text = "GARMETNS";
+            this.label1.Text = "GARMENTS";
             // 
             // panel5
             // 
@@ -212,9 +212,9 @@
             this.panel5.Controls.Add(this.label3);
             this.panel5.Controls.Add(this.pictureBox2);
             this.panel5.ForeColor = System.Drawing.Color.LightGray;
-            this.panel5.Location = new System.Drawing.Point(509, 125);
+            this.panel5.Location = new System.Drawing.Point(580, 120);
             this.panel5.Name = "panel5";
-            this.panel5.Size = new System.Drawing.Size(175, 152);
+            this.panel5.Size = new System.Drawing.Size(230, 280);
             this.panel5.TabIndex = 109;
             // 
             // label3
@@ -222,7 +222,7 @@
             this.label3.AutoSize = true;
             this.label3.Font = new System.Drawing.Font("Microsoft Sans Serif", 15.75F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.label3.ForeColor = System.Drawing.Color.Black;
-            this.label3.Location = new System.Drawing.Point(39, 109);
+            this.label3.Location = new System.Drawing.Point(55, 220);
             this.label3.Name = "label3";
             this.label3.Size = new System.Drawing.Size(100, 25);
             this.label3.TabIndex = 1;
@@ -234,9 +234,9 @@
             this.panel7.Controls.Add(this.label4);
             this.panel7.Controls.Add(this.pictureBox4);
             this.panel7.ForeColor = System.Drawing.Color.LightGray;
-            this.panel7.Location = new System.Drawing.Point(302, 334);
+            this.panel7.Location = new System.Drawing.Point(320, 430);
             this.panel7.Name = "panel7";
-            this.panel7.Size = new System.Drawing.Size(175, 152);
+            this.panel7.Size = new System.Drawing.Size(230, 280);
             this.panel7.TabIndex = 110;
             // 
             // label4
@@ -244,9 +244,9 @@
             this.label4.AutoSize = true;
             this.label4.Font = new System.Drawing.Font("Microsoft Sans Serif", 15.75F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.label4.ForeColor = System.Drawing.Color.Black;
-            this.label4.Location = new System.Drawing.Point(22, 109);
+            this.label4.Location = new System.Drawing.Point(40, 220);
             this.label4.Name = "label4";
-            this.label4.Size = new System.Drawing.Size(133, 25);
+            this.label4.Size = new System.Drawing.Size(148, 25);
             this.label4.TabIndex = 1;
             this.label4.Text = "FOOTWEAR";
             // 
@@ -256,9 +256,9 @@
             this.panel8.Controls.Add(this.label6);
             this.panel8.Controls.Add(this.pictureBox5);
             this.panel8.ForeColor = System.Drawing.Color.LightGray;
-            this.panel8.Location = new System.Drawing.Point(509, 334);
+            this.panel8.Location = new System.Drawing.Point(580, 430);
             this.panel8.Name = "panel8";
-            this.panel8.Size = new System.Drawing.Size(175, 152);
+            this.panel8.Size = new System.Drawing.Size(230, 280);
             this.panel8.TabIndex = 111;
             // 
             // label6
@@ -266,7 +266,7 @@
             this.label6.AutoSize = true;
             this.label6.Font = new System.Drawing.Font("Microsoft Sans Serif", 15.75F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.label6.ForeColor = System.Drawing.Color.Black;
-            this.label6.Location = new System.Drawing.Point(55, 109);
+            this.label6.Location = new System.Drawing.Point(70, 220);
             this.label6.Name = "label6";
             this.label6.Size = new System.Drawing.Size(60, 25);
             this.label6.TabIndex = 1;
@@ -275,9 +275,9 @@
             // pictureBox5
             // 
             this.pictureBox5.Image = global::POS_system.Properties.Resources.readytowear1;
-            this.pictureBox5.Location = new System.Drawing.Point(36, 16);
+            this.pictureBox5.Location = new System.Drawing.Point(50, 30);
             this.pictureBox5.Name = "pictureBox5";
-            this.pictureBox5.Size = new System.Drawing.Size(96, 80);
+            this.pictureBox5.Size = new System.Drawing.Size(130, 160);
             this.pictureBox5.SizeMode = System.Windows.Forms.PictureBoxSizeMode.StretchImage;
             this.pictureBox5.TabIndex = 0;
             this.pictureBox5.TabStop = false;
@@ -285,9 +285,9 @@
             // pictureBox4
             // 
             this.pictureBox4.Image = global::POS_system.Properties.Resources.sapatos1;
-            this.pictureBox4.Location = new System.Drawing.Point(36, 16);
+            this.pictureBox4.Location = new System.Drawing.Point(50, 30);
             this.pictureBox4.Name = "pictureBox4";
-            this.pictureBox4.Size = new System.Drawing.Size(96, 80);
+            this.pictureBox4.Size = new System.Drawing.Size(130, 160);
             this.pictureBox4.SizeMode = System.Windows.Forms.PictureBoxSizeMode.StretchImage;
             this.pictureBox4.TabIndex = 0;
             this.pictureBox4.TabStop = false;
@@ -295,9 +295,9 @@
             // pictureBox2
             // 
             this.pictureBox2.Image = global::POS_system.Properties.Resources.schooling;
-            this.pictureBox2.Location = new System.Drawing.Point(41, 16);
+            this.pictureBox2.Location = new System.Drawing.Point(50, 30);
             this.pictureBox2.Name = "pictureBox2";
-            this.pictureBox2.Size = new System.Drawing.Size(96, 80);
+            this.pictureBox2.Size = new System.Drawing.Size(130, 160);
             this.pictureBox2.SizeMode = System.Windows.Forms.PictureBoxSizeMode.StretchImage;
             this.pictureBox2.TabIndex = 0;
             this.pictureBox2.TabStop = false;
@@ -305,9 +305,9 @@
             // pictureBox1
             // 
             this.pictureBox1.Image = global::POS_system.Properties.Resources.tshirt1;
-            this.pictureBox1.Location = new System.Drawing.Point(36, 16);
+            this.pictureBox1.Location = new System.Drawing.Point(50, 30);
             this.pictureBox1.Name = "pictureBox1";
-            this.pictureBox1.Size = new System.Drawing.Size(96, 80);
+            this.pictureBox1.Size = new System.Drawing.Size(130, 160);
             this.pictureBox1.SizeMode = System.Windows.Forms.PictureBoxSizeMode.StretchImage;
             this.pictureBox1.TabIndex = 0;
             this.pictureBox1.TabStop = false;
@@ -331,7 +331,7 @@
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.BackColor = System.Drawing.Color.DarkSlateGray;
             this.BackgroundImageLayout = System.Windows.Forms.ImageLayout.Stretch;
-            this.ClientSize = new System.Drawing.Size(1178, 688);
+            this.ClientSize = new System.Drawing.Size(1536, 864);
             this.Controls.Add(this.panel8);
             this.Controls.Add(this.panel7);
             this.Controls.Add(this.panel5);
@@ -342,6 +342,7 @@
             this.Controls.Add(this.panel2);
             this.Controls.Add(this.Savebtn);
             this.Name = "Form1";
+            this.StartPosition = System.Windows.Forms.FormStartPosition.CenterScreen;
             this.WindowState = System.Windows.Forms.FormWindowState.Maximized;
             this.Load += new System.EventHandler(this.Form1_Load);
             this.panel2.ResumeLayout(false);
@@ -392,4 +393,3 @@
         private System.Windows.Forms.PictureBox pictureBox5;
     }
 }
-
