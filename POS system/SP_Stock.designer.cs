@@ -74,24 +74,16 @@ namespace POS_system
 		}
 		
 		[global::System.Data.Linq.Mapping.FunctionAttribute(Name="dbo.sp_Stock")]
-public ISingleResult<sp_StockResult> 
-sp_Stock([global::System.Data.Linq.Mapping.ParameterAttribute(Name="ProductName", DbType="VarChar(100)")] string 
-productName, [global::System.Data.Linq.Mapping.ParameterAttribute(Name="Category", DbType="VarChar(50)")] string 
-category, [global::System.Data.Linq.Mapping.ParameterAttribute(Name="UnitPrice", DbType="Decimal(10,2)")] 
-System.Nullable<decimal> unitPrice, [global::System.Data.Linq.Mapping.ParameterAttribute(Name="Material", 
-DbType="NVarChar(100)")] string material, [global::System.Data.Linq.Mapping.ParameterAttribute(Name="DateAdded", 
-DbType="DateTime")] System.Nullable<System.DateTime> dateAdded, [global::System.Data.Linq.Mapping.ParameterAttribute(Name="Quantity", DbType="Int")] System.Nullable<int> quantity)
+		public ISingleResult<sp_StockResult> sp_Stock([global::System.Data.Linq.Mapping.ParameterAttribute(Name="ProductName", DbType="VarChar(100)")] string productName, [global::System.Data.Linq.Mapping.ParameterAttribute(Name="Category", DbType="VarChar(50)")] string category, [global::System.Data.Linq.Mapping.ParameterAttribute(Name="UnitPrice", DbType="Decimal(10,2)")] System.Nullable<decimal> unitPrice, [global::System.Data.Linq.Mapping.ParameterAttribute(Name="Material", DbType="NVarChar(100)")] string material, [global::System.Data.Linq.Mapping.ParameterAttribute(Name="DateAdded", DbType="DateTime")] System.Nullable<System.DateTime> dateAdded, [global::System.Data.Linq.Mapping.ParameterAttribute(Name="Quantity", DbType="Int")] System.Nullable<int> quantity)
 		{
-			IExecuteResult result = this.ExecuteMethodCall(this, ((MethodInfo)(MethodInfo.GetCurrentMethod())), productName, category, unitPrice, material, dateAdded);
+			IExecuteResult result = this.ExecuteMethodCall(this, ((MethodInfo)(MethodInfo.GetCurrentMethod())), productName, category, unitPrice, material, dateAdded, quantity);
 			return ((ISingleResult<sp_StockResult>)(result.ReturnValue));
 		}
 		
 		[global::System.Data.Linq.Mapping.FunctionAttribute(Name="dbo.sp_UpdateProduct")]
-		public int sp_UpdateProduct([global::System.Data.Linq.Mapping.ParameterAttribute(Name="PRODUCTNAME", DbType="VarChar(50)")] string pRODUCTNAME, [global::System.Data.Linq.Mapping.ParameterAttribute(Name="CATEGORY", DbType="VarChar(50)")] string cATEGORY, [global::System.Data.Linq.Mapping.ParameterAttribute(Name="UNITPRICE", DbType="Decimal(10,2)")] System.Nullable<decimal> uNITPRICE, [global::System.Data.Linq.Mapping.ParameterAttribute(Name="MATERIAL", DbType="VarChar(100)")] string mATERIAL, [global::System.Data.Linq.Mapping.ParameterAttribute(Name="DATE", 
-DbType="DateTime")] System.Nullable<System.DateTime> dATE, 
-[global::System.Data.Linq.Mapping.ParameterAttribute(Name="STOCKID", DbType="Int")] System.Nullable<int> sTOCKID, [global::System.Data.Linq.Mapping.ParameterAttribute(Name="QUANTITY", DbType="Int")] System.Nullable<int> qUANTITY)
+		public int sp_UpdateProduct([global::System.Data.Linq.Mapping.ParameterAttribute(Name="PRODUCTNAME", DbType="VarChar(50)")] string pRODUCTNAME, [global::System.Data.Linq.Mapping.ParameterAttribute(Name="CATEGORY", DbType="VarChar(50)")] string cATEGORY, [global::System.Data.Linq.Mapping.ParameterAttribute(Name="UNITPRICE", DbType="Decimal(10,2)")] System.Nullable<decimal> uNITPRICE, [global::System.Data.Linq.Mapping.ParameterAttribute(Name="MATERIAL", DbType="VarChar(100)")] string mATERIAL, [global::System.Data.Linq.Mapping.ParameterAttribute(Name="DATE", DbType="DateTime")] System.Nullable<System.DateTime> dATE, [global::System.Data.Linq.Mapping.ParameterAttribute(Name="STOCKID", DbType="Int")] System.Nullable<int> sTOCKID, [global::System.Data.Linq.Mapping.ParameterAttribute(Name="QUANTITY", DbType="Int")] System.Nullable<int> qUANTITY)
 		{
-			IExecuteResult result = this.ExecuteMethodCall(this, ((MethodInfo)(MethodInfo.GetCurrentMethod())), pRODUCTNAME, cATEGORY, uNITPRICE, mATERIAL, dATE, sTOCKID);
+			IExecuteResult result = this.ExecuteMethodCall(this, ((MethodInfo)(MethodInfo.GetCurrentMethod())), pRODUCTNAME, cATEGORY, uNITPRICE, mATERIAL, dATE, sTOCKID, qUANTITY);
 			return ((int)(result.ReturnValue));
 		}
 		
