@@ -201,6 +201,7 @@
 
             if (!isViewArchived)
             {
+                btnUpdate.Show();
                 btnDelete.Show();
                 btnAdd.Hide();
             }
