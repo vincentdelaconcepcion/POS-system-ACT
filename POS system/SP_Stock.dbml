@@ -16,6 +16,7 @@
     <Parameter Name="UnitPrice" Parameter="unitPrice" Type="System.Decimal" DbType="Decimal(10,2)" />
     <Parameter Name="Material" Parameter="material" Type="System.String" DbType="NVarChar(100)" />
     <Parameter Name="DateAdded" Parameter="dateAdded" Type="System.DateTime" DbType="DateTime" />
+    <Parameter Name="Quantity" Parameter="quantity" Type="System.Int32" DbType="Int" />
     <ElementType Name="sp_StockResult">
       <Column Name="NewStockID" Type="System.Decimal" DbType="Decimal(38,0)" CanBeNull="true" />
     </ElementType>
@@ -27,6 +28,7 @@
     <Parameter Name="MATERIAL" Parameter="mATERIAL" Type="System.String" DbType="VarChar(100)" />
     <Parameter Name="DATE" Parameter="dATE" Type="System.DateTime" DbType="DateTime" />
     <Parameter Name="STOCKID" Parameter="sTOCKID" Type="System.Int32" DbType="Int" />
+    <Parameter Name="QUANTITY" Parameter="qUANTITY" Type="System.Int32" DbType="Int" />
     <Return Type="System.Int32" />
   </Function>
   <Function Name="dbo.sp_DeleteStock" Method="sp_DeleteStock">
@@ -42,6 +44,7 @@
       <Column Name="UnitPrice" Type="System.Decimal" DbType="Decimal(10,2) NOT NULL" CanBeNull="false" />
       <Column Name="Material" Type="System.String" DbType="NVarChar(100)" CanBeNull="true" />
       <Column Name="DateAdded" Type="System.DateTime" DbType="DateTime NOT NULL" CanBeNull="false" />
+      <Column Name="Quantity" Type="System.Int32" DbType="Int NOT NULL" CanBeNull="false" />
     </ElementType>
   </Function>
 </Database>

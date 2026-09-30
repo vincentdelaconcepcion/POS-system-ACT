@@ -362,7 +362,7 @@
             this.btnBuy.TabIndex = 113;
             this.btnBuy.Text = "Stock Display";
             this.btnBuy.UseVisualStyleBackColor = false;
-            this.btnBuy.Click += new System.EventHandler(this.btnBuy_Click);
+            
             // 
             // Form1
             // 

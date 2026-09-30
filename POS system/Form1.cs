@@ -146,11 +146,6 @@ namespace POS_system
 
         }
 
-        private void btnBuy_Click(object sender, EventArgs e)
-        {
-            BuyingForm buyingForm = new BuyingForm();
-            buyingForm.Show();
-            
-        }
+     
     }
 }

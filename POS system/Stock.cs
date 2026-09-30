@@ -68,7 +68,8 @@
                             Category = reader["Category"].ToString(),
                             UnitPrice = Convert.ToDecimal(reader["UnitPrice"]),
                             Material = reader["Material"] == DBNull.Value ? null : reader["Material"].ToString(),
-                            DateAdded = Convert.ToDateTime(reader["DateAdded"])
+                            DateAdded = Convert.ToDateTime(reader["DateAdded"]),
+                            Quantity = Convert.ToInt32(reader["Quantity"])
                         });
                     }
                 }
@@ -97,6 +98,7 @@
                 btnAdd.Hide();
                 btnUpdate.Hide();
                 btnArchive.Hide();
+                btnDelete.Hide();
                 btnRestore.Show();
                 btnViewArchived.Text = "View Stock";
             }
@@ -104,10 +106,17 @@
             {
                 btnAdd.Show();
                 btnUpdate.Hide();
+                btnDelete.Hide();
                 btnArchive.Show();
                 btnRestore.Hide();
                 btnViewArchived.Text = "View Archived";
             }
+        }
+
+        private int ParseQuantity()
+        {
+            int qty;
+            return int.TryParse(txtQuantity.Text.Trim(), out qty) && qty >= 0 ? qty : 0;
         }
 
         private void LoadStock()
@@ -131,7 +140,8 @@
                     cmbCategory.SelectedItem.ToString(),
                     Convert.ToDecimal(txtunitPrice.Text),
                     txtMaterial.Text,
-                    dtpDateAdded.Value
+                    dtpDateAdded.Value,
+                    ParseQuantity()
                 );
                 LoadStock();
                 ClearInputs();
@@ -149,7 +159,7 @@
             txtProductname.Clear();
             txtunitPrice.Clear();
             txtMaterial.Clear();
-           
+            txtQuantity.Clear();
             dtpDateAdded.Value = DateTime.Now;
         }
 
@@ -163,6 +173,12 @@
         
         private void dgtStock_CellClick(object sender, DataGridViewCellEventArgs e)
         {
+            if (e.RowIndex < 0 || !isViewArchived)
+            {
+                UpdateButtonVisibility();
+                btnUpdate.Hide();
+            }
+
             if (e.RowIndex < 0)
                 return;
 
@@ -180,7 +196,14 @@
 
             txtunitPrice.Text = selected.UnitPrice.ToString("0.00");
             txtMaterial.Text = selected.Material ?? string.Empty;
+            txtQuantity.Text = selected.Quantity.ToString();
             dtpDateAdded.Value = selected.DateAdded;
+
+            if (!isViewArchived)
+            {
+                btnDelete.Show();
+                btnAdd.Hide();
+            }
         }
 
         private void dgtStock_CellContentClick(object sender, DataGridViewCellEventArgs e)
@@ -269,7 +292,8 @@
                     Convert.ToDecimal(txtunitPrice.Text),
                     txtMaterial.Text,
                     dtpDateAdded.Value,
-                    selectedStockId
+                    selectedStockId,
+                    ParseQuantity()
                 );
                 LoadStock();
                 selectedStockId = -1;
@@ -395,6 +419,7 @@
 
             txtunitPrice.Text = selected.UnitPrice.ToString("0.00");
             txtMaterial.Text = selected.Material ?? string.Empty;
+            txtQuantity.Text = selected.Quantity.ToString();
             dtpDateAdded.Value = selected.DateAdded;
         }
 

@@ -33,6 +33,8 @@
             this.label2 = new System.Windows.Forms.Label();
             this.txtunitPrice = new System.Windows.Forms.TextBox();
             this.txtMaterial = new System.Windows.Forms.TextBox();
+            this.txtQuantity = new System.Windows.Forms.TextBox();
+            this.labelQuantity = new System.Windows.Forms.Label();
             this.label3 = new System.Windows.Forms.Label();
             this.label4 = new System.Windows.Forms.Label();
             this.label5 = new System.Windows.Forms.Label();
@@ -114,6 +116,25 @@
             this.txtMaterial.Name = "txtMaterial";
             this.txtMaterial.Size = new System.Drawing.Size(280, 32);
             this.txtMaterial.TabIndex = 5;
+            // 
+            // txtQuantity
+            // 
+            this.txtQuantity.Font = new System.Drawing.Font("Microsoft Sans Serif", 11F);
+            this.txtQuantity.Location = new System.Drawing.Point(510, 487);
+            this.txtQuantity.Multiline = true;
+            this.txtQuantity.Name = "txtQuantity";
+            this.txtQuantity.Size = new System.Drawing.Size(280, 32);
+            this.txtQuantity.TabIndex = 6;
+            // 
+            // labelQuantity
+            // 
+            this.labelQuantity.AutoSize = true;
+            this.labelQuantity.Font = new System.Drawing.Font("Microsoft Sans Serif", 13F);
+            this.labelQuantity.Location = new System.Drawing.Point(365, 490);
+            this.labelQuantity.Name = "labelQuantity";
+            this.labelQuantity.Size = new System.Drawing.Size(102, 22);
+            this.labelQuantity.TabIndex = 15;
+            this.labelQuantity.Text = "Quantity:";
             // 
             // label3
             // 
@@ -473,9 +494,11 @@
             this.Controls.Add(this.btnArchive);
             this.Controls.Add(this.btnUpdate);
             this.Controls.Add(this.label6);
+            this.Controls.Add(this.labelQuantity);
             this.Controls.Add(this.label5);
             this.Controls.Add(this.label4);
             this.Controls.Add(this.label3);
+            this.Controls.Add(this.txtQuantity);
             this.Controls.Add(this.txtMaterial);
             this.Controls.Add(this.txtunitPrice);
             this.Controls.Add(this.cmbCategory);
@@ -504,6 +527,8 @@
         private System.Windows.Forms.Label label2;
         private System.Windows.Forms.TextBox txtunitPrice;
         private System.Windows.Forms.TextBox txtMaterial;
+        private System.Windows.Forms.TextBox txtQuantity;
+        private System.Windows.Forms.Label labelQuantity;
         private System.Windows.Forms.Label label3;
         private System.Windows.Forms.Label label4;
         private System.Windows.Forms.Label label5;
