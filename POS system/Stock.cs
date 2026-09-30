@@ -4,6 +4,7 @@
     using System.Data;
     using System.Data.SqlClient;
     using System.Drawing;
+    using System.Drawing.Drawing2D;
     using System.Linq;
     using System.Text;
     using System.Threading.Tasks;
@@ -17,6 +18,8 @@
 
         {
             InitializeComponent();
+            ApplyUiShapes();
+            this.Resize += (s, e) => ApplyUiShapes();
             LoadStock();
         }
 
@@ -31,20 +34,127 @@
         private int selectedStockId = -1;
         private bool isViewArchived = false;
 
+        private readonly Font gridHeaderFont = new Font("Segoe UI", 12F, FontStyle.Bold);
+        private readonly Font gridFont = new Font("Segoe UI", 11F);
+
+        private void ApplyUiShapes()
+        {
+            ApplyShapes(this);
+        }
+
+        private void ApplyShapes(Control root)
+        {
+            foreach (Control c in root.Controls)
+            {
+                Button btn = c as Button;
+                if (btn != null)
+                    RoundShape(btn, 18);
+
+                TextBox txt = c as TextBox;
+                if (txt != null)
+                    RoundShape(txt, 15);
+
+                if (c == pictureBox7)
+                    MakeCircle(c);
+
+                if (c.HasChildren)
+                    ApplyShapes(c);
+            }
+        }
+
+        private void MakeCircle(Control c)
+        {
+            if (c.Width <= 0 || c.Height <= 0)
+                return;
+
+            using (GraphicsPath path = new GraphicsPath())
+            {
+                path.AddEllipse(new Rectangle(0, 0, c.Width, c.Height));
+
+                Region previous = c.Region;
+                c.Region = new Region(path);
+                if (previous != null)
+                    previous.Dispose();
+            }
+        }
+
+        private void RoundShape(Control c, int radius)
+        {
+            if (c.Width <= 0 || c.Height <= 0)
+                return;
+
+            Rectangle bounds = new Rectangle(0, 0, c.Width, c.Height);
+            int d = radius * 2;
+
+            using (GraphicsPath path = new GraphicsPath())
+            {
+                if (d <= 0 || bounds.Width < d || bounds.Height < d)
+                {
+                    path.AddRectangle(bounds);
+                }
+                else
+                {
+                    path.AddArc(bounds.X, bounds.Y, d, d, 180, 90);
+                    path.AddArc(bounds.Right - d, bounds.Y, d, d, 270, 90);
+                    path.AddArc(bounds.Right - d, bounds.Bottom - d, d, d, 0, 90);
+                    path.AddArc(bounds.X, bounds.Bottom - d, d, d, 90, 90);
+                    path.CloseFigure();
+                }
+
+                Region previous = c.Region;
+                c.Region = new Region(path);
+                if (previous != null)
+                    previous.Dispose();
+            }
+        }
+
         private void ApplyGridFormatting()
         {
             if (dgtStock.Columns.Contains("StockID"))
                 dgtStock.Columns["StockID"].Visible = false;
             if (dgtStock.Columns.Contains("ProductName"))
+            {
                 dgtStock.Columns["ProductName"].HeaderText = "Product Name";
+                dgtStock.Columns["ProductName"].FillWeight = 150;
+            }
             if (dgtStock.Columns.Contains("UnitPrice"))
+            {
                 dgtStock.Columns["UnitPrice"].HeaderText = "Unit Price";
+                dgtStock.Columns["UnitPrice"].FillWeight = 90;
+            }
             if (dgtStock.Columns.Contains("DateAdded"))
+            {
                 dgtStock.Columns["DateAdded"].HeaderText = "Date Added";
+                dgtStock.Columns["DateAdded"].DefaultCellStyle.Format = "d";
+                dgtStock.Columns["DateAdded"].FillWeight = 90;
+            }
+            if (dgtStock.Columns.Contains("Category"))
+                dgtStock.Columns["Category"].FillWeight = 110;
+            if (dgtStock.Columns.Contains("Material"))
+                dgtStock.Columns["Material"].FillWeight = 110;
+            if (dgtStock.Columns.Contains("Quantity"))
+                dgtStock.Columns["Quantity"].FillWeight = 80;
+            if (dgtStock.Columns.Contains("dgtQty"))
+                dgtStock.Columns["dgtQty"].FillWeight = 60;
 
             dgtStock.ReadOnly = false;
             foreach (DataGridViewColumn col in dgtStock.Columns)
                 col.ReadOnly = (col.Name != "dgtQty");
+
+            dgtStock.AutoSizeColumnsMode = DataGridViewAutoSizeColumnsMode.Fill;
+            dgtStock.Font = gridFont;
+            dgtStock.BackgroundColor = Color.White;
+            dgtStock.GridColor = Color.FromArgb(215, 215, 215);
+            dgtStock.EnableHeadersVisualStyles = false;
+            dgtStock.ColumnHeadersDefaultCellStyle.BackColor = Color.FromArgb(0, 0, 128);
+            dgtStock.ColumnHeadersDefaultCellStyle.ForeColor = Color.White;
+            dgtStock.ColumnHeadersDefaultCellStyle.Font = gridHeaderFont;
+            dgtStock.DefaultCellStyle.BackColor = Color.White;
+            dgtStock.DefaultCellStyle.ForeColor = Color.FromArgb(35, 35, 35);
+            dgtStock.DefaultCellStyle.SelectionBackColor = Color.FromArgb(0, 0, 128);
+            dgtStock.DefaultCellStyle.SelectionForeColor = Color.White;
+            dgtStock.ClearSelection();
+            dgtStock.CurrentCell = null;
         }
 
         private List<sp_SearchResult> GetArchivedList()
