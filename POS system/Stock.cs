@@ -41,6 +41,10 @@
                 dgtStock.Columns["UnitPrice"].HeaderText = "Unit Price";
             if (dgtStock.Columns.Contains("DateAdded"))
                 dgtStock.Columns["DateAdded"].HeaderText = "Date Added";
+
+            dgtStock.ReadOnly = false;
+            foreach (DataGridViewColumn col in dgtStock.Columns)
+                col.ReadOnly = (col.Name != "dgtQty");
         }
 
         private List<sp_SearchResult> GetArchivedList()

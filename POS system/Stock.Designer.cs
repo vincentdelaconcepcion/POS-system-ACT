@@ -181,14 +181,16 @@
             // 
             // dgtStock
             // 
+            this.dgtQty = new System.Windows.Forms.DataGridViewTextBoxColumn();
             this.dgtStock.AllowUserToAddRows = false;
             this.dgtStock.AllowUserToDeleteRows = false;
             this.dgtStock.AllowUserToResizeColumns = false;
             this.dgtStock.BackgroundColor = System.Drawing.Color.White;
             this.dgtStock.ColumnHeadersHeightSizeMode = System.Windows.Forms.DataGridViewColumnHeadersHeightSizeMode.AutoSize;
+            this.dgtStock.Columns.AddRange(new System.Windows.Forms.DataGridViewColumn[] {
+            this.dgtQty});
             this.dgtStock.Location = new System.Drawing.Point(840, 110);
             this.dgtStock.Name = "dgtStock";
-            this.dgtStock.ReadOnly = true;
             this.dgtStock.RowHeadersWidth = 51;
             this.dgtStock.RowTemplate.Height = 28;
             this.dgtStock.SelectionMode = System.Windows.Forms.DataGridViewSelectionMode.FullRowSelect;
@@ -197,6 +199,12 @@
             this.dgtStock.CellClick += new System.Windows.Forms.DataGridViewCellEventHandler(this.dgtStock_CellClick);
             this.dgtStock.CellContentClick += new System.Windows.Forms.DataGridViewCellEventHandler(this.dgtStock_CellContentClick);
             this.dgtStock.CellDoubleClick += new System.Windows.Forms.DataGridViewCellEventHandler(this.dgtStock_CellDoubleClick);
+            // 
+            // dgtQty
+            // 
+            this.dgtQty.HeaderText = "Qty";
+            this.dgtQty.Name = "dgtQty";
+            this.dgtQty.Width = 60;
             // 
             // dtpDateAdded
             // 
@@ -511,6 +519,7 @@
         private System.Windows.Forms.Button btnArchive;
         private System.Windows.Forms.Button btnRestore;
         private System.Windows.Forms.Button btnViewArchived;
+        private System.Windows.Forms.DataGridViewTextBoxColumn dgtQty;
         private System.Windows.Forms.Panel panel2;
         private System.Windows.Forms.Button button12;
         private System.Windows.Forms.Button button8;
