@@ -5,6 +5,7 @@
     using System.Data.SqlClient;
     using System.Drawing;
     using System.Drawing.Drawing2D;
+    using System.Runtime.InteropServices;
     using System.Linq;
     using System.Text;
     using System.Threading.Tasks;
@@ -20,15 +21,14 @@
             InitializeComponent();
             ApplyUiShapes();
             this.Resize += (s, e) => ApplyUiShapes();
+            txtS_search.KeyDown += (s, e) =>
+            {
+                if (e.KeyCode == Keys.Enter)
+                    e.SuppressKeyPress = true;
+            };
             LoadStock();
         }
 
-        private void label2_Click(object sender, EventArgs e)
-        {
-
-        }
-
-      
         SP_StockDataContext db = new SP_StockDataContext();
         private List<sp_SearchResult> allStock; // displays all stock items in memory for filtering
         private int selectedStockId = -1;
@@ -52,7 +52,10 @@
 
                 TextBox txt = c as TextBox;
                 if (txt != null)
+                {
                     RoundShape(txt, 15);
+                    CenterTextBoxText(txt);
+                }
 
                 if (c == pictureBox7)
                     MakeCircle(c);
@@ -60,6 +63,40 @@
                 if (c.HasChildren)
                     ApplyShapes(c);
             }
+        }
+
+        [DllImport("user32.dll", CharSet = CharSet.Auto)]
+        private static extern IntPtr SendMessage(IntPtr hWnd, int msg, IntPtr wParam, IntPtr lParam);
+
+        [DllImport("user32.dll", CharSet = CharSet.Auto)]
+        private static extern IntPtr SendMessage(IntPtr hWnd, int msg, IntPtr wParam, ref NativeRect lParam);
+
+        [StructLayout(LayoutKind.Sequential)]
+        private struct NativeRect
+        {
+            public int Left;
+            public int Top;
+            public int Right;
+            public int Bottom;
+        }
+
+        private const int EM_SETRECT = 0xB3;
+
+        private void CenterTextBoxText(TextBox txt)
+        {
+            txt.TextAlign = HorizontalAlignment.Center;
+
+            if (!txt.IsHandleCreated || !txt.Multiline || txt.Width <= 0 || txt.Height <= 0)
+                return;
+
+            int lineHeight = txt.Font.Height;
+            NativeRect area = new NativeRect();
+            area.Left = 6;
+            area.Right = txt.ClientSize.Width - 6;
+            area.Top = Math.Max(0, (txt.ClientSize.Height - lineHeight) / 2);
+            area.Bottom = txt.ClientSize.Height;
+
+            SendMessage(txt.Handle, EM_SETRECT, IntPtr.Zero, ref area);
         }
 
         private void MakeCircle(Control c)
@@ -422,6 +459,7 @@
         {
             isViewArchived = false;
             UpdateButtonVisibility();
+            ApplyUiShapes();
         }
 
         private void btnArchive_Click(object sender, EventArgs e)
@@ -532,11 +570,6 @@
             txtMaterial.Text = selected.Material ?? string.Empty;
             txtQuantity.Text = selected.Quantity.ToString();
             dtpDateAdded.Value = selected.DateAdded;
-        }
-
-        private void button1_Click(object sender, EventArgs e)
-        {
-
         }
     }
 }
