@@ -597,5 +597,19 @@
             txtQuantity.Text = selected.Quantity.ToString();
             dtpDateAdded.Value = selected.DateAdded;
         }
+
+        private void btnHome_Click(object sender, EventArgs e)
+        {
+            Form1 home = new Form1();
+            home.Show();
+            this.Hide();
+        }
+
+        private void btnStockDisplay_Click(object sender, EventArgs e)
+        {
+            StockDisplay displaystock = new StockDisplay();
+            displaystock.Show();
+            this.Hide();
+        }
     }
 }

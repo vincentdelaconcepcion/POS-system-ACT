@@ -146,6 +146,18 @@ namespace POS_system
 
         }
 
-     
+        private void button6_Click_1(object sender, EventArgs e)
+        {
+            StockForm productsForm = new StockForm();
+            productsForm.Show();
+            this.Hide();
+        }
+
+        private void btnStockDisplay_Click(object sender, EventArgs e)
+        {
+            StockDisplay displaystock = new StockDisplay();
+            displaystock.Show();
+            this.Hide();
+        }
     }
 }

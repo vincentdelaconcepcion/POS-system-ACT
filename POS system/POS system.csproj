@@ -73,6 +73,12 @@
     <Compile Include="Stock.Designer.cs">
       <DependentUpon>Stock.cs</DependentUpon>
     </Compile>
+    <Compile Include="StockDisplay.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="StockDisplay.Designer.cs">
+      <DependentUpon>StockDisplay.cs</DependentUpon>
+    </Compile>
     <Compile Include="TEMPODataSet.Designer.cs">
       <AutoGen>True</AutoGen>
       <DesignTime>True</DesignTime>
@@ -109,6 +115,9 @@
     </EmbeddedResource>
     <EmbeddedResource Include="Stock.resx">
       <DependentUpon>Stock.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="StockDisplay.resx">
+      <DependentUpon>StockDisplay.cs</DependentUpon>
     </EmbeddedResource>
     <None Include="Properties\Settings.settings">
       <Generator>SettingsSingleFileGenerator</Generator>
