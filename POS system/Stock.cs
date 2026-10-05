@@ -171,12 +171,10 @@
                 dgtStock.Columns["Material"].FillWeight = 110;
             if (dgtStock.Columns.Contains("Quantity"))
                 dgtStock.Columns["Quantity"].FillWeight = 80;
-            if (dgtStock.Columns.Contains("dgtQty"))
-                dgtStock.Columns["dgtQty"].FillWeight = 60;
 
             dgtStock.ReadOnly = false;
             foreach (DataGridViewColumn col in dgtStock.Columns)
-                col.ReadOnly = (col.Name != "dgtQty");
+                col.ReadOnly = true;
 
             dgtStock.AutoSizeColumnsMode = DataGridViewAutoSizeColumnsMode.Fill;
             dgtStock.Font = gridFont;

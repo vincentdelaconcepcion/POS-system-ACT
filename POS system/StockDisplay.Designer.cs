@@ -31,8 +31,6 @@
             System.ComponentModel.ComponentResourceManager resources = new System.ComponentModel.ComponentResourceManager(typeof(StockDisplay));
             this.panel2 = new System.Windows.Forms.Panel();
             this.button12 = new System.Windows.Forms.Button();
-            this.button8 = new System.Windows.Forms.Button();
-            this.button7 = new System.Windows.Forms.Button();
             this.button6 = new System.Windows.Forms.Button();
             this.btnStockDisplay = new System.Windows.Forms.Button();
             this.btnHome = new System.Windows.Forms.Button();
@@ -40,6 +38,7 @@
             this.pictureBox7 = new System.Windows.Forms.PictureBox();
             this.label7 = new System.Windows.Forms.Label();
             this.flowLayoutPanel9 = new System.Windows.Forms.FlowLayoutPanel();
+            this.panel1 = new System.Windows.Forms.Panel();
             this.panel2.SuspendLayout();
             this.panel3.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.pictureBox7)).BeginInit();
@@ -49,8 +48,6 @@
             // 
             this.panel2.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(0)))), ((int)(((byte)(0)))), ((int)(((byte)(128)))));
             this.panel2.Controls.Add(this.button12);
-            this.panel2.Controls.Add(this.button8);
-            this.panel2.Controls.Add(this.button7);
             this.panel2.Controls.Add(this.button6);
             this.panel2.Controls.Add(this.btnStockDisplay);
             this.panel2.Controls.Add(this.btnHome);
@@ -75,36 +72,6 @@
             this.button12.TabIndex = 113;
             this.button12.Text = "Settings";
             this.button12.UseVisualStyleBackColor = false;
-            // 
-            // button8
-            // 
-            this.button8.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(193)))), ((int)(((byte)(154)))), ((int)(((byte)(107)))));
-            this.button8.FlatAppearance.BorderSize = 0;
-            this.button8.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
-            this.button8.Font = new System.Drawing.Font("Segoe UI", 14F, System.Drawing.FontStyle.Bold);
-            this.button8.ForeColor = System.Drawing.Color.White;
-            this.button8.Location = new System.Drawing.Point(26, 634);
-            this.button8.Name = "button8";
-            this.button8.Size = new System.Drawing.Size(248, 65);
-            this.button8.TabIndex = 116;
-            this.button8.Text = "RWT";
-            this.button8.UseVisualStyleBackColor = false;
-            this.button8.Visible = false;
-            // 
-            // button7
-            // 
-            this.button7.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(193)))), ((int)(((byte)(154)))), ((int)(((byte)(107)))));
-            this.button7.FlatAppearance.BorderSize = 0;
-            this.button7.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
-            this.button7.Font = new System.Drawing.Font("Segoe UI", 14F, System.Drawing.FontStyle.Bold);
-            this.button7.ForeColor = System.Drawing.Color.White;
-            this.button7.Location = new System.Drawing.Point(26, 634);
-            this.button7.Name = "button7";
-            this.button7.Size = new System.Drawing.Size(248, 65);
-            this.button7.TabIndex = 115;
-            this.button7.Text = "Footwear";
-            this.button7.UseVisualStyleBackColor = false;
-            this.button7.Visible = false;
             // 
             // button6
             // 
@@ -194,11 +161,19 @@
             this.flowLayoutPanel9.TabIndex = 110;
             this.flowLayoutPanel9.Visible = false;
             // 
+            // panel1
+            // 
+            this.panel1.Location = new System.Drawing.Point(984, 330);
+            this.panel1.Name = "panel1";
+            this.panel1.Size = new System.Drawing.Size(200, 100);
+            this.panel1.TabIndex = 100;
+            // 
             // StockDisplay
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.ClientSize = new System.Drawing.Size(1465, 711);
+            this.Controls.Add(this.panel1);
             this.Controls.Add(this.panel2);
             this.Name = "StockDisplay";
             this.Text = "StockDisplay";
@@ -214,8 +189,6 @@
 
         private System.Windows.Forms.Panel panel2;
         private System.Windows.Forms.Button button12;
-        private System.Windows.Forms.Button button8;
-        private System.Windows.Forms.Button button7;
         private System.Windows.Forms.Button button6;
         private System.Windows.Forms.Button btnStockDisplay;
         private System.Windows.Forms.Button btnHome;
@@ -223,5 +196,6 @@
         private System.Windows.Forms.PictureBox pictureBox7;
         private System.Windows.Forms.Label label7;
         private System.Windows.Forms.FlowLayoutPanel flowLayoutPanel9;
+        private System.Windows.Forms.Panel panel1;
     }
 }

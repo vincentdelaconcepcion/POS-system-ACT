@@ -42,7 +42,6 @@
             this.btnAdd = new System.Windows.Forms.Button();
             this.btnBack = new System.Windows.Forms.Button();
             this.dgtStock = new System.Windows.Forms.DataGridView();
-            this.dgtQty = new System.Windows.Forms.DataGridViewTextBoxColumn();
             this.dtpDateAdded = new System.Windows.Forms.DateTimePicker();
             this.txtS_search = new System.Windows.Forms.TextBox();
             this.cmbCategory = new System.Windows.Forms.ComboBox();
@@ -53,8 +52,6 @@
             this.btnViewArchived = new System.Windows.Forms.Button();
             this.panel2 = new System.Windows.Forms.Panel();
             this.button12 = new System.Windows.Forms.Button();
-            this.button8 = new System.Windows.Forms.Button();
-            this.button7 = new System.Windows.Forms.Button();
             this.button6 = new System.Windows.Forms.Button();
             this.btnStockDisplay = new System.Windows.Forms.Button();
             this.btnHome = new System.Windows.Forms.Button();
@@ -221,8 +218,6 @@
             | System.Windows.Forms.AnchorStyles.Right)));
             this.dgtStock.BackgroundColor = System.Drawing.Color.White;
             this.dgtStock.ColumnHeadersHeightSizeMode = System.Windows.Forms.DataGridViewColumnHeadersHeightSizeMode.AutoSize;
-            this.dgtStock.Columns.AddRange(new System.Windows.Forms.DataGridViewColumn[] {
-            this.dgtQty});
             this.dgtStock.Location = new System.Drawing.Point(300, 0);
             this.dgtStock.Name = "dgtStock";
             this.dgtStock.RowHeadersWidth = 51;
@@ -233,13 +228,6 @@
             this.dgtStock.CellClick += new System.Windows.Forms.DataGridViewCellEventHandler(this.dgtStock_CellClick);
             this.dgtStock.CellContentClick += new System.Windows.Forms.DataGridViewCellEventHandler(this.dgtStock_CellContentClick);
             this.dgtStock.CellDoubleClick += new System.Windows.Forms.DataGridViewCellEventHandler(this.dgtStock_CellDoubleClick);
-            // 
-            // dgtQty
-            // 
-            this.dgtQty.HeaderText = "Qty";
-            this.dgtQty.MinimumWidth = 6;
-            this.dgtQty.Name = "dgtQty";
-            this.dgtQty.Width = 80;
             // 
             // dtpDateAdded
             // 
@@ -352,8 +340,6 @@
             // 
             this.panel2.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(0)))), ((int)(((byte)(0)))), ((int)(((byte)(128)))));
             this.panel2.Controls.Add(this.button12);
-            this.panel2.Controls.Add(this.button8);
-            this.panel2.Controls.Add(this.button7);
             this.panel2.Controls.Add(this.button6);
             this.panel2.Controls.Add(this.btnStockDisplay);
             this.panel2.Controls.Add(this.btnHome);
@@ -378,36 +364,6 @@
             this.button12.TabIndex = 113;
             this.button12.Text = "Settings";
             this.button12.UseVisualStyleBackColor = false;
-            // 
-            // button8
-            // 
-            this.button8.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(193)))), ((int)(((byte)(154)))), ((int)(((byte)(107)))));
-            this.button8.FlatAppearance.BorderSize = 0;
-            this.button8.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
-            this.button8.Font = new System.Drawing.Font("Segoe UI", 14F, System.Drawing.FontStyle.Bold);
-            this.button8.ForeColor = System.Drawing.Color.White;
-            this.button8.Location = new System.Drawing.Point(26, 634);
-            this.button8.Name = "button8";
-            this.button8.Size = new System.Drawing.Size(248, 65);
-            this.button8.TabIndex = 116;
-            this.button8.Text = "RWT";
-            this.button8.UseVisualStyleBackColor = false;
-            this.button8.Visible = false;
-            // 
-            // button7
-            // 
-            this.button7.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(193)))), ((int)(((byte)(154)))), ((int)(((byte)(107)))));
-            this.button7.FlatAppearance.BorderSize = 0;
-            this.button7.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
-            this.button7.Font = new System.Drawing.Font("Segoe UI", 14F, System.Drawing.FontStyle.Bold);
-            this.button7.ForeColor = System.Drawing.Color.White;
-            this.button7.Location = new System.Drawing.Point(26, 634);
-            this.button7.Name = "button7";
-            this.button7.Size = new System.Drawing.Size(248, 65);
-            this.button7.TabIndex = 115;
-            this.button7.Text = "Footwear";
-            this.button7.UseVisualStyleBackColor = false;
-            this.button7.Visible = false;
             // 
             // button6
             // 
@@ -588,11 +544,8 @@
         private System.Windows.Forms.Button btnArchive;
         private System.Windows.Forms.Button btnRestore;
         private System.Windows.Forms.Button btnViewArchived;
-        private System.Windows.Forms.DataGridViewTextBoxColumn dgtQty;
         private System.Windows.Forms.Panel panel2;
         private System.Windows.Forms.Button button12;
-        private System.Windows.Forms.Button button8;
-        private System.Windows.Forms.Button button7;
         private System.Windows.Forms.Button button6;
         private System.Windows.Forms.Button btnStockDisplay;
         private System.Windows.Forms.Button btnHome;
