@@ -139,6 +139,9 @@
   <data name="bjs" type="System.Resources.ResXFileRef, System.Windows.Forms">
     <value>..\Resources\bjs.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
   </data>
+  <data name="readytowear1" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>..\Resources\readytowear1.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
+  </data>
   <data name="jordan1" type="System.Resources.ResXFileRef, System.Windows.Forms">
     <value>..\Resources\jordan1.jpg;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
   </data>
@@ -157,13 +160,16 @@
   <data name="search-interface-symbol" type="System.Resources.ResXFileRef, System.Windows.Forms">
     <value>..\Resources\search-interface-symbol.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
   </data>
+  <data name="c281c1e9-853c-47c1-8edc-01dd2b7e861a" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>..\Resources\c281c1e9-853c-47c1-8edc-01dd2b7e861a.jpg;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
+  </data>
   <data name="ChatGPT Image Aug 9, 2026, 11_17_05 AM" type="System.Resources.ResXFileRef, System.Windows.Forms">
     <value>..\Resources\ChatGPT Image Aug 9, 2026, 11_17_05 AM.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
   </data>
   <data name="schooling" type="System.Resources.ResXFileRef, System.Windows.Forms">
     <value>..\Resources\schooling.jpg;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
   </data>
-  <data name="readytowear1" type="System.Resources.ResXFileRef, System.Windows.Forms">
-    <value>..\Resources\readytowear1.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
+  <data name="pads" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>..\Resources\pads.jpg;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
   </data>
 </root>
