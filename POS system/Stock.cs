@@ -284,7 +284,7 @@
                 // calling the stored procedure to add a new stock item
                 db.sp_Stock(
                     txtProductname.Text,
-                    cmbCategory.SelectedItem.ToString(),
+                    cmbCategory.Text,
                     Convert.ToDecimal(txtunitPrice.Text),
                     txtMaterial.Text,
                     dtpDateAdded.Value,
@@ -336,10 +336,7 @@
             selectedStockId = selected.StockID;
             txtProductname.Text = selected.ProductName;
 
-            if (selected.Category != null && cmbCategory.Items.Contains(selected.Category))
-                cmbCategory.SelectedItem = selected.Category;
-            else
-                cmbCategory.SelectedIndex = -1;
+            SelectCategory(selected.Category);
 
             txtunitPrice.Text = selected.UnitPrice.ToString("0.00");
             txtMaterial.Text = selected.Material ?? string.Empty;
@@ -436,7 +433,7 @@
                 db = new SP_StockDataContext();
                 db.sp_UpdateProduct(
                     txtProductname.Text,
-                    cmbCategory.SelectedItem != null ? cmbCategory.SelectedItem.ToString() : string.Empty,
+                    cmbCategory.Text,
                     Convert.ToDecimal(txtunitPrice.Text),
                     txtMaterial.Text,
                     dtpDateAdded.Value,
@@ -460,6 +457,38 @@
             isViewArchived = false;
             UpdateButtonVisibility();
             ApplyUiShapes();
+            LoadCategories();
+        }
+
+        private void LoadCategories()
+        {
+            db = new SP_StockDataContext();
+
+            cmbCategory.DataSource = null;
+            cmbCategory.DisplayMember = "CategoryName";
+            cmbCategory.ValueMember = "CategoryID";
+            cmbCategory.DataSource = db.sp_GetCategories().ToList();
+        }
+
+        private void SelectCategory(string categoryName)
+        {
+            if (string.IsNullOrEmpty(categoryName))
+            {
+                cmbCategory.SelectedIndex = -1;
+                return;
+            }
+
+            for (int i = 0; i < cmbCategory.Items.Count; i++)
+            {
+                sp_GetCategoriesResult item = cmbCategory.Items[i] as sp_GetCategoriesResult;
+                if (item != null && item.CategoryName == categoryName)
+                {
+                    cmbCategory.SelectedIndex = i;
+                    return;
+                }
+            }
+
+            cmbCategory.SelectedIndex = -1;
         }
 
         private void btnArchive_Click(object sender, EventArgs e)
@@ -561,10 +590,7 @@
             selectedStockId = selected.StockID;
             txtProductname.Text = selected.ProductName;
 
-            if (selected.Category != null && cmbCategory.Items.Contains(selected.Category))
-                cmbCategory.SelectedItem = selected.Category;
-            else
-                cmbCategory.SelectedIndex = -1;
+            SelectCategory(selected.Category);
 
             txtunitPrice.Text = selected.UnitPrice.ToString("0.00");
             txtMaterial.Text = selected.Material ?? string.Empty;
