@@ -19,7 +19,15 @@ namespace POS_system
         public Form1()
         {
             InitializeComponent();
+            ApplyRoleAccess();
+            Session.AddLogoutButton(this, panel2);
             LoadStock();
+        }
+
+        private void ApplyRoleAccess()
+        {
+            Session.HideUnless(button6, Session.CanManageStock);
+            Session.HideUnless(button12, Session.CanOpenSettings);
         }
 
         private void LoadStock()

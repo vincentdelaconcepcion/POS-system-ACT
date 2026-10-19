@@ -15,6 +15,15 @@ namespace POS_system
         public StockDisplay()
         {
             InitializeComponent();
+            ApplyRoleAccess();
+            Session.AddLogoutButton(this, panel2);
+        }
+
+        private void ApplyRoleAccess()
+        {
+            Session.HideUnless(btnHome, Session.CanSeeHome);
+            Session.HideUnless(button6, Session.CanManageStock);
+            Session.HideUnless(button12, Session.CanOpenSettings);
         }
 
         private void btnHome_Click(object sender, EventArgs e)

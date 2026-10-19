@@ -103,8 +103,10 @@ namespace POS_system
 
             try
             {
-                if (AuthService.ValidateUser(username, password))
+                string roleName;
+                if (AuthService.TryLogin(username, password, out roleName))
                 {
+                    Session.SignIn(username, Session.ParseRole(roleName));
                     DialogResult = DialogResult.OK;
                     Close();
                 }

@@ -56,16 +56,16 @@
             this.btnStockDisplay = new System.Windows.Forms.Button();
             this.btnHome = new System.Windows.Forms.Button();
             this.panel3 = new System.Windows.Forms.Panel();
+            this.pictureBox7 = new System.Windows.Forms.PictureBox();
             this.label7 = new System.Windows.Forms.Label();
             this.flowLayoutPanel9 = new System.Windows.Forms.FlowLayoutPanel();
             this.panelBottom = new System.Windows.Forms.Panel();
             this.labelSearch = new System.Windows.Forms.Label();
-            this.pictureBox7 = new System.Windows.Forms.PictureBox();
             ((System.ComponentModel.ISupportInitialize)(this.dgtStock)).BeginInit();
             this.panel2.SuspendLayout();
             this.panel3.SuspendLayout();
-            this.panelBottom.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.pictureBox7)).BeginInit();
+            this.panelBottom.SuspendLayout();
             this.SuspendLayout();
             // 
             // txtProductname
@@ -73,7 +73,7 @@
             this.txtProductname.BackColor = System.Drawing.Color.White;
             this.txtProductname.BorderStyle = System.Windows.Forms.BorderStyle.None;
             this.txtProductname.Font = new System.Drawing.Font("Segoe UI", 11F);
-            this.txtProductname.Location = new System.Drawing.Point(142, 77);
+            this.txtProductname.Location = new System.Drawing.Point(152, 77);
             this.txtProductname.Multiline = true;
             this.txtProductname.Name = "txtProductname";
             this.txtProductname.Size = new System.Drawing.Size(188, 32);
@@ -232,7 +232,7 @@
             // dtpDateAdded
             // 
             this.dtpDateAdded.Font = new System.Drawing.Font("Segoe UI", 11F);
-            this.dtpDateAdded.Location = new System.Drawing.Point(836, 126);
+            this.dtpDateAdded.Location = new System.Drawing.Point(836, 129);
             this.dtpDateAdded.Name = "dtpDateAdded";
             this.dtpDateAdded.Size = new System.Drawing.Size(188, 27);
             this.dtpDateAdded.TabIndex = 14;
@@ -244,7 +244,7 @@
             this.txtS_search.BackColor = System.Drawing.Color.White;
             this.txtS_search.BorderStyle = System.Windows.Forms.BorderStyle.None;
             this.txtS_search.Font = new System.Drawing.Font("Segoe UI", 11F);
-            this.txtS_search.Location = new System.Drawing.Point(120, 20);
+            this.txtS_search.Location = new System.Drawing.Point(124, 22);
             this.txtS_search.Multiline = true;
             this.txtS_search.Name = "txtS_search";
             this.txtS_search.Size = new System.Drawing.Size(900, 32);
@@ -256,7 +256,7 @@
             this.cmbCategory.DropDownStyle = System.Windows.Forms.ComboBoxStyle.DropDownList;
             this.cmbCategory.Font = new System.Drawing.Font("Segoe UI", 11F);
             this.cmbCategory.FormattingEnabled = true;
-            this.cmbCategory.Location = new System.Drawing.Point(142, 126);
+            this.cmbCategory.Location = new System.Drawing.Point(152, 128);
             this.cmbCategory.Name = "cmbCategory";
             this.cmbCategory.Size = new System.Drawing.Size(188, 28);
             this.cmbCategory.TabIndex = 3;
@@ -419,6 +419,18 @@
             this.panel3.Size = new System.Drawing.Size(300, 236);
             this.panel3.TabIndex = 98;
             // 
+            // pictureBox7
+            // 
+            this.pictureBox7.BackColor = System.Drawing.Color.White;
+            this.pictureBox7.BackgroundImage = ((System.Drawing.Image)(resources.GetObject("pictureBox7.BackgroundImage")));
+            this.pictureBox7.BackgroundImageLayout = System.Windows.Forms.ImageLayout.Zoom;
+            this.pictureBox7.Location = new System.Drawing.Point(68, 28);
+            this.pictureBox7.Name = "pictureBox7";
+            this.pictureBox7.Size = new System.Drawing.Size(165, 179);
+            this.pictureBox7.SizeMode = System.Windows.Forms.PictureBoxSizeMode.Zoom;
+            this.pictureBox7.TabIndex = 83;
+            this.pictureBox7.TabStop = false;
+            // 
             // label7
             // 
             this.label7.AutoSize = true;
@@ -477,23 +489,11 @@
             this.labelSearch.AutoSize = true;
             this.labelSearch.Font = new System.Drawing.Font("Segoe UI", 12F, System.Drawing.FontStyle.Bold);
             this.labelSearch.ForeColor = System.Drawing.Color.White;
-            this.labelSearch.Location = new System.Drawing.Point(26, 28);
+            this.labelSearch.Location = new System.Drawing.Point(26, 33);
             this.labelSearch.Name = "labelSearch";
             this.labelSearch.Size = new System.Drawing.Size(61, 21);
             this.labelSearch.TabIndex = 21;
             this.labelSearch.Text = "Search";
-            // 
-            // pictureBox7
-            // 
-            this.pictureBox7.BackColor = System.Drawing.Color.White;
-            this.pictureBox7.BackgroundImage = ((System.Drawing.Image)(resources.GetObject("pictureBox7.BackgroundImage")));
-            this.pictureBox7.BackgroundImageLayout = System.Windows.Forms.ImageLayout.Zoom;
-            this.pictureBox7.Location = new System.Drawing.Point(68, 28);
-            this.pictureBox7.Name = "pictureBox7";
-            this.pictureBox7.Size = new System.Drawing.Size(165, 179);
-            this.pictureBox7.SizeMode = System.Windows.Forms.PictureBoxSizeMode.Zoom;
-            this.pictureBox7.TabIndex = 83;
-            this.pictureBox7.TabStop = false;
             // 
             // StockForm
             // 
@@ -514,9 +514,9 @@
             this.panel2.ResumeLayout(false);
             this.panel3.ResumeLayout(false);
             this.panel3.PerformLayout();
+            ((System.ComponentModel.ISupportInitialize)(this.pictureBox7)).EndInit();
             this.panelBottom.ResumeLayout(false);
             this.panelBottom.PerformLayout();
-            ((System.ComponentModel.ISupportInitialize)(this.pictureBox7)).EndInit();
             this.ResumeLayout(false);
 
         }

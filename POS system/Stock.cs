@@ -19,6 +19,19 @@
 
         {
             InitializeComponent();
+
+            Session.HideUnless(button12, Session.CanOpenSettings);
+
+            if (!Session.CanManageStock)
+            {
+                Shown += (s, e) =>
+                {
+                    new StockDisplay().Show();
+                    Close();
+                };
+                return;
+            }
+
             ApplyUiShapes();
             this.Resize += (s, e) => ApplyUiShapes();
             txtS_search.KeyDown += (s, e) =>
@@ -26,6 +39,7 @@
                 if (e.KeyCode == Keys.Enter)
                     e.SuppressKeyPress = true;
             };
+            Session.AddLogoutButton(this, panel2);
             LoadStock();
         }
 
@@ -238,6 +252,17 @@
 
         private void UpdateButtonVisibility()
         {
+            if (!Session.CanManageStock)
+            {
+                btnAdd.Hide();
+                btnUpdate.Hide();
+                btnArchive.Hide();
+                btnDelete.Hide();
+                btnRestore.Hide();
+                btnViewArchived.Hide();
+                return;
+            }
+
             if (isViewArchived)
             {
                 btnAdd.Hide();

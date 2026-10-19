@@ -32,39 +32,83 @@ namespace POS_system
 
         public static bool ValidateUser(string username, string password)
         {
-            const string sql = "SELECT PasswordHash FROM Users WHERE Username = @username";
+            string role;
+            return TryLogin(username, password, out role);
+        }
+
+        public static bool TryLogin(string username, string password, out string roleName)
+        {
+            roleName = null;
+
+            const string sql = "SELECT PASSWORD, Role FROM [User] WHERE USERNAME = @username";
 
             using (var con = new SqlConnection(ConnectionString))
             using (var cmd = new SqlCommand(sql, con))
             {
                 cmd.Parameters.AddWithValue("@username", username);
-                con.Open();
+
+                try
+                {
+                    con.Open();
+
+                    using (var reader = cmd.ExecuteReader())
+                    {
+                        if (!reader.Read())
+                            return false;
+
+                        string expected = ToHex(reader.GetValue(0));
+                        if (!FixedTimeEquals(expected, HashPassword(password)))
+                            return false;
+
+                        roleName = reader.FieldCount > 1 && !reader.IsDBNull(1)
+                            ? reader.GetString(1)
+                            : null;
+                        return true;
+                    }
+                }
+                catch (SqlException ex)
+                {
+                    if (!ex.Message.Contains("'Role'"))
+                        throw;
+
+                    // The Users table has no Role column yet: log in, but treat everyone as a cashier.
+                    roleName = null;
+                    return LoginWithoutRole(username, password, con);
+                }
+            }
+        }
+
+        private static bool LoginWithoutRole(string username, string password, SqlConnection con)
+        {
+            using (var cmd = new SqlCommand("SELECT PASSWORD FROM [User] WHERE USERNAME = @username", con))
+            {
+                cmd.Parameters.AddWithValue("@username", username);
 
                 object stored = cmd.ExecuteScalar();
                 if (stored == null || stored == DBNull.Value)
                     return false;
 
-                string expected;
-                byte[] raw = stored as byte[];
-                if (raw != null)
-                {
-                    var sb = new StringBuilder(raw.Length * 2);
-                    foreach (byte b in raw)
-                        sb.Append(b.ToString("x2"));
-                    expected = sb.ToString();
-                }
-                else
-                {
-                    expected = stored.ToString().Trim();
-                }
-
-                return FixedTimeEquals(expected, HashPassword(password));
+                return FixedTimeEquals(ToHex(stored), HashPassword(password));
             }
+        }
+
+        private static string ToHex(object value)
+        {
+            byte[] raw = value as byte[];
+            if (raw != null)
+            {
+                var sb = new StringBuilder(raw.Length * 2);
+                foreach (byte b in raw)
+                    sb.Append(b.ToString("x2"));
+                return sb.ToString();
+            }
+
+            return value == null || value == DBNull.Value ? string.Empty : value.ToString().Trim();
         }
 
         public static bool UserExists(string username)
         {
-            const string sql = "SELECT COUNT(1) FROM Users WHERE Username = @username";
+            const string sql = "SELECT COUNT(1) FROM [User] WHERE USERNAME = @username";
 
             using (var con = new SqlConnection(ConnectionString))
             using (var cmd = new SqlCommand(sql, con))
@@ -75,15 +119,16 @@ namespace POS_system
             }
         }
 
-        public static void CreateUser(string username, string password)
+        public static void CreateUser(string username, string password, UserRole role)
         {
-            const string sql = "INSERT INTO Users (Username, PasswordHash) VALUES (@username, @hash)";
+            const string sql = "INSERT INTO [User] (USERNAME, PASSWORD, Role) VALUES (@username, @hash, @role)";
 
             using (var con = new SqlConnection(ConnectionString))
             using (var cmd = new SqlCommand(sql, con))
             {
                 cmd.Parameters.AddWithValue("@username", username);
                 cmd.Parameters.AddWithValue("@hash", HashPassword(password));
+                cmd.Parameters.AddWithValue("@role", role.ToString());
                 con.Open();
                 cmd.ExecuteNonQuery();
             }
