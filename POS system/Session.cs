@@ -1,4 +1,5 @@
 using System;
+using System.Collections.Generic;
 using System.Drawing;
 using System.Windows.Forms;
 
@@ -78,7 +79,16 @@ namespace POS_system
             btn.Click += (s, e) =>
             {
                 SignOut();
-                owner.Close();
+
+                var openForms = new List<Form>();
+                foreach (Form openForm in Application.OpenForms)
+                    openForms.Add(openForm);
+
+                foreach (Form openForm in openForms)
+                {
+                    if (openForm != null && !openForm.IsDisposed)
+                        openForm.Close();
+                }
             };
 
             container.Controls.Add(btn);

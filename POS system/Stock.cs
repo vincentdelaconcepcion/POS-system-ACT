@@ -21,6 +21,12 @@
             InitializeComponent();
 
             Session.HideUnless(btnAdminPanel, Session.CanOpenSettings);
+            btnAdminPanel.Click += (s, e) =>
+            {
+                var adminPanel = new AdminPanel { Owner = this };
+                adminPanel.Show();
+                Hide();
+            };
 
             if (!Session.CanManageStock)
             {
@@ -32,14 +38,7 @@
                 return;
             }
 
-            ApplyUiShapes();
-            this.Resize += (s, e) => ApplyUiShapes();
-            panelBottom.Resize += (s, e) => LayoutActionButtons();
-            txtS_search.KeyDown += (s, e) =>
-            {
-                if (e.KeyCode == Keys.Enter)
-                    e.SuppressKeyPress = true;
-            };
+           
             Session.AddLogoutButton(this, panel2);
             LoadStock();
         }
@@ -52,33 +51,9 @@
         private readonly Font gridHeaderFont = new Font("Segoe UI", 12F, FontStyle.Bold);
         private readonly Font gridFont = new Font("Segoe UI", 11F);
 
-        private void ApplyUiShapes()
-        {
-            ApplyShapes(this);
-        }
+       
 
-        private void ApplyShapes(Control root)
-        {
-            foreach (Control c in root.Controls)
-            {
-                Button btn = c as Button;
-                if (btn != null)
-                    RoundShape(btn, 18);
-
-                TextBox txt = c as TextBox;
-                if (txt != null)
-                {
-                    RoundShape(txt, 15);
-                    CenterTextBoxText(txt);
-                }
-
-                if (c == pictureBox7)
-                    MakeCircle(c);
-
-                if (c.HasChildren)
-                    ApplyShapes(c);
-            }
-        }
+        
 
         [DllImport("user32.dll", CharSet = CharSet.Auto)]
         private static extern IntPtr SendMessage(IntPtr hWnd, int msg, IntPtr wParam, IntPtr lParam);
@@ -130,36 +105,7 @@
             }
         }
 
-        private void RoundShape(Control c, int radius)
-        {
-            if (c.Width <= 0 || c.Height <= 0)
-                return;
-
-            Rectangle bounds = new Rectangle(0, 0, c.Width, c.Height);
-            int d = radius * 2;
-
-            using (GraphicsPath path = new GraphicsPath())
-            {
-                if (d <= 0 || bounds.Width < d || bounds.Height < d)
-                {
-                    path.AddRectangle(bounds);
-                }
-                else
-                {
-                    path.AddArc(bounds.X, bounds.Y, d, d, 180, 90);
-                    path.AddArc(bounds.Right - d, bounds.Y, d, d, 270, 90);
-                    path.AddArc(bounds.Right - d, bounds.Bottom - d, d, d, 0, 90);
-                    path.AddArc(bounds.X, bounds.Bottom - d, d, d, 90, 90);
-                    path.CloseFigure();
-                }
-
-                Region previous = c.Region;
-                c.Region = new Region(path);
-                if (previous != null)
-                    previous.Dispose();
-            }
-        }
-
+      
         private void ApplyGridFormatting()
         {
             if (dgtStock.Columns.Contains("StockID"))
@@ -513,7 +459,7 @@
         {
             isViewArchived = false;
             UpdateButtonVisibility();
-            ApplyUiShapes();
+           
             LoadCategories();
         }
 

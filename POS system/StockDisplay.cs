@@ -19,10 +19,24 @@ namespace POS_system
         private readonly SP_StockDataContext db = new SP_StockDataContext();
         private readonly List<CartItem> cart = new List<CartItem>();
         private List<Panel> productCards;
+        private List<Panel> orderedProductCards;
         private Dictionary<Panel, Point> cardLocations;
+        private Dictionary<Panel, Button> cardCategories;
+        private List<Button> categoryHeaders;
+        private Dictionary<Button, int> categoryOriginalY;
+        private Label lblProductTitle;
+        private Label lblNoProducts;
+        private Button btnAddProduct;
 
         private static readonly Color InStockColor = Color.FromArgb(46, 125, 50);
         private static readonly Color OutOfStockColor = Color.FromArgb(198, 40, 40);
+        private static readonly Color CategoryColor = Color.FromArgb(193, 154, 107);
+        private static readonly Font SearchLabelFont = new Font("Segoe UI", 11F, FontStyle.Bold);
+        private static readonly Font ProductNameFont = new Font("Segoe UI", 10.5F);
+        private static readonly Font ProductPriceFont = new Font("Segoe UI", 9.75F);
+        private static readonly Font StockLabelFont = new Font("Segoe UI", 8.25F, FontStyle.Bold);
+        private static readonly Font BuyButtonFont = new Font("Segoe UI", 10.5F, FontStyle.Bold);
+        private static readonly Font BuyButtonCompactFont = new Font("Segoe UI", 9.5F, FontStyle.Bold);
 
         private const int WM_MOUSEWHEEL = 0x020A;
         private readonly Timer smoothScrollTimer = new Timer { Interval = 15 };
@@ -41,9 +55,69 @@ namespace POS_system
             smoothScrollTimer.Tick += SmoothScrollTimer_Tick;
             Application.AddMessageFilter(this);
             FormClosed += StockDisplay_FormClosed;
+            Resize += (s, e) =>
+            {
+                if (WindowState != FormWindowState.Minimized)
+                    LayoutStockDisplay();
+            };
+            btnAddProduct = new Button
+            {
+                Text = "+ Add Product",
+                Font = new Font("Segoe UI", 10F, FontStyle.Bold),
+                ForeColor = Color.White,
+                BackColor = CategoryColor,
+                FlatStyle = FlatStyle.Flat,
+                Cursor = Cursors.Hand,
+                TabStop = false
+            };
+            btnAddProduct.FlatAppearance.BorderSize = 0;
+            btnAddProduct.Click += (s, e) =>
+            {
+                StockForm stockForm = new StockForm();
+                stockForm.Show();
+                Hide();
+            };
+            Controls.Add(btnAddProduct);
+            btnAddProduct.BringToFront();
+
             ApplyRoleAccess();
             Session.AddLogoutButton(this, panel2);
+            btnAdminPanel.Click += (s, e) =>
+            {
+                var adminPanel = new AdminPanel { Owner = this };
+                adminPanel.Show();
+                Hide();
+            };
+
+            txtsearch.Multiline = false;
+            txtsearch.Font = new Font("Segoe UI", 11F);
+            txtsearch.BorderStyle = BorderStyle.FixedSingle;
+
+            lblProductTitle = new Label
+            {
+                Text = "Product Catalog",
+                Font = new Font("Segoe UI", 20F, FontStyle.Bold),
+                ForeColor = Color.FromArgb(35, 52, 70),
+                BackColor = Color.Transparent,
+                AutoSize = true
+            };
+            lblNoProducts = new Label
+            {
+                Text = "No products match your search.",
+                Font = new Font("Segoe UI", 12F, FontStyle.Bold),
+                ForeColor = Color.FromArgb(100, 110, 120),
+                BackColor = Color.Transparent,
+                AutoSize = true,
+                Visible = false
+            };
+
+            Controls.Add(lblProductTitle);
+            lblProductTitle.BringToFront();
+            panel1.Controls.Add(lblNoProducts);
+            lblNoProducts.BringToFront();
+
             InitializeSearch();
+            LayoutStockDisplay();
             LoadStockStatus();
         }
 
@@ -52,15 +126,25 @@ namespace POS_system
             Session.HideUnless(btnHome, Session.CanSeeHome);
             Session.HideUnless(button6, Session.CanManageStock);
             Session.HideUnless(btnAdminPanel, Session.CanOpenSettings);
+            Session.HideUnless(btnAddProduct, Session.CanManageStock);
         }
 
         private void LoadStockStatus()
         {
             try
             {
-                var quantities = db.sp_Search(null)
+                List<sp_SearchResult> stockItems = db.sp_Search(null).ToList();
+
+                AddMissingProductCards(stockItems);
+
+                var quantities = stockItems
                     .GroupBy(s => (s.ProductName ?? string.Empty).Trim(), StringComparer.OrdinalIgnoreCase)
                     .ToDictionary(g => g.Key, g => g.Sum(s => s.Quantity), StringComparer.OrdinalIgnoreCase);
+
+                var products = stockItems
+                    .GroupBy(s => (s.ProductName ?? string.Empty).Trim(), StringComparer.OrdinalIgnoreCase)
+                    .Where(g => g.Key.Length > 0)
+                    .ToDictionary(g => g.Key, g => g.First(), StringComparer.OrdinalIgnoreCase);
 
                 foreach (Panel card in productCards)
                 {
@@ -70,17 +154,243 @@ namespace POS_system
                     if (buyButton == null || string.IsNullOrEmpty(productName))
                         continue;
 
-                    int quantity;
-                    bool available = quantities.TryGetValue(productName, out quantity) && quantity > 0;
+                    sp_SearchResult product;
+                    if (products.TryGetValue(productName, out product))
+                        ApplyProductPrice(card, product.UnitPrice);
 
-                    ApplyStockStatus(buyButton, available);
+                    int quantity;
+                    quantities.TryGetValue(productName, out quantity);
+
+                    ApplyStockStatus(buyButton, quantity > 0);
+                    ApplyStockLabel(card, quantity);
                 }
+
+                LayoutProductGrid();
             }
             catch (Exception ex)
             {
                 MessageBox.Show("Unable to load stock availability:\n\n" + ex.Message,
                     "Stock Error", MessageBoxButtons.OK, MessageBoxIcon.Error);
             }
+        }
+
+        private void AddMissingProductCards(List<sp_SearchResult> stockItems)
+        {
+            if (stockItems == null || productCards == null || cardCategories == null)
+                return;
+
+            var existingNames = new HashSet<string>(
+                productCards.Select(GetProductName).Where(n => !string.IsNullOrWhiteSpace(n)),
+                StringComparer.OrdinalIgnoreCase);
+
+            foreach (var product in stockItems
+                .Where(s => !string.IsNullOrWhiteSpace(s.ProductName))
+                .GroupBy(s => s.ProductName.Trim(), StringComparer.OrdinalIgnoreCase)
+                .Select(g => g.First()))
+            {
+                string productName = product.ProductName.Trim();
+                if (!existingNames.Add(productName))
+                    continue;
+
+                Panel card = CreateProductCard(product);
+                cardCategories[card] = EnsureCategoryHeader(product.Category);
+                productCards.Add(card);
+                orderedProductCards.Add(card);
+                card.Visible = MatchesSearch(productName);
+            }
+        }
+
+        private Panel CreateProductCard(sp_SearchResult product)
+        {
+            string productName = (product.ProductName ?? "Unnamed Product").Trim();
+
+            var card = new Panel
+            {
+                Name = "panelProduct" + product.StockID,
+                BackColor = Color.White,
+                Size = new Size(139, 231),
+                TabStop = false
+            };
+
+            var picture = new PictureBox
+            {
+                Name = "pictureBoxProduct" + product.StockID,
+                BackColor = Color.FromArgb(247, 243, 237),
+                Image = CreatePlaceholderImage(productName),
+                SizeMode = PictureBoxSizeMode.Zoom,
+                TabStop = false
+            };
+
+            var nameLabel = new Label
+            {
+                Name = "lblProductName",
+                Text = productName,
+                Font = ProductNameFont,
+                ForeColor = Color.Black,
+                BackColor = Color.Transparent
+            };
+
+            var priceLabel = new Label
+            {
+                Name = "lblPrice",
+                Text = FormatPrice(product.UnitPrice),
+                Font = ProductPriceFont,
+                ForeColor = Color.Black,
+                BackColor = Color.Transparent
+            };
+
+            var stockLabel = new Label
+            {
+                Name = "lblStock",
+                Font = StockLabelFont,
+                ForeColor = OutOfStockColor,
+                BackColor = Color.Transparent,
+                TextAlign = ContentAlignment.MiddleRight
+            };
+
+            var buyButton = new Button
+            {
+                Name = "btnBuy",
+                Text = "BUY",
+                Font = BuyButtonFont,
+                ForeColor = Color.White,
+                BackColor = InStockColor,
+                FlatStyle = FlatStyle.Flat,
+                Cursor = Cursors.Hand,
+                UseVisualStyleBackColor = false
+            };
+            buyButton.FlatAppearance.BorderSize = 0;
+            buyButton.Click += BuyButton_Click;
+
+            card.Controls.Add(picture);
+            card.Controls.Add(nameLabel);
+            card.Controls.Add(priceLabel);
+            card.Controls.Add(stockLabel);
+            card.Controls.Add(buyButton);
+            TagProductLabels(card);
+            panel1.Controls.Add(card);
+
+            return card;
+        }
+
+        private Button EnsureCategoryHeader(string category)
+        {
+            string headerText = string.IsNullOrWhiteSpace(category) ? "Other" : category.Trim();
+
+            Button existing = categoryHeaders.FirstOrDefault(
+                header => string.Equals(header.Text, headerText, StringComparison.OrdinalIgnoreCase));
+
+            if (existing != null)
+                return existing;
+
+            var newHeader = new Button
+            {
+                Name = "btnCategory" + categoryHeaders.Count,
+                Text = headerText,
+                Font = new Font("Segoe UI", 14F, FontStyle.Bold),
+                ForeColor = Color.White,
+                BackColor = CategoryColor,
+                FlatStyle = FlatStyle.Flat,
+                Size = new Size(160, 36),
+                TabStop = false,
+                UseVisualStyleBackColor = false,
+                Visible = txtsearch.Text.Trim().Length == 0
+            };
+            newHeader.FlatAppearance.BorderSize = 0;
+
+            panel1.Controls.Add(newHeader);
+            categoryHeaders.Add(newHeader);
+            categoryOriginalY[newHeader] = int.MaxValue;
+
+            return newHeader;
+        }
+
+        private static Image CreatePlaceholderImage(string productName)
+        {
+            var image = new Bitmap(190, 132);
+
+            using (Graphics graphics = Graphics.FromImage(image))
+            using (var background = new SolidBrush(Color.FromArgb(247, 243, 237)))
+            using (var border = new Pen(Color.FromArgb(218, 204, 185), 2))
+            using (var textBrush = new SolidBrush(Color.FromArgb(168, 130, 84)))
+            using (var font = new Font("Segoe UI", 42F, FontStyle.Bold, GraphicsUnit.Pixel))
+            using (var format = new StringFormat
+            {
+                Alignment = StringAlignment.Center,
+                LineAlignment = StringAlignment.Center
+            })
+            {
+                graphics.SmoothingMode = System.Drawing.Drawing2D.SmoothingMode.AntiAlias;
+                graphics.FillRectangle(background, 0, 0, image.Width, image.Height);
+                graphics.DrawRectangle(border, 1, 1, image.Width - 3, image.Height - 3);
+                graphics.DrawString(
+                    GetInitials(productName),
+                    font,
+                    textBrush,
+                    new RectangleF(0, 0, image.Width, image.Height),
+                    format);
+            }
+
+            return image;
+        }
+
+        private static string GetInitials(string productName)
+        {
+            string[] parts = (productName ?? string.Empty)
+                .Split(new[] { ' ' }, StringSplitOptions.RemoveEmptyEntries);
+
+            string initials = string.Concat(
+                parts.Take(2).Where(part => part.Length > 0).Select(part => char.ToUpperInvariant(part[0])));
+
+            return string.IsNullOrEmpty(initials) ? "?" : initials;
+        }
+
+        private static string FormatPrice(decimal price)
+        {
+            return string.Format(CultureInfo.CurrentCulture, "{0}{1:N2}", Peso, price);
+        }
+
+        private static void ApplyProductPrice(Panel card, decimal price)
+        {
+            Label priceLabel = GetPriceLabel(card);
+            if (priceLabel != null)
+                priceLabel.Text = FormatPrice(price);
+        }
+
+        private static void ApplyStockLabel(Panel card, int quantity)
+        {
+            Label stockLabel = EnsureStockLabel(card);
+            if (stockLabel == null)
+                return;
+
+            stockLabel.Text = string.Format(CultureInfo.CurrentCulture, "{0} left", quantity);
+            stockLabel.ForeColor = quantity > 0 ? InStockColor : OutOfStockColor;
+        }
+
+        private static Label EnsureStockLabel(Panel card)
+        {
+            Label stockLabel = GetStockLabel(card);
+            if (stockLabel != null)
+                return stockLabel;
+
+            stockLabel = new Label
+            {
+                Name = "lblStock",
+                AutoSize = false,
+                Font = StockLabelFont,
+                BackColor = Color.Transparent,
+                TextAlign = ContentAlignment.MiddleRight
+            };
+            card.Controls.Add(stockLabel);
+
+            return stockLabel;
+        }
+
+        private bool MatchesSearch(string productName)
+        {
+            string search = txtsearch.Text.Trim();
+            return search.Length == 0
+                || (productName ?? string.Empty).IndexOf(search, StringComparison.OrdinalIgnoreCase) >= 0;
         }
 
         private static void ApplyStockStatus(Button button, bool available)
@@ -197,7 +507,34 @@ namespace POS_system
         private void InitializeSearch()
         {
             productCards = panel1.Controls.OfType<Panel>().ToList();
+            foreach (Panel card in productCards)
+                TagProductLabels(card);
+
             cardLocations = productCards.ToDictionary(c => c, c => c.Location);
+            orderedProductCards = productCards
+                .OrderBy(c => cardLocations[c].Y)
+                .ThenBy(c => cardLocations[c].X)
+                .ToList();
+
+            categoryHeaders = new[] { button1, button16, button25, button36 }
+                .Where(b => b != null)
+                .OrderBy(b => b.Top)
+                .ToList();
+            categoryOriginalY = categoryHeaders.ToDictionary(b => b, b => b.Top);
+            cardCategories = new Dictionary<Panel, Button>();
+
+            foreach (Panel card in orderedProductCards)
+            {
+                int cardY = cardLocations[card].Y;
+                Button category = categoryHeaders.LastOrDefault(
+                    header => categoryOriginalY[header] <= cardY);
+
+                if (category == null)
+                    category = categoryHeaders.FirstOrDefault();
+
+                cardCategories[card] = category;
+            }
+
             SendMessage(txtsearch.Handle, EM_SETCUEBANNER, (IntPtr)1, "Search product...");
         }
 
@@ -207,12 +544,8 @@ namespace POS_system
             string search = txtsearch.Text.Trim();
             bool filtering = search.Length > 0;
 
-            button1.Visible = !filtering;
-            button16.Visible = !filtering;
-            button25.Visible = !filtering;
-            button36.Visible = !filtering;
-
-            int index = 0;
+            foreach (Button header in categoryHeaders)
+                header.Visible = !filtering;
 
             foreach (Panel card in productCards)
             {
@@ -221,23 +554,257 @@ namespace POS_system
                     || productName.IndexOf(search, StringComparison.OrdinalIgnoreCase) >= 0;
 
                 card.Visible = matches;
-
-                if (!filtering)
-                {
-                    card.Location = cardLocations[card];
-                }
-                else if (matches)
-                {
-                    int column = index % 4;
-                    int row = index / 4;
-                    card.Location = new Point(24 + column * 174, 53 + row * 253);
-                    index++;
-                }
             }
 
+            LayoutProductGrid();
             scrollTarget = 0;
             smoothScrollTimer.Stop();
             panel1.AutoScrollPosition = new Point(0, 0);
+        }
+
+        private void LayoutStockDisplay()
+        {
+            if (panel1 == null || panel2 == null || panel42 == null ||
+                txtsearch == null || label76 == null || lblProductTitle == null)
+                return;
+
+            const int sideWidth = 300;
+            const int cartWidth = 360;
+            const int margin = 24;
+            const int panelTop = 72;
+
+            int width = ClientSize.Width;
+            int height = ClientSize.Height;
+
+            panel2.Width = sideWidth;
+            panel42.Width = cartWidth;
+
+            int productLeft = panel2.Width + margin;
+            int productRight = width - cartWidth - margin;
+            int productWidth = Math.Max(300, productRight - productLeft);
+
+            const int addWidth = 128;
+            const int addGap = 10;
+            bool showAddProduct = Session.CanManageStock && btnAddProduct != null && productWidth >= 680;
+
+            if (btnAddProduct != null)
+            {
+                btnAddProduct.Visible = showAddProduct;
+                btnAddProduct.Size = new Size(addWidth, 32);
+                btnAddProduct.Location = new Point(productRight - addWidth, 18);
+            }
+
+            int searchRight = showAddProduct ? productRight - addWidth - addGap : productRight;
+            int searchWidth = Math.Min(380, Math.Max(220, (searchRight - productLeft) / 3));
+            int searchLeft = searchRight - searchWidth;
+
+            lblProductTitle.Visible = productWidth >= (showAddProduct ? 820 : 560);
+            lblProductTitle.Location = new Point(productLeft, 18);
+
+            label76.AutoSize = false;
+            label76.Font = SearchLabelFont;
+            label76.ForeColor = Color.FromArgb(45, 62, 80);
+            label76.BackColor = Color.Transparent;
+            label76.TextAlign = ContentAlignment.MiddleLeft;
+            label76.Size = new Size(76, 28);
+            label76.Location = new Point(searchLeft - 84, 20);
+
+            txtsearch.AutoSize = false;
+            txtsearch.Location = new Point(searchLeft, 18);
+            txtsearch.Size = new Size(searchWidth, 32);
+
+            panel1.Anchor = AnchorStyles.None;
+            panel1.Location = new Point(productLeft, panelTop);
+            panel1.Size = new Size(
+                productWidth,
+                Math.Max(200, height - panelTop - margin));
+
+            LayoutCartPanel();
+            LayoutProductGrid();
+        }
+
+        private void LayoutCartPanel()
+        {
+            if (panel42 == null || lstCart == null || lblTotal == null ||
+                btnCheckout == null || label77 == null)
+                return;
+
+            const int margin = 18;
+            const int listTop = 80;
+            const int bottomArea = 100;
+
+            label77.Location = new Point(24, 20);
+
+            lstCart.Anchor = AnchorStyles.None;
+            lstCart.Location = new Point(margin, listTop);
+            lstCart.Size = new Size(
+                Math.Max(180, panel42.ClientSize.Width - (margin * 2)),
+                Math.Max(160, panel42.ClientSize.Height - listTop - bottomArea));
+
+            int bottomY = panel42.ClientSize.Height - 58;
+            lblTotal.Anchor = AnchorStyles.None;
+            lblTotal.Location = new Point(margin, bottomY + 7);
+
+            btnCheckout.Anchor = AnchorStyles.None;
+            btnCheckout.Size = new Size(150, 44);
+            btnCheckout.Location = new Point(
+                Math.Max(margin, panel42.ClientSize.Width - margin - btnCheckout.Width),
+                bottomY);
+        }
+
+        private void LayoutProductGrid()
+        {
+            if (panel1 == null || orderedProductCards == null ||
+                categoryHeaders == null || cardCategories == null || txtsearch == null)
+                return;
+
+            const int margin = 18;
+            const int gap = 12;
+            const int cardHeight = 236;
+            const int rowGap = 16;
+            const int minimumCardWidth = 140;
+            const int maximumColumns = 6;
+
+            int scrollBarWidth = SystemInformation.VerticalScrollBarWidth;
+            int available = Math.Max(
+                120,
+                panel1.ClientSize.Width - (margin * 2) - scrollBarWidth);
+            int columns = Math.Max(
+                2,
+                Math.Min(maximumColumns, (available + gap) / (minimumCardWidth + gap)));
+            int cardWidth = Math.Max(
+                120,
+                (available - ((columns - 1) * gap)) / columns);
+            cardWidth = Math.Min(cardWidth, 220);
+
+            int gridWidth = (columns * cardWidth) + ((columns - 1) * gap);
+            int startX = margin + Math.Max(0, (available - gridWidth) / 2);
+            int scrollY = -panel1.AutoScrollPosition.Y;
+            int y = 10;
+            bool filtering = txtsearch.Text.Trim().Length > 0;
+
+            if (filtering)
+            {
+                List<Panel> matches = orderedProductCards
+                    .Where(card => card.Visible)
+                    .ToList();
+
+                y = LayoutCards(matches, startX, y, columns, cardWidth, cardHeight, gap, rowGap);
+                lblNoProducts.Location = new Point(startX, 12);
+                lblNoProducts.Visible = matches.Count == 0;
+            }
+            else
+            {
+                lblNoProducts.Visible = false;
+
+                foreach (Button header in categoryHeaders)
+                {
+                    header.Visible = true;
+                    header.Location = new Point(startX, y);
+                    header.Size = new Size(
+                        Math.Min(240, Math.Max(180, cardWidth + 32)),
+                        36);
+                    y += 48;
+
+                    List<Panel> cards = orderedProductCards
+                        .Where(card => cardCategories[card] == header)
+                        .ToList();
+
+                    y = LayoutCards(cards, startX, y, columns, cardWidth, cardHeight, gap, rowGap);
+                    y += 24;
+                }
+            }
+
+            panel1.AutoScrollMinSize = new Size(0, Math.Max(0, y + 8));
+
+            if (scrollY > 0)
+            {
+                int max = GetMaxScrollOffset();
+                panel1.AutoScrollPosition = new Point(0, Math.Min(scrollY, max));
+            }
+        }
+
+        private int LayoutCards(
+            List<Panel> cards,
+            int startX,
+            int startY,
+            int columns,
+            int cardWidth,
+            int cardHeight,
+            int gap,
+            int rowGap)
+        {
+            for (int i = 0; i < cards.Count; i++)
+            {
+                int column = i % columns;
+                int row = i / columns;
+                Panel card = cards[i];
+
+                card.Location = new Point(
+                    startX + (column * (cardWidth + gap)),
+                    startY + (row * (cardHeight + rowGap)));
+                LayoutProductCard(card, cardWidth, cardHeight);
+            }
+
+            int rows = (cards.Count + columns - 1) / columns;
+            return startY + (rows == 0
+                ? 0
+                : (rows * cardHeight) + ((rows - 1) * rowGap));
+        }
+
+        private static void LayoutProductCard(Panel card, int width, int height)
+        {
+            card.Size = new Size(width, height);
+
+            PictureBox picture = card.Controls.OfType<PictureBox>().FirstOrDefault();
+            if (picture != null)
+            {
+                const int imageHeight = 132;
+                int imageWidth = Math.Max(60, width - 24);
+                picture.Location = new Point((width - imageWidth) / 2, 14);
+                picture.Size = new Size(imageWidth, imageHeight);
+                picture.SizeMode = PictureBoxSizeMode.Zoom;
+            }
+
+            Label name = GetNameLabel(card);
+            if (name != null)
+            {
+                name.AutoSize = false;
+                name.AutoEllipsis = true;
+                name.Font = ProductNameFont;
+                name.Location = new Point(10, 152);
+                name.Size = new Size(Math.Max(20, width - 20), 22);
+                name.TextAlign = ContentAlignment.MiddleLeft;
+            }
+
+            Label price = GetPriceLabel(card);
+            if (price != null)
+            {
+                price.AutoSize = false;
+                price.Font = ProductPriceFont;
+                price.Location = new Point(10, 176);
+                price.Size = new Size(Math.Max(20, width - 82), 20);
+                price.TextAlign = ContentAlignment.MiddleLeft;
+            }
+
+            Label stock = GetStockLabel(card);
+            if (stock != null)
+            {
+                stock.AutoSize = false;
+                stock.Font = StockLabelFont;
+                stock.Location = new Point(Math.Max(10, width - 68), 176);
+                stock.Size = new Size(58, 20);
+                stock.TextAlign = ContentAlignment.MiddleRight;
+            }
+
+            Button buyButton = card.Controls.OfType<Button>().FirstOrDefault();
+            if (buyButton != null)
+            {
+                buyButton.AutoSize = false;
+                buyButton.Font = width >= 160 ? BuyButtonFont : BuyButtonCompactFont;
+                buyButton.Location = new Point(10, height - 33);
+                buyButton.Size = new Size(Math.Max(20, width - 20), 28);
+            }
         }
 
         public bool PreFilterMessage(ref Message m)
@@ -321,13 +888,49 @@ namespace POS_system
 
         private static string GetProductName(Panel card)
         {
-            var labels = card.Controls.OfType<Label>().OrderBy(l => l.Top).ToList();
-            return labels.Count >= 2 ? labels[0].Text.Trim() : string.Empty;
+            Label name = GetNameLabel(card);
+            return name == null ? string.Empty : name.Text.Trim();
+        }
+
+        private static void TagProductLabels(Panel card)
+        {
+            List<Label> labels = card.Controls.OfType<Label>()
+                .Where(label => label.Name != "lblStock")
+                .OrderBy(label => label.Top)
+                .ToList();
+
+            if (labels.Count > 0 && labels[0].Tag == null)
+                labels[0].Tag = "product-name";
+
+            if (labels.Count > 1 && labels[1].Tag == null)
+                labels[1].Tag = "product-price";
+        }
+
+        private static Label GetNameLabel(Panel card)
+        {
+            return card.Controls.OfType<Label>()
+                .FirstOrDefault(label =>
+                    label.Name == "lblProductName" ||
+                    object.Equals(label.Tag, "product-name"));
+        }
+
+        private static Label GetPriceLabel(Panel card)
+        {
+            return card.Controls.OfType<Label>()
+                .FirstOrDefault(label =>
+                    label.Name == "lblPrice" ||
+                    object.Equals(label.Tag, "product-price"));
+        }
+
+        private static Label GetStockLabel(Panel card)
+        {
+            return card.Controls.OfType<Label>()
+                .FirstOrDefault(label => label.Name == "lblStock");
         }
 
         private void StockDisplay_Load(object sender, EventArgs e)
         {
-
+            LayoutStockDisplay();
         }
 
         private void btnCheckout_Click(object sender, EventArgs e)

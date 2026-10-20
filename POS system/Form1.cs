@@ -32,7 +32,15 @@ namespace POS_system
 
             ApplyRoleAccess();
             Session.AddLogoutButton(this, panel2);
+            btnAdminPanel.Click += (s, e) => OpenAdminPanel();
             LayoutDashboard();
+        }
+
+        private void OpenAdminPanel()
+        {
+            var adminPanel = new AdminPanel { Owner = this };
+            adminPanel.Show();
+            Hide();
         }
 
         private void ApplyRoleAccess()
