@@ -19,6 +19,17 @@ namespace POS_system
         public Form1()
         {
             InitializeComponent();
+
+            if (!Session.CanSeeHome)
+            {
+                Shown += (s, e) =>
+                {
+                    new StockDisplay().Show();
+                    Close();
+                };
+                return;
+            }
+
             ApplyRoleAccess();
             Session.AddLogoutButton(this, panel2);
             LoadStock();

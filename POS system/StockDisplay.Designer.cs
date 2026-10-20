@@ -232,6 +232,8 @@
             this.button8 = new System.Windows.Forms.Button();
             this.button10 = new System.Windows.Forms.Button();
             this.button44 = new System.Windows.Forms.Button();
+            this.txtsearch = new System.Windows.Forms.TextBox();
+            this.label76 = new System.Windows.Forms.Label();
             this.panel2.SuspendLayout();
             this.panel3.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.pictureBox7)).BeginInit();
@@ -2072,12 +2074,13 @@
             this.button16.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
             this.button16.Font = new System.Drawing.Font("Segoe UI", 14F, System.Drawing.FontStyle.Bold);
             this.button16.ForeColor = System.Drawing.Color.White;
-            this.button16.Location = new System.Drawing.Point(3, 569);
+            this.button16.Location = new System.Drawing.Point(3, 561);
             this.button16.Name = "button16";
             this.button16.Size = new System.Drawing.Size(160, 34);
             this.button16.TabIndex = 128;
             this.button16.Text = "School Supplies";
             this.button16.UseVisualStyleBackColor = false;
+            this.button16.Click += new System.EventHandler(this.button16_Click);
             // 
             // panel16
             // 
@@ -2788,7 +2791,7 @@
             this.button1.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
             this.button1.Font = new System.Drawing.Font("Segoe UI", 14F, System.Drawing.FontStyle.Bold);
             this.button1.ForeColor = System.Drawing.Color.White;
-            this.button1.Location = new System.Drawing.Point(3, 0);
+            this.button1.Location = new System.Drawing.Point(3, 13);
             this.button1.Name = "button1";
             this.button1.Size = new System.Drawing.Size(160, 34);
             this.button1.TabIndex = 115;
@@ -2884,17 +2887,37 @@
             this.button44.Text = "Checkout";
             this.button44.UseVisualStyleBackColor = false;
             // 
+            // txtsearch
+            // 
+            this.txtsearch.Location = new System.Drawing.Point(588, 28);
+            this.txtsearch.Multiline = true;
+            this.txtsearch.Name = "txtsearch";
+            this.txtsearch.Size = new System.Drawing.Size(248, 31);
+            this.txtsearch.TabIndex = 124;
+            this.txtsearch.TextChanged += new System.EventHandler(this.txtsearch_TextChanged);
+            // 
+            // label76
+            // 
+            this.label76.AutoSize = true;
+            this.label76.Font = new System.Drawing.Font("Microsoft Sans Serif", 14.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.label76.Location = new System.Drawing.Point(512, 32);
+            this.label76.Name = "label76";
+            this.label76.Size = new System.Drawing.Size(70, 24);
+            this.label76.TabIndex = 125;
+            this.label76.Text = "Search";
+            // 
             // StockDisplay
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.ClientSize = new System.Drawing.Size(1465, 711);
+            this.Controls.Add(this.label76);
+            this.Controls.Add(this.txtsearch);
             this.Controls.Add(this.panel41);
             this.Controls.Add(this.panel1);
             this.Controls.Add(this.panel2);
             this.Name = "StockDisplay";
             this.Text = "StockDisplay";
-            this.AutoSizeChanged += new System.EventHandler(this.BuyButton_Click);
             this.panel2.ResumeLayout(false);
             this.panel3.ResumeLayout(false);
             this.panel3.PerformLayout();
@@ -3014,6 +3037,7 @@
             this.panel41.ResumeLayout(false);
             this.panel41.PerformLayout();
             this.ResumeLayout(false);
+            this.PerformLayout();
 
         }
 
@@ -3222,5 +3246,7 @@
         private System.Windows.Forms.Button button7;
         private System.Windows.Forms.Button button8;
         private System.Windows.Forms.Button button44;
+        private System.Windows.Forms.TextBox txtsearch;
+        private System.Windows.Forms.Label label76;
     }
 }

@@ -40,16 +40,18 @@ namespace POS_system
         {
             roleName = null;
 
-            const string sql = "SELECT PASSWORD, Role FROM [User] WHERE USERNAME = @username";
-
             using (var con = new SqlConnection(ConnectionString))
-            using (var cmd = new SqlCommand(sql, con))
             {
-                cmd.Parameters.AddWithValue("@username", username);
+                con.Open();
 
-                try
+                bool hasRoleColumn = ColumnExists(con, "User", "Role");
+                string sql = hasRoleColumn
+                    ? "SELECT PASSWORD, Role FROM [User] WHERE USERNAME = @username"
+                    : "SELECT PASSWORD FROM [User] WHERE USERNAME = @username";
+
+                using (var cmd = new SqlCommand(sql, con))
                 {
-                    con.Open();
+                    cmd.Parameters.AddWithValue("@username", username);
 
                     using (var reader = cmd.ExecuteReader())
                     {
@@ -60,35 +62,25 @@ namespace POS_system
                         if (!FixedTimeEquals(expected, HashPassword(password)))
                             return false;
 
-                        roleName = reader.FieldCount > 1 && !reader.IsDBNull(1)
+                        roleName = hasRoleColumn && !reader.IsDBNull(1)
                             ? reader.GetString(1)
                             : null;
                         return true;
                     }
                 }
-                catch (SqlException ex)
-                {
-                    if (!ex.Message.Contains("'Role'"))
-                        throw;
-
-                    // The Users table has no Role column yet: log in, but treat everyone as a cashier.
-                    roleName = null;
-                    return LoginWithoutRole(username, password, con);
-                }
             }
         }
 
-        private static bool LoginWithoutRole(string username, string password, SqlConnection con)
+        private static bool ColumnExists(SqlConnection con, string tableName, string columnName)
         {
-            using (var cmd = new SqlCommand("SELECT PASSWORD FROM [User] WHERE USERNAME = @username", con))
+            const string sql = "SELECT COUNT(1) FROM INFORMATION_SCHEMA.COLUMNS " +
+                               "WHERE TABLE_NAME = @table AND COLUMN_NAME = @column";
+
+            using (var cmd = new SqlCommand(sql, con))
             {
-                cmd.Parameters.AddWithValue("@username", username);
-
-                object stored = cmd.ExecuteScalar();
-                if (stored == null || stored == DBNull.Value)
-                    return false;
-
-                return FixedTimeEquals(ToHex(stored), HashPassword(password));
+                cmd.Parameters.AddWithValue("@table", tableName);
+                cmd.Parameters.AddWithValue("@column", columnName);
+                return Convert.ToInt32(cmd.ExecuteScalar()) > 0;
             }
         }
 
@@ -121,16 +113,24 @@ namespace POS_system
 
         public static void CreateUser(string username, string password, UserRole role)
         {
-            const string sql = "INSERT INTO [User] (USERNAME, PASSWORD, Role) VALUES (@username, @hash, @role)";
-
             using (var con = new SqlConnection(ConnectionString))
-            using (var cmd = new SqlCommand(sql, con))
             {
-                cmd.Parameters.AddWithValue("@username", username);
-                cmd.Parameters.AddWithValue("@hash", HashPassword(password));
-                cmd.Parameters.AddWithValue("@role", role.ToString());
                 con.Open();
-                cmd.ExecuteNonQuery();
+
+                bool hasRoleColumn = ColumnExists(con, "User", "Role");
+                string sql = hasRoleColumn
+                    ? "INSERT INTO [User] (USERNAME, PASSWORD, Role) VALUES (@username, @hash, @role)"
+                    : "INSERT INTO [User] (USERNAME, PASSWORD) VALUES (@username, @hash)";
+
+                using (var cmd = new SqlCommand(sql, con))
+                {
+                    cmd.Parameters.AddWithValue("@username", username);
+                    cmd.Parameters.AddWithValue("@hash", HashPassword(password));
+                    if (hasRoleColumn)
+                        cmd.Parameters.AddWithValue("@role", role.ToString());
+
+                    cmd.ExecuteNonQuery();
+                }
             }
         }
 

@@ -28,6 +28,13 @@ namespace POS_system
             LogoutRequested = false;
         }
 
+        public static void SignOut()
+        {
+            Username = null;
+            Role = UserRole.Cashier;
+            LogoutRequested = true;
+        }
+
         public static UserRole ParseRole(string roleName)
         {
             UserRole role;
@@ -52,31 +59,30 @@ namespace POS_system
             if (container == null || owner == null)
                 return;
 
+            if (container.Controls.ContainsKey("btnLogout"))
+                return;
+
             var btn = new Button();
             btn.Name = "btnLogout";
             btn.Text = "Logout";
-            btn.Size = new Size(120, 35);
-            btn.Font = new Font("Segoe UI", 10F, FontStyle.Bold);
+            btn.Size = new Size(248, 50);
+            btn.Font = new Font("Segoe UI", 12F, FontStyle.Bold);
             btn.ForeColor = Color.White;
             btn.BackColor = SystemColors.MenuHighlight;
             btn.FlatStyle = FlatStyle.Flat;
+            btn.FlatAppearance.BorderSize = 0;
             btn.Cursor = Cursors.Hand;
-
-            int bottom = 0;
-            foreach (Control c in container.Controls)
-            {
-                if (c is Button && c.Visible && c.Bottom > bottom)
-                    bottom = c.Bottom;
-            }
-            btn.Location = new Point(30, bottom == 0 ? 20 : bottom + 12);
+            btn.Anchor = AnchorStyles.Bottom | AnchorStyles.Left;
+            btn.Location = new Point(26, Math.Max(20, container.ClientSize.Height - btn.Height - 20));
 
             btn.Click += (s, e) =>
             {
-                LogoutRequested = true;
+                SignOut();
                 owner.Close();
             };
 
             container.Controls.Add(btn);
+            btn.BringToFront();
         }
     }
 }
