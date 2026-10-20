@@ -483,7 +483,6 @@
             this.panel1.Name = "panel1";
             this.panel1.Size = new System.Drawing.Size(704, 581);
             this.panel1.TabIndex = 122;
-            this.panel1.AutoSizeChanged += new System.EventHandler(this.BuyButton_Click);
             // 
             // panel39
             // 
@@ -1667,7 +1666,6 @@
             this.button23.TabIndex = 119;
             this.button23.Text = "BUY";
             this.button23.UseVisualStyleBackColor = false;
-            this.button23.AutoSizeChanged += new System.EventHandler(this.BuyButton_Click);
             this.button23.Click += new System.EventHandler(this.BuyButton_Click);
             // 
             // label39
@@ -1730,7 +1728,6 @@
             this.button22.TabIndex = 119;
             this.button22.Text = "BUY";
             this.button22.UseVisualStyleBackColor = false;
-            this.button22.AutoSizeChanged += new System.EventHandler(this.BuyButton_Click);
             this.button22.Click += new System.EventHandler(this.BuyButton_Click);
             // 
             // label37
@@ -1793,7 +1790,6 @@
             this.button21.TabIndex = 119;
             this.button21.Text = "BUY";
             this.button21.UseVisualStyleBackColor = false;
-            this.button21.AutoSizeChanged += new System.EventHandler(this.BuyButton_Click);
             this.button21.Click += new System.EventHandler(this.BuyButton_Click);
             // 
             // label36
@@ -1856,7 +1852,6 @@
             this.button20.TabIndex = 119;
             this.button20.Text = "BUY";
             this.button20.UseVisualStyleBackColor = false;
-            this.button20.AutoSizeChanged += new System.EventHandler(this.BuyButton_Click);
             this.button20.Click += new System.EventHandler(this.BuyButton_Click);
             // 
             // label34
@@ -1919,7 +1914,6 @@
             this.button19.TabIndex = 119;
             this.button19.Text = "BUY";
             this.button19.UseVisualStyleBackColor = false;
-            this.button19.AutoSizeChanged += new System.EventHandler(this.BuyButton_Click);
             this.button19.Click += new System.EventHandler(this.BuyButton_Click);
             // 
             // label32
@@ -1982,7 +1976,6 @@
             this.button18.TabIndex = 119;
             this.button18.Text = "BUY";
             this.button18.UseVisualStyleBackColor = false;
-            this.button18.AutoSizeChanged += new System.EventHandler(this.BuyButton_Click);
             this.button18.Click += new System.EventHandler(this.BuyButton_Click);
             // 
             // label30
@@ -2045,7 +2038,6 @@
             this.button17.TabIndex = 119;
             this.button17.Text = "BUY";
             this.button17.UseVisualStyleBackColor = false;
-            this.button17.AutoSizeChanged += new System.EventHandler(this.BuyButton_Click);
             this.button17.Click += new System.EventHandler(this.BuyButton_Click);
             // 
             // label28
@@ -2123,7 +2115,6 @@
             this.button15.TabIndex = 119;
             this.button15.Text = "BUY";
             this.button15.UseVisualStyleBackColor = false;
-            this.button15.AutoSizeChanged += new System.EventHandler(this.BuyButton_Click);
             this.button15.Click += new System.EventHandler(this.BuyButton_Click);
             // 
             // label26
@@ -2186,7 +2177,6 @@
             this.button14.TabIndex = 119;
             this.button14.Text = "BUY";
             this.button14.UseVisualStyleBackColor = false;
-            this.button14.AutoSizeChanged += new System.EventHandler(this.BuyButton_Click);
             this.button14.Click += new System.EventHandler(this.BuyButton_Click);
             // 
             // label24
@@ -2249,7 +2239,6 @@
             this.button13.TabIndex = 119;
             this.button13.Text = "BUY";
             this.button13.UseVisualStyleBackColor = false;
-            this.button13.AutoSizeChanged += new System.EventHandler(this.BuyButton_Click);
             this.button13.Click += new System.EventHandler(this.BuyButton_Click);
             // 
             // label22
@@ -2312,7 +2301,6 @@
             this.button11.TabIndex = 119;
             this.button11.Text = "BUY";
             this.button11.UseVisualStyleBackColor = false;
-            this.button11.AutoSizeChanged += new System.EventHandler(this.BuyButton_Click);
             this.button11.Click += new System.EventHandler(this.BuyButton_Click);
             // 
             // label20
@@ -2856,12 +2844,13 @@
             // 
             // btnCheckout
             // 
+            this.btnCheckout.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Right)));
             this.btnCheckout.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(193)))), ((int)(((byte)(154)))), ((int)(((byte)(107)))));
             this.btnCheckout.FlatAppearance.BorderSize = 0;
             this.btnCheckout.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
             this.btnCheckout.Font = new System.Drawing.Font("Segoe UI", 12F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.btnCheckout.ForeColor = System.Drawing.Color.White;
-            this.btnCheckout.Location = new System.Drawing.Point(215, 659);
+            this.btnCheckout.Location = new System.Drawing.Point(209, 653);
             this.btnCheckout.Name = "btnCheckout";
             this.btnCheckout.Size = new System.Drawing.Size(136, 40);
             this.btnCheckout.TabIndex = 121;
@@ -2871,10 +2860,11 @@
             // 
             // lblTotal
             // 
+            this.lblTotal.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Left)));
             this.lblTotal.AutoSize = true;
             this.lblTotal.Font = new System.Drawing.Font("Microsoft Sans Serif", 15.75F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.lblTotal.ForeColor = System.Drawing.Color.White;
-            this.lblTotal.Location = new System.Drawing.Point(29, 666);
+            this.lblTotal.Location = new System.Drawing.Point(18, 658);
             this.lblTotal.Name = "lblTotal";
             this.lblTotal.Size = new System.Drawing.Size(128, 25);
             this.lblTotal.TabIndex = 1;
@@ -2882,15 +2872,18 @@
             // 
             // lstCart
             // 
-            this.lstCart.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Right)));
+            this.lstCart.Anchor = ((System.Windows.Forms.AnchorStyles)((((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Bottom) 
+            | System.Windows.Forms.AnchorStyles.Left) 
+            | System.Windows.Forms.AnchorStyles.Right)));
             this.lstCart.BackColor = System.Drawing.Color.Navy;
             this.lstCart.Font = new System.Drawing.Font("Microsoft Sans Serif", 12F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.lstCart.ForeColor = System.Drawing.Color.White;
             this.lstCart.FormattingEnabled = true;
+            this.lstCart.IntegralHeight = false;
             this.lstCart.ItemHeight = 20;
-            this.lstCart.Location = new System.Drawing.Point(15, 85);
+            this.lstCart.Location = new System.Drawing.Point(18, 85);
             this.lstCart.Name = "lstCart";
-            this.lstCart.Size = new System.Drawing.Size(336, 524);
+            this.lstCart.Size = new System.Drawing.Size(327, 545);
             this.lstCart.TabIndex = 0;
             // 
             // txtsearch
@@ -2931,7 +2924,7 @@
             this.label77.BackColor = System.Drawing.Color.Navy;
             this.label77.Font = new System.Drawing.Font("Microsoft Sans Serif", 24F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.label77.ForeColor = System.Drawing.Color.White;
-            this.label77.Location = new System.Drawing.Point(27, 41);
+            this.label77.Location = new System.Drawing.Point(27, 29);
             this.label77.Name = "label77";
             this.label77.Size = new System.Drawing.Size(305, 37);
             this.label77.TabIndex = 125;

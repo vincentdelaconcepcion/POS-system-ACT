@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.ComponentModel;
 using System.Data;
+using System.Data.SqlClient;
 using System.Drawing;
 using System.Globalization;
 using System.Linq;
@@ -14,8 +15,9 @@ namespace POS_system
 {
     public partial class StockDisplay : Form, IMessageFilter
     {
-        private decimal total = 0;
+        private const string Peso = "\u20B1";
         private readonly SP_StockDataContext db = new SP_StockDataContext();
+        private readonly List<CartItem> cart = new List<CartItem>();
         private List<Panel> productCards;
         private Dictionary<Panel, Point> cardLocations;
 
@@ -57,7 +59,7 @@ namespace POS_system
             try
             {
                 var quantities = db.sp_Search(null)
-                    .GroupBy(s => s.ProductName, StringComparer.OrdinalIgnoreCase)
+                    .GroupBy(s => (s.ProductName ?? string.Empty).Trim(), StringComparer.OrdinalIgnoreCase)
                     .ToDictionary(g => g.Key, g => g.Sum(s => s.Quantity), StringComparer.OrdinalIgnoreCase);
 
                 foreach (Panel card in productCards)
@@ -108,24 +110,83 @@ namespace POS_system
 
         private void BuyButton_Click(object sender, EventArgs e)
         {
-            var btn = (Button)sender;
-            var card = btn.Parent;   // the panel holding this product
+            Button btn = sender as Button;
+            if (btn == null || btn.Parent == null)
+                return;
 
-            // Labels sorted top to bottom: first = name, second = price
-            var labels = card.Controls.OfType<Label>()
-                             .OrderBy(l => l.Top)
-                             .ToList();
+            string name = GetProductName(btn.Parent as Panel);
+            if (string.IsNullOrWhiteSpace(name))
+                return;
 
-            string name = labels[0].Text;
-            decimal price = decimal.Parse(
-                labels[1].Text.Replace("₱", "").Trim(),
-                CultureInfo.InvariantCulture);
+            sp_SearchResult stock = db.sp_Search(null)
+                .Where(s => string.Equals((s.ProductName ?? string.Empty).Trim(), name.Trim(), StringComparison.OrdinalIgnoreCase))
+                .OrderByDescending(s => s.Quantity)
+                .FirstOrDefault();
 
-            lstCart.Items.Add($"{name} - ₱{price:N2}");
+            if (stock == null || stock.Quantity <= 0)
+            {
+                MessageBox.Show("This product is no longer available.", "Out of Stock",
+                    MessageBoxButtons.OK, MessageBoxIcon.Warning);
+                LoadStockStatus();
+                return;
+            }
 
-            total += price;
-            lblTotal.Text = $"Total: ₱{total:N2}";
+            CartItem item = cart.FirstOrDefault(i => i.StockID == stock.StockID);
+            int quantityInCart = item == null ? 0 : item.Quantity;
 
+            if (quantityInCart >= stock.Quantity)
+            {
+                MessageBox.Show(
+                    string.Format("Only {0} unit(s) of {1} are available.", stock.Quantity, stock.ProductName),
+                    "Stock Limit", MessageBoxButtons.OK, MessageBoxIcon.Information);
+                return;
+            }
+
+            if (item == null)
+            {
+                cart.Add(new CartItem
+                {
+                    StockID = stock.StockID,
+                    ProductName = stock.ProductName.Trim(),
+                    Category = stock.Category,
+                    UnitPrice = stock.UnitPrice,
+                    Quantity = 1
+                });
+            }
+            else
+            {
+                item.Quantity++;
+            }
+
+            RefreshCart();
+        }
+
+        private void RefreshCart()
+        {
+            decimal total = cart.Sum(i => i.Subtotal);
+
+            lstCart.BeginUpdate();
+            try
+            {
+                lstCart.Items.Clear();
+
+                foreach (CartItem item in cart)
+                {
+                    lstCart.Items.Add(string.Format(
+                        CultureInfo.CurrentCulture,
+                        "{0} x{1} - {2}{3:N2}",
+                        item.ProductName,
+                        item.Quantity,
+                        Peso,
+                        item.Subtotal));
+                }
+            }
+            finally
+            {
+                lstCart.EndUpdate();
+            }
+
+            lblTotal.Text = string.Format(CultureInfo.CurrentCulture, "Total: {0}{1:N2}", Peso, total);
         }
 
         private void button16_Click(object sender, EventArgs e)
@@ -271,7 +332,192 @@ namespace POS_system
 
         private void btnCheckout_Click(object sender, EventArgs e)
         {
+            if (cart.Count == 0)
+            {
+                MessageBox.Show("Add at least one product before checking out.", "Cart Empty",
+                    MessageBoxButtons.OK, MessageBoxIcon.Information);
+                return;
+            }
 
+            decimal totalAmount = cart.Sum(i => i.Subtotal);
+            int itemCount = cart.Sum(i => i.Quantity);
+
+            DialogResult confirm = MessageBox.Show(
+                string.Format(CultureInfo.CurrentCulture,
+                    "Complete this sale?\n\nItems: {0}\nTotal: {1}{2:N2}",
+                    itemCount, Peso, totalAmount),
+                "Confirm Checkout", MessageBoxButtons.YesNo, MessageBoxIcon.Question);
+
+            if (confirm != DialogResult.Yes)
+                return;
+
+            btnCheckout.Enabled = false;
+            Cursor = Cursors.WaitCursor;
+
+            try
+            {
+                int orderId = SaveOrder();
+
+                MessageBox.Show(
+                    string.Format(CultureInfo.CurrentCulture,
+                        "Sale completed successfully.\n\nOrder #: {0}\nTotal: {1}{2:N2}",
+                        orderId, Peso, totalAmount),
+                    "Checkout Complete", MessageBoxButtons.OK, MessageBoxIcon.Information);
+
+                cart.Clear();
+                RefreshCart();
+                LoadStockStatus();
+            }
+            catch (Exception ex)
+            {
+                MessageBox.Show("Checkout failed. No changes were saved.\n\n" + ex.Message,
+                    "Checkout Error", MessageBoxButtons.OK, MessageBoxIcon.Error);
+                LoadStockStatus();
+            }
+            finally
+            {
+                btnCheckout.Enabled = true;
+                Cursor = Cursors.Default;
+            }
+        }
+
+        private int SaveOrder()
+        {
+            decimal totalAmount = cart.Sum(i => i.Subtotal);
+
+            using (SqlConnection conn = new SqlConnection(db.Connection.ConnectionString))
+            {
+                conn.Open();
+
+                using (SqlTransaction tx = conn.BeginTransaction())
+                {
+                    try
+                    {
+                        bool hasCashier = ColumnExists(conn, tx, "dbo.Orders", "Cashier");
+
+                        string insertOrder = hasCashier
+                            ? "INSERT INTO dbo.Orders (OrderDate, TotalAmount, Cashier) VALUES (GETDATE(), @TotalAmount, @Cashier); SELECT CAST(SCOPE_IDENTITY() AS INT);"
+                            : "INSERT INTO dbo.Orders (OrderDate, TotalAmount) VALUES (GETDATE(), @TotalAmount); SELECT CAST(SCOPE_IDENTITY() AS INT);";
+
+                        int orderId;
+
+                        using (SqlCommand cmd = new SqlCommand(insertOrder, conn, tx))
+                        {
+                            AddMoney(cmd, "@TotalAmount", totalAmount);
+
+                            if (hasCashier)
+                            {
+                                cmd.Parameters.Add("@Cashier", SqlDbType.NVarChar, 100).Value =
+                                    string.IsNullOrWhiteSpace(Session.Username)
+                                        ? (object)DBNull.Value
+                                        : Session.Username.Trim();
+                            }
+
+                            orderId = Convert.ToInt32(cmd.ExecuteScalar());
+                        }
+
+                        foreach (CartItem item in cart)
+                        {
+                            int available;
+
+                            using (SqlCommand cmd = new SqlCommand(
+                                "SELECT Quantity FROM dbo.Stock WITH (UPDLOCK, ROWLOCK) WHERE StockID = @StockID AND IsArchived = 0",
+                                conn, tx))
+                            {
+                                cmd.Parameters.Add("@StockID", SqlDbType.Int).Value = item.StockID;
+                                object value = cmd.ExecuteScalar();
+
+                                if (value == null || value == DBNull.Value)
+                                    throw new InvalidOperationException(item.ProductName + " is no longer available.");
+
+                                available = Convert.ToInt32(value);
+                            }
+
+                            if (available < item.Quantity)
+                            {
+                                throw new InvalidOperationException(string.Format(
+                                    CultureInfo.CurrentCulture,
+                                    "Only {0} unit(s) of {1} remain in stock.",
+                                    available, item.ProductName));
+                            }
+
+                            using (SqlCommand cmd = new SqlCommand(
+                                "INSERT INTO dbo.OrderItems (OrderID, StockID, ProductName, Category, UnitPrice, Quantity, Subtotal) " +
+                                "VALUES (@OrderID, @StockID, @ProductName, @Category, @UnitPrice, @Quantity, @Subtotal)",
+                                conn, tx))
+                            {
+                                cmd.Parameters.Add("@OrderID", SqlDbType.Int).Value = orderId;
+                                cmd.Parameters.Add("@StockID", SqlDbType.Int).Value = item.StockID;
+                                cmd.Parameters.Add("@ProductName", SqlDbType.NVarChar, 200).Value = item.ProductName;
+                                cmd.Parameters.Add("@Category", SqlDbType.NVarChar, 100).Value =
+                                    string.IsNullOrWhiteSpace(item.Category) ? (object)DBNull.Value : item.Category;
+                                AddMoney(cmd, "@UnitPrice", item.UnitPrice);
+                                cmd.Parameters.Add("@Quantity", SqlDbType.Int).Value = item.Quantity;
+                                AddMoney(cmd, "@Subtotal", item.Subtotal);
+
+                                cmd.ExecuteNonQuery();
+                            }
+
+                            using (SqlCommand cmd = new SqlCommand(
+                                "UPDATE dbo.Stock SET Quantity = Quantity - @Quantity " +
+                                "WHERE StockID = @StockID AND IsArchived = 0 AND Quantity >= @Quantity",
+                                conn, tx))
+                            {
+                                cmd.Parameters.Add("@Quantity", SqlDbType.Int).Value = item.Quantity;
+                                cmd.Parameters.Add("@StockID", SqlDbType.Int).Value = item.StockID;
+
+                                if (cmd.ExecuteNonQuery() != 1)
+                                    throw new InvalidOperationException("Unable to reserve stock for " + item.ProductName + ".");
+                            }
+                        }
+
+                        tx.Commit();
+                        return orderId;
+                    }
+                    catch
+                    {
+                        try
+                        {
+                            tx.Rollback();
+                        }
+                        catch
+                        {
+                        }
+
+                        throw;
+                    }
+                }
+            }
+        }
+
+        private static void AddMoney(SqlCommand cmd, string name, decimal value)
+        {
+            SqlParameter parameter = cmd.Parameters.Add(name, SqlDbType.Decimal);
+            parameter.Precision = 9;
+            parameter.Scale = 2;
+            parameter.Value = value;
+        }
+
+        private static bool ColumnExists(SqlConnection conn, SqlTransaction tx, string tableName, string columnName)
+        {
+            using (SqlCommand cmd = new SqlCommand(
+                "SELECT 1 FROM sys.columns WHERE object_id = OBJECT_ID(@TableName) AND name = @ColumnName",
+                conn, tx))
+            {
+                cmd.Parameters.Add("@TableName", SqlDbType.NVarChar, 128).Value = tableName;
+                cmd.Parameters.Add("@ColumnName", SqlDbType.NVarChar, 128).Value = columnName;
+                return cmd.ExecuteScalar() != null;
+            }
+        }
+
+        private sealed class CartItem
+        {
+            public int StockID { get; set; }
+            public string ProductName { get; set; }
+            public string Category { get; set; }
+            public decimal UnitPrice { get; set; }
+            public int Quantity { get; set; }
+            public decimal Subtotal { get { return UnitPrice * Quantity; } }
         }
     }
 }
