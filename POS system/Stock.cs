@@ -34,6 +34,7 @@
 
             ApplyUiShapes();
             this.Resize += (s, e) => ApplyUiShapes();
+            panelBottom.Resize += (s, e) => LayoutActionButtons();
             txtS_search.KeyDown += (s, e) =>
             {
                 if (e.KeyCode == Keys.Enter)
@@ -260,6 +261,7 @@
                 btnDelete.Hide();
                 btnRestore.Hide();
                 btnViewArchived.Hide();
+                LayoutActionButtons();
                 return;
             }
 
@@ -280,6 +282,36 @@
                 btnArchive.Show();
                 btnRestore.Hide();
                 btnViewArchived.Text = "View Archived";
+            }
+
+            LayoutActionButtons();
+        }
+
+        private void LayoutActionButtons()
+        {
+            const int leftMargin = 26;
+            const int gap = 12;
+            const int buttonWidth = 150;
+            const int buttonY = 195;
+
+            int left = leftMargin;
+            foreach (Button button in new[] { btnDelete, btnArchive, btnRestore, btnViewArchived })
+            {
+                if (!button.Visible)
+                    continue;
+
+                button.Location = new Point(left, buttonY);
+                left += buttonWidth + gap;
+            }
+
+            int right = panelBottom.ClientSize.Width - leftMargin - buttonWidth;
+            foreach (Button button in new[] { btnBack, btnUpdate, btnAdd })
+            {
+                if (!button.Visible)
+                    continue;
+
+                button.Location = new Point(right, buttonY);
+                right -= buttonWidth + gap;
             }
         }
 
@@ -372,6 +404,8 @@
                 btnDelete.Show();
                 btnAdd.Hide();
             }
+
+            LayoutActionButtons();
         }
 
         private void dgtStock_CellContentClick(object sender, DataGridViewCellEventArgs e)

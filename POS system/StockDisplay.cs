@@ -12,7 +12,7 @@ using System.Windows.Forms;
 
 namespace POS_system
 {
-    public partial class StockDisplay : Form
+    public partial class StockDisplay : Form, IMessageFilter
     {
         private decimal total = 0;
         private readonly SP_StockDataContext db = new SP_StockDataContext();
@@ -22,6 +22,10 @@ namespace POS_system
         private static readonly Color InStockColor = Color.FromArgb(46, 125, 50);
         private static readonly Color OutOfStockColor = Color.FromArgb(198, 40, 40);
 
+        private const int WM_MOUSEWHEEL = 0x020A;
+        private readonly Timer smoothScrollTimer = new Timer { Interval = 15 };
+        private int scrollTarget;
+
         [DllImport("user32.dll", CharSet = CharSet.Unicode)]
         private static extern IntPtr SendMessage(IntPtr hWnd, int msg, IntPtr wParam, string lParam);
 
@@ -30,6 +34,11 @@ namespace POS_system
         public StockDisplay()
         {
             InitializeComponent();
+            //made the form full screen 
+            WindowState = FormWindowState.Maximized;
+            smoothScrollTimer.Tick += SmoothScrollTimer_Tick;
+            Application.AddMessageFilter(this);
+            FormClosed += StockDisplay_FormClosed;
             ApplyRoleAccess();
             Session.AddLogoutButton(this, panel2);
             InitializeSearch();
@@ -165,7 +174,88 @@ namespace POS_system
                 }
             }
 
+            scrollTarget = 0;
+            smoothScrollTimer.Stop();
             panel1.AutoScrollPosition = new Point(0, 0);
+        }
+
+        public bool PreFilterMessage(ref Message m)
+        {
+            if (m.Msg != WM_MOUSEWHEEL || !Visible || panel1 == null || !panel1.IsHandleCreated)
+                return false;
+
+            if (!panel1.RectangleToScreen(panel1.ClientRectangle).Contains(Cursor.Position))
+                return false;
+
+            if (GetMaxScrollOffset() <= 0)
+                return false;
+
+            int wheelDelta = (short)((long)m.WParam >> 16);
+            int lines = SystemInformation.MouseWheelScrollLines;
+            if (wheelDelta == 0 || lines == 0)
+                return false;
+
+            int distance = lines < 0
+                ? Math.Max(1, panel1.ClientSize.Height / 2)
+                : lines * 40;
+
+            ScrollProducts(wheelDelta > 0 ? -distance : distance);
+            return true;
+        }
+
+        private void ScrollProducts(int delta)
+        {
+            int max = GetMaxScrollOffset();
+            if (max <= 0)
+                return;
+
+            if (!smoothScrollTimer.Enabled)
+                scrollTarget = -panel1.AutoScrollPosition.Y;
+
+            scrollTarget = Math.Max(0, Math.Min(max, scrollTarget + delta));
+            smoothScrollTimer.Start();
+        }
+
+        private void SmoothScrollTimer_Tick(object sender, EventArgs e)
+        {
+            int max = GetMaxScrollOffset();
+            if (max <= 0)
+            {
+                scrollTarget = 0;
+                smoothScrollTimer.Stop();
+                return;
+            }
+
+            scrollTarget = Math.Min(scrollTarget, max);
+            int current = -panel1.AutoScrollPosition.Y;
+            int distance = scrollTarget - current;
+
+            if (Math.Abs(distance) <= 1)
+            {
+                panel1.AutoScrollPosition = new Point(0, scrollTarget);
+                smoothScrollTimer.Stop();
+                return;
+            }
+
+            int step = distance / 3;
+            if (step == 0)
+                step = Math.Sign(distance);
+            if (Math.Abs(step) > 120)
+                step = Math.Sign(step) * 120;
+
+            panel1.AutoScrollPosition = new Point(0, current + step);
+        }
+
+        private int GetMaxScrollOffset()
+        {
+            return Math.Max(0, panel1.DisplayRectangle.Height - panel1.ClientSize.Height);
+        }
+
+        private void StockDisplay_FormClosed(object sender, FormClosedEventArgs e)
+        {
+            smoothScrollTimer.Stop();
+            smoothScrollTimer.Dispose();
+            Application.RemoveMessageFilter(this);
         }
 
         private static string GetProductName(Panel card)
@@ -174,5 +264,14 @@ namespace POS_system
             return labels.Count >= 2 ? labels[0].Text.Trim() : string.Empty;
         }
 
+        private void StockDisplay_Load(object sender, EventArgs e)
+        {
+
+        }
+
+        private void btnCheckout_Click(object sender, EventArgs e)
+        {
+
+        }
     }
 }

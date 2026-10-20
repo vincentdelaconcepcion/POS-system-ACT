@@ -185,7 +185,8 @@
             this.btnAdd.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
             this.btnAdd.Font = new System.Drawing.Font("Segoe UI", 12F, System.Drawing.FontStyle.Bold);
             this.btnAdd.ForeColor = System.Drawing.Color.White;
-            this.btnAdd.Location = new System.Drawing.Point(26, 195);
+            this.btnAdd.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Right)));
+            this.btnAdd.Location = new System.Drawing.Point(805, 195);
             this.btnAdd.Name = "btnAdd";
             this.btnAdd.Size = new System.Drawing.Size(150, 45);
             this.btnAdd.TabIndex = 11;
@@ -200,7 +201,8 @@
             this.btnBack.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
             this.btnBack.Font = new System.Drawing.Font("Segoe UI", 12F, System.Drawing.FontStyle.Bold);
             this.btnBack.ForeColor = System.Drawing.Color.White;
-            this.btnBack.Location = new System.Drawing.Point(889, 195);
+            this.btnBack.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Right)));
+            this.btnBack.Location = new System.Drawing.Point(967, 195);
             this.btnBack.Name = "btnBack";
             this.btnBack.Size = new System.Drawing.Size(150, 45);
             this.btnBack.TabIndex = 12;
@@ -223,7 +225,7 @@
             this.dgtStock.RowHeadersWidth = 51;
             this.dgtStock.RowTemplate.Height = 34;
             this.dgtStock.SelectionMode = System.Windows.Forms.DataGridViewSelectionMode.FullRowSelect;
-            this.dgtStock.Size = new System.Drawing.Size(1236, 555);
+            this.dgtStock.Size = new System.Drawing.Size(1143, 555);
             this.dgtStock.TabIndex = 13;
             this.dgtStock.CellClick += new System.Windows.Forms.DataGridViewCellEventHandler(this.dgtStock_CellClick);
             this.dgtStock.CellContentClick += new System.Windows.Forms.DataGridViewCellEventHandler(this.dgtStock_CellContentClick);
@@ -247,7 +249,7 @@
             this.txtS_search.Location = new System.Drawing.Point(124, 22);
             this.txtS_search.Multiline = true;
             this.txtS_search.Name = "txtS_search";
-            this.txtS_search.Size = new System.Drawing.Size(900, 32);
+            this.txtS_search.Size = new System.Drawing.Size(993, 32);
             this.txtS_search.TabIndex = 15;
             this.txtS_search.TextChanged += new System.EventHandler(this.txtS_search_TextChanged);
             // 
@@ -283,7 +285,8 @@
             this.btnUpdate.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
             this.btnUpdate.Font = new System.Drawing.Font("Segoe UI", 12F, System.Drawing.FontStyle.Bold);
             this.btnUpdate.ForeColor = System.Drawing.Color.White;
-            this.btnUpdate.Location = new System.Drawing.Point(716, 195);
+            this.btnUpdate.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Right)));
+            this.btnUpdate.Location = new System.Drawing.Point(805, 195);
             this.btnUpdate.Name = "btnUpdate";
             this.btnUpdate.Size = new System.Drawing.Size(150, 45);
             this.btnUpdate.TabIndex = 17;
@@ -298,7 +301,7 @@
             this.btnArchive.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
             this.btnArchive.Font = new System.Drawing.Font("Segoe UI", 12F, System.Drawing.FontStyle.Bold);
             this.btnArchive.ForeColor = System.Drawing.Color.White;
-            this.btnArchive.Location = new System.Drawing.Point(199, 195);
+            this.btnArchive.Location = new System.Drawing.Point(188, 195);
             this.btnArchive.Name = "btnArchive";
             this.btnArchive.Size = new System.Drawing.Size(150, 45);
             this.btnArchive.TabIndex = 18;
@@ -313,7 +316,7 @@
             this.btnRestore.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
             this.btnRestore.Font = new System.Drawing.Font("Segoe UI", 12F, System.Drawing.FontStyle.Bold);
             this.btnRestore.ForeColor = System.Drawing.Color.White;
-            this.btnRestore.Location = new System.Drawing.Point(544, 195);
+            this.btnRestore.Location = new System.Drawing.Point(350, 195);
             this.btnRestore.Name = "btnRestore";
             this.btnRestore.Size = new System.Drawing.Size(150, 45);
             this.btnRestore.TabIndex = 19;
@@ -328,7 +331,7 @@
             this.btnViewArchived.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
             this.btnViewArchived.Font = new System.Drawing.Font("Segoe UI", 12F, System.Drawing.FontStyle.Bold);
             this.btnViewArchived.ForeColor = System.Drawing.Color.White;
-            this.btnViewArchived.Location = new System.Drawing.Point(371, 195);
+            this.btnViewArchived.Location = new System.Drawing.Point(512, 195);
             this.btnViewArchived.Name = "btnViewArchived";
             this.btnViewArchived.Size = new System.Drawing.Size(150, 45);
             this.btnViewArchived.TabIndex = 20;
@@ -481,7 +484,7 @@
             this.panelBottom.Controls.Add(this.btnBack);
             this.panelBottom.Location = new System.Drawing.Point(300, 555);
             this.panelBottom.Name = "panelBottom";
-            this.panelBottom.Size = new System.Drawing.Size(1236, 309);
+            this.panelBottom.Size = new System.Drawing.Size(1143, 309);
             this.panelBottom.TabIndex = 99;
             // 
             // labelSearch
