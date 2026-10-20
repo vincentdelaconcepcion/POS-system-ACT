@@ -51,7 +51,7 @@ namespace POS_system
         {
             Session.HideUnless(btnHome, Session.CanSeeHome);
             Session.HideUnless(button6, Session.CanManageStock);
-            Session.HideUnless(button12, Session.CanOpenSettings);
+            Session.HideUnless(btnAdminPanel, Session.CanOpenSettings);
         }
 
         private void LoadStockStatus()

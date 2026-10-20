@@ -20,7 +20,7 @@
         {
             InitializeComponent();
 
-            Session.HideUnless(button12, Session.CanOpenSettings);
+            Session.HideUnless(btnAdminPanel, Session.CanOpenSettings);
 
             if (!Session.CanManageStock)
             {

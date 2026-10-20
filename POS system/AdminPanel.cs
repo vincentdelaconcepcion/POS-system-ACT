@@ -10,9 +10,9 @@ using System.Windows.Forms;
 
 namespace POS_system
 {
-    public partial class Settings: Form
+    public partial class AdminPanel : Form
     {
-        public Settings()
+        public AdminPanel()
         {
             InitializeComponent();
         }

@@ -30,7 +30,7 @@
         {
             System.ComponentModel.ComponentResourceManager resources = new System.ComponentModel.ComponentResourceManager(typeof(StockDisplay));
             this.panel2 = new System.Windows.Forms.Panel();
-            this.button12 = new System.Windows.Forms.Button();
+            this.btnAdminPanel = new System.Windows.Forms.Button();
             this.button6 = new System.Windows.Forms.Button();
             this.btnStockDisplay = new System.Windows.Forms.Button();
             this.btnHome = new System.Windows.Forms.Button();
@@ -319,7 +319,7 @@
             // panel2
             // 
             this.panel2.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(0)))), ((int)(((byte)(0)))), ((int)(((byte)(128)))));
-            this.panel2.Controls.Add(this.button12);
+            this.panel2.Controls.Add(this.btnAdminPanel);
             this.panel2.Controls.Add(this.button6);
             this.panel2.Controls.Add(this.btnStockDisplay);
             this.panel2.Controls.Add(this.btnHome);
@@ -331,19 +331,19 @@
             this.panel2.Size = new System.Drawing.Size(300, 711);
             this.panel2.TabIndex = 99;
             // 
-            // button12
+            // btnAdminPanel
             // 
-            this.button12.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(193)))), ((int)(((byte)(154)))), ((int)(((byte)(107)))));
-            this.button12.FlatAppearance.BorderSize = 0;
-            this.button12.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
-            this.button12.Font = new System.Drawing.Font("Segoe UI", 14F, System.Drawing.FontStyle.Bold);
-            this.button12.ForeColor = System.Drawing.Color.White;
-            this.button12.Location = new System.Drawing.Point(26, 544);
-            this.button12.Name = "button12";
-            this.button12.Size = new System.Drawing.Size(248, 65);
-            this.button12.TabIndex = 113;
-            this.button12.Text = "Settings";
-            this.button12.UseVisualStyleBackColor = false;
+            this.btnAdminPanel.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(193)))), ((int)(((byte)(154)))), ((int)(((byte)(107)))));
+            this.btnAdminPanel.FlatAppearance.BorderSize = 0;
+            this.btnAdminPanel.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
+            this.btnAdminPanel.Font = new System.Drawing.Font("Segoe UI", 14F, System.Drawing.FontStyle.Bold);
+            this.btnAdminPanel.ForeColor = System.Drawing.Color.White;
+            this.btnAdminPanel.Location = new System.Drawing.Point(26, 544);
+            this.btnAdminPanel.Name = "btnAdminPanel";
+            this.btnAdminPanel.Size = new System.Drawing.Size(248, 65);
+            this.btnAdminPanel.TabIndex = 113;
+            this.btnAdminPanel.Text = "Admin Panel";
+            this.btnAdminPanel.UseVisualStyleBackColor = false;
             // 
             // button6
             // 
@@ -3069,7 +3069,7 @@
         #endregion
 
         private System.Windows.Forms.Panel panel2;
-        private System.Windows.Forms.Button button12;
+        private System.Windows.Forms.Button btnAdminPanel;
         private System.Windows.Forms.Button button6;
         private System.Windows.Forms.Button btnStockDisplay;
         private System.Windows.Forms.Button btnHome;
