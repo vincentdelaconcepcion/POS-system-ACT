@@ -58,6 +58,8 @@ namespace POS_system
             smoothScrollTimer.Tick += SmoothScrollTimer_Tick;
             Application.AddMessageFilter(this);
             FormClosed += StockDisplay_FormClosed;
+
+            // this is ussed to check and stretch the screen to match the window state
             Resize += (s, e) =>
             {
                 if (WindowState != FormWindowState.Minimized)
@@ -74,6 +76,8 @@ namespace POS_system
                 TabStop = false
             };
             btnAddProduct.FlatAppearance.BorderSize = 0;
+
+            // Adding of new product button in the stockdisplay and navigate the user to the stock.cs form
             btnAddProduct.Click += (s, e) =>
             {
                 StockForm stockForm = new StockForm();
@@ -82,6 +86,7 @@ namespace POS_system
             };
             Controls.Add(btnAddProduct);
             btnAddProduct.BringToFront();
+
 
             lblPaymentMethod = new Label
             {
