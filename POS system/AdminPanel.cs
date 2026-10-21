@@ -452,5 +452,300 @@ namespace POS_system
                 Close();
             }
         }
+
+        private void panel2_Paint(object sender, PaintEventArgs e)
+        {
+
+        }
+
+        private void btnAdminPanel_Click(object sender, EventArgs e)
+        {
+
+        }
+
+        private void button6_Click(object sender, EventArgs e)
+        {
+
+        }
+
+        private void btnStockDisplay_Click(object sender, EventArgs e)
+        {
+
+        }
+
+        private void button1_Click(object sender, EventArgs e)
+        {
+
+        }
+
+        private void label7_Click(object sender, EventArgs e)
+        {
+
+        }
+
+        private void pictureBox7_Click(object sender, EventArgs e)
+        {
+
+        }
+
+        private void panelContent_Paint(object sender, PaintEventArgs e)
+        {
+
+        }
+
+        private void flowLayoutPanel9_Paint(object sender, PaintEventArgs e)
+        {
+
+        }
+
+        private void panelUsers_Paint(object sender, PaintEventArgs e)
+        {
+
+        }
+
+        private void panelHeader_Paint(object sender, PaintEventArgs e)
+        {
+
+        }
+
+        private void lblStatus_Click(object sender, EventArgs e)
+        {
+
+        }
+
+        private void lblCurrentUser_Click(object sender, EventArgs e)
+        {
+
+        }
+
+        private void lblSubheader_Click(object sender, EventArgs e)
+        {
+
+        }
+
+        private void lblHeader_Click(object sender, EventArgs e)
+        {
+
+        }
+
+        private void statsLayout_Paint(object sender, PaintEventArgs e)
+        {
+
+        }
+
+        private void panelStatUsers_Paint(object sender, PaintEventArgs e)
+        {
+
+        }
+
+        private void lblTotalUsers_Click(object sender, EventArgs e)
+        {
+
+        }
+
+        private void lblTotalUsersTitle_Click(object sender, EventArgs e)
+        {
+
+        }
+
+        private void panelStatAdmins_Paint(object sender, PaintEventArgs e)
+        {
+
+        }
+
+        private void lblAdmins_Click(object sender, EventArgs e)
+        {
+
+        }
+
+        private void lblAdminsTitle_Click(object sender, EventArgs e)
+        {
+
+        }
+
+        private void panelStatManagers_Paint(object sender, PaintEventArgs e)
+        {
+
+        }
+
+        private void lblManagers_Click(object sender, EventArgs e)
+        {
+
+        }
+
+        private void lblManagersTitle_Click(object sender, EventArgs e)
+        {
+
+        }
+
+        private void panelStatCashiers_Paint(object sender, PaintEventArgs e)
+        {
+
+        }
+
+        private void lblCashiers_Click(object sender, EventArgs e)
+        {
+
+        }
+
+        private void lblCashiersTitle_Click(object sender, EventArgs e)
+        {
+
+        }
+
+        private void bodyLayout_Paint(object sender, PaintEventArgs e)
+        {
+
+        }
+
+        private void leftLayout_Paint(object sender, PaintEventArgs e)
+        {
+
+        }
+
+        private void panelAddUser_Paint(object sender, PaintEventArgs e)
+        {
+
+        }
+
+        private void chkShowPassword_CheckedChanged(object sender, EventArgs e)
+        {
+
+        }
+
+        private void btnAddUser_Click(object sender, EventArgs e)
+        {
+
+        }
+
+        private void cboRole_SelectedIndexChanged(object sender, EventArgs e)
+        {
+
+        }
+
+        private void lblRole_Click(object sender, EventArgs e)
+        {
+
+        }
+
+        private void txtPassword_TextChanged(object sender, EventArgs e)
+        {
+
+        }
+
+        private void label3_Click(object sender, EventArgs e)
+        {
+
+        }
+
+        private void txtUsername_TextChanged(object sender, EventArgs e)
+        {
+
+        }
+
+        private void label2_Click(object sender, EventArgs e)
+        {
+
+        }
+
+        private void label1_Click(object sender, EventArgs e)
+        {
+
+        }
+
+        private void panelQuickActions_Paint(object sender, PaintEventArgs e)
+        {
+
+        }
+
+        private void btnQuickRefresh_Click(object sender, EventArgs e)
+        {
+
+        }
+
+        private void btnQuickHome_Click(object sender, EventArgs e)
+        {
+
+        }
+
+        private void btnQuickPos_Click(object sender, EventArgs e)
+        {
+
+        }
+
+        private void btnQuickStock_Click(object sender, EventArgs e)
+        {
+
+        }
+
+        private void lblQuickTitle_Click(object sender, EventArgs e)
+        {
+
+        }
+
+        private void panelInfo_Paint(object sender, PaintEventArgs e)
+        {
+
+        }
+
+        private void lblInfoBody_Click(object sender, EventArgs e)
+        {
+
+        }
+
+        private void lblInfoTitle_Click(object sender, EventArgs e)
+        {
+
+        }
+
+        private void panel3_Paint(object sender, PaintEventArgs e)
+        {
+
+        }
+
+        private void flowUserActions_Paint(object sender, PaintEventArgs e)
+        {
+
+        }
+
+        private void cboRoleChange_SelectedIndexChanged(object sender, EventArgs e)
+        {
+
+        }
+
+        private void btnUpdateRole_Click(object sender, EventArgs e)
+        {
+
+        }
+
+        private void btnResetPassword_Click(object sender, EventArgs e)
+        {
+
+        }
+
+        private void btnDeleteUser_Click(object sender, EventArgs e)
+        {
+
+        }
+
+        private void lblSelection_Click(object sender, EventArgs e)
+        {
+
+        }
+
+        private void dgvUsers_CellContentClick(object sender, DataGridViewCellEventArgs e)
+        {
+
+        }
+
+        private void btnRefresh_Click(object sender, EventArgs e)
+        {
+
+        }
+
+        private void lblUsersTitle_Click(object sender, EventArgs e)
+        {
+
+        }
     }
 }

@@ -408,7 +408,7 @@
             this.btnHome.Name = "btnHome";
             this.btnHome.Size = new System.Drawing.Size(248, 65);
             this.btnHome.TabIndex = 112;
-            this.btnHome.Text = "Home";
+            this.btnHome.Text = "Dashboard";
             this.btnHome.UseVisualStyleBackColor = false;
             this.btnHome.Click += new System.EventHandler(this.btnHome_Click);
             // 

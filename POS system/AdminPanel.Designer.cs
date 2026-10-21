@@ -18,9 +18,9 @@
         private void InitializeComponent()
         {
             System.ComponentModel.ComponentResourceManager resources = new System.ComponentModel.ComponentResourceManager(typeof(AdminPanel));
-            System.Windows.Forms.DataGridViewCellStyle dataGridViewCellStyle7 = new System.Windows.Forms.DataGridViewCellStyle();
-            System.Windows.Forms.DataGridViewCellStyle dataGridViewCellStyle8 = new System.Windows.Forms.DataGridViewCellStyle();
-            System.Windows.Forms.DataGridViewCellStyle dataGridViewCellStyle9 = new System.Windows.Forms.DataGridViewCellStyle();
+            System.Windows.Forms.DataGridViewCellStyle dataGridViewCellStyle1 = new System.Windows.Forms.DataGridViewCellStyle();
+            System.Windows.Forms.DataGridViewCellStyle dataGridViewCellStyle2 = new System.Windows.Forms.DataGridViewCellStyle();
+            System.Windows.Forms.DataGridViewCellStyle dataGridViewCellStyle3 = new System.Windows.Forms.DataGridViewCellStyle();
             this.panel2 = new System.Windows.Forms.Panel();
             this.btnAdminPanel = new System.Windows.Forms.Button();
             this.button6 = new System.Windows.Forms.Button();
@@ -116,6 +116,7 @@
             this.panel2.Name = "panel2";
             this.panel2.Size = new System.Drawing.Size(300, 900);
             this.panel2.TabIndex = 114;
+            this.panel2.Paint += new System.Windows.Forms.PaintEventHandler(this.panel2_Paint);
             // 
             // btnAdminPanel
             // 
@@ -130,6 +131,7 @@
             this.btnAdminPanel.TabIndex = 113;
             this.btnAdminPanel.Text = "Admin Panel";
             this.btnAdminPanel.UseVisualStyleBackColor = false;
+            this.btnAdminPanel.Click += new System.EventHandler(this.btnAdminPanel_Click);
             // 
             // button6
             // 
@@ -144,6 +146,7 @@
             this.button6.TabIndex = 114;
             this.button6.Text = "Stock";
             this.button6.UseVisualStyleBackColor = false;
+            this.button6.Click += new System.EventHandler(this.button6_Click);
             // 
             // btnStockDisplay
             // 
@@ -158,6 +161,7 @@
             this.btnStockDisplay.TabIndex = 113;
             this.btnStockDisplay.Text = "Stock Display";
             this.btnStockDisplay.UseVisualStyleBackColor = false;
+            this.btnStockDisplay.Click += new System.EventHandler(this.btnStockDisplay_Click);
             // 
             // button1
             // 
@@ -170,8 +174,9 @@
             this.button1.Name = "button1";
             this.button1.Size = new System.Drawing.Size(248, 65);
             this.button1.TabIndex = 112;
-            this.button1.Text = "Home";
+            this.button1.Text = "Dashboard";
             this.button1.UseVisualStyleBackColor = false;
+            this.button1.Click += new System.EventHandler(this.button1_Click);
             // 
             // panel3
             // 
@@ -182,6 +187,7 @@
             this.panel3.Name = "panel3";
             this.panel3.Size = new System.Drawing.Size(300, 236);
             this.panel3.TabIndex = 98;
+            this.panel3.Paint += new System.Windows.Forms.PaintEventHandler(this.panel3_Paint);
             // 
             // pictureBox7
             // 
@@ -194,6 +200,7 @@
             this.pictureBox7.SizeMode = System.Windows.Forms.PictureBoxSizeMode.Zoom;
             this.pictureBox7.TabIndex = 83;
             this.pictureBox7.TabStop = false;
+            this.pictureBox7.Click += new System.EventHandler(this.pictureBox7_Click);
             // 
             // label7
             // 
@@ -207,6 +214,7 @@
             this.label7.TabIndex = 98;
             this.label7.Text = "POS System";
             this.label7.Visible = false;
+            this.label7.Click += new System.EventHandler(this.label7_Click);
             // 
             // flowLayoutPanel9
             // 
@@ -216,6 +224,7 @@
             this.flowLayoutPanel9.Size = new System.Drawing.Size(260, 54);
             this.flowLayoutPanel9.TabIndex = 110;
             this.flowLayoutPanel9.Visible = false;
+            this.flowLayoutPanel9.Paint += new System.Windows.Forms.PaintEventHandler(this.flowLayoutPanel9_Paint);
             // 
             // panelContent
             // 
@@ -230,6 +239,7 @@
             this.panelContent.Name = "panelContent";
             this.panelContent.Size = new System.Drawing.Size(882, 900);
             this.panelContent.TabIndex = 115;
+            this.panelContent.Paint += new System.Windows.Forms.PaintEventHandler(this.panelContent_Paint);
             // 
             // panelHeader
             // 
@@ -244,6 +254,7 @@
             this.panelHeader.Name = "panelHeader";
             this.panelHeader.Size = new System.Drawing.Size(834, 96);
             this.panelHeader.TabIndex = 0;
+            this.panelHeader.Paint += new System.Windows.Forms.PaintEventHandler(this.panelHeader_Paint);
             // 
             // lblStatus
             // 
@@ -256,6 +267,7 @@
             this.lblStatus.TabIndex = 3;
             this.lblStatus.Text = "Ready";
             this.lblStatus.TextAlign = System.Drawing.ContentAlignment.MiddleRight;
+            this.lblStatus.Click += new System.EventHandler(this.lblStatus_Click);
             // 
             // lblCurrentUser
             // 
@@ -268,6 +280,7 @@
             this.lblCurrentUser.TabIndex = 2;
             this.lblCurrentUser.Text = "Signed in as";
             this.lblCurrentUser.TextAlign = System.Drawing.ContentAlignment.MiddleRight;
+            this.lblCurrentUser.Click += new System.EventHandler(this.lblCurrentUser_Click);
             // 
             // lblSubheader
             // 
@@ -279,6 +292,7 @@
             this.lblSubheader.Size = new System.Drawing.Size(302, 19);
             this.lblSubheader.TabIndex = 1;
             this.lblSubheader.Text = "Manage user accounts, roles, and system access";
+            this.lblSubheader.Click += new System.EventHandler(this.lblSubheader_Click);
             // 
             // lblHeader
             // 
@@ -290,6 +304,7 @@
             this.lblHeader.Size = new System.Drawing.Size(241, 45);
             this.lblHeader.TabIndex = 0;
             this.lblHeader.Text = "ADMIN PANEL";
+            this.lblHeader.Click += new System.EventHandler(this.lblHeader_Click);
             // 
             // statsLayout
             // 
@@ -311,6 +326,7 @@
             this.statsLayout.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Percent, 100F));
             this.statsLayout.Size = new System.Drawing.Size(834, 96);
             this.statsLayout.TabIndex = 1;
+            this.statsLayout.Paint += new System.Windows.Forms.PaintEventHandler(this.statsLayout_Paint);
             // 
             // panelStatUsers
             // 
@@ -323,6 +339,7 @@
             this.panelStatUsers.Name = "panelStatUsers";
             this.panelStatUsers.Size = new System.Drawing.Size(194, 96);
             this.panelStatUsers.TabIndex = 0;
+            this.panelStatUsers.Paint += new System.Windows.Forms.PaintEventHandler(this.panelStatUsers_Paint);
             // 
             // lblTotalUsers
             // 
@@ -334,6 +351,7 @@
             this.lblTotalUsers.Size = new System.Drawing.Size(33, 37);
             this.lblTotalUsers.TabIndex = 1;
             this.lblTotalUsers.Text = "0";
+            this.lblTotalUsers.Click += new System.EventHandler(this.lblTotalUsers_Click);
             // 
             // lblTotalUsersTitle
             // 
@@ -345,6 +363,7 @@
             this.lblTotalUsersTitle.Size = new System.Drawing.Size(76, 19);
             this.lblTotalUsersTitle.TabIndex = 0;
             this.lblTotalUsersTitle.Text = "Total Users";
+            this.lblTotalUsersTitle.Click += new System.EventHandler(this.lblTotalUsersTitle_Click);
             // 
             // panelStatAdmins
             // 
@@ -357,6 +376,7 @@
             this.panelStatAdmins.Name = "panelStatAdmins";
             this.panelStatAdmins.Size = new System.Drawing.Size(194, 96);
             this.panelStatAdmins.TabIndex = 1;
+            this.panelStatAdmins.Paint += new System.Windows.Forms.PaintEventHandler(this.panelStatAdmins_Paint);
             // 
             // lblAdmins
             // 
@@ -368,6 +388,7 @@
             this.lblAdmins.Size = new System.Drawing.Size(33, 37);
             this.lblAdmins.TabIndex = 1;
             this.lblAdmins.Text = "0";
+            this.lblAdmins.Click += new System.EventHandler(this.lblAdmins_Click);
             // 
             // lblAdminsTitle
             // 
@@ -379,6 +400,7 @@
             this.lblAdminsTitle.Size = new System.Drawing.Size(99, 19);
             this.lblAdminsTitle.TabIndex = 0;
             this.lblAdminsTitle.Text = "Administrators";
+            this.lblAdminsTitle.Click += new System.EventHandler(this.lblAdminsTitle_Click);
             // 
             // panelStatManagers
             // 
@@ -391,6 +413,7 @@
             this.panelStatManagers.Name = "panelStatManagers";
             this.panelStatManagers.Size = new System.Drawing.Size(194, 96);
             this.panelStatManagers.TabIndex = 2;
+            this.panelStatManagers.Paint += new System.Windows.Forms.PaintEventHandler(this.panelStatManagers_Paint);
             // 
             // lblManagers
             // 
@@ -402,6 +425,7 @@
             this.lblManagers.Size = new System.Drawing.Size(33, 37);
             this.lblManagers.TabIndex = 1;
             this.lblManagers.Text = "0";
+            this.lblManagers.Click += new System.EventHandler(this.lblManagers_Click);
             // 
             // lblManagersTitle
             // 
@@ -413,6 +437,7 @@
             this.lblManagersTitle.Size = new System.Drawing.Size(70, 19);
             this.lblManagersTitle.TabIndex = 0;
             this.lblManagersTitle.Text = "Managers";
+            this.lblManagersTitle.Click += new System.EventHandler(this.lblManagersTitle_Click);
             // 
             // panelStatCashiers
             // 
@@ -425,6 +450,7 @@
             this.panelStatCashiers.Name = "panelStatCashiers";
             this.panelStatCashiers.Size = new System.Drawing.Size(210, 96);
             this.panelStatCashiers.TabIndex = 3;
+            this.panelStatCashiers.Paint += new System.Windows.Forms.PaintEventHandler(this.panelStatCashiers_Paint);
             // 
             // lblCashiers
             // 
@@ -436,6 +462,7 @@
             this.lblCashiers.Size = new System.Drawing.Size(33, 37);
             this.lblCashiers.TabIndex = 1;
             this.lblCashiers.Text = "0";
+            this.lblCashiers.Click += new System.EventHandler(this.lblCashiers_Click);
             // 
             // lblCashiersTitle
             // 
@@ -447,6 +474,7 @@
             this.lblCashiersTitle.Size = new System.Drawing.Size(60, 19);
             this.lblCashiersTitle.TabIndex = 0;
             this.lblCashiersTitle.Text = "Cashiers";
+            this.lblCashiersTitle.Click += new System.EventHandler(this.lblCashiersTitle_Click);
             // 
             // bodyLayout
             // 
@@ -465,6 +493,7 @@
             this.bodyLayout.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Percent, 100F));
             this.bodyLayout.Size = new System.Drawing.Size(834, 624);
             this.bodyLayout.TabIndex = 2;
+            this.bodyLayout.Paint += new System.Windows.Forms.PaintEventHandler(this.bodyLayout_Paint);
             // 
             // leftLayout
             // 
@@ -483,6 +512,7 @@
             this.leftLayout.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Percent, 100F));
             this.leftLayout.Size = new System.Drawing.Size(342, 624);
             this.leftLayout.TabIndex = 0;
+            this.leftLayout.Paint += new System.Windows.Forms.PaintEventHandler(this.leftLayout_Paint);
             // 
             // panelAddUser
             // 
@@ -502,6 +532,7 @@
             this.panelAddUser.Name = "panelAddUser";
             this.panelAddUser.Size = new System.Drawing.Size(342, 262);
             this.panelAddUser.TabIndex = 0;
+            this.panelAddUser.Paint += new System.Windows.Forms.PaintEventHandler(this.panelAddUser_Paint);
             // 
             // chkShowPassword
             // 
@@ -514,6 +545,7 @@
             this.chkShowPassword.TabIndex = 8;
             this.chkShowPassword.Text = "Show password";
             this.chkShowPassword.UseVisualStyleBackColor = true;
+            this.chkShowPassword.CheckedChanged += new System.EventHandler(this.chkShowPassword_CheckedChanged);
             // 
             // btnAddUser
             // 
@@ -531,6 +563,7 @@
             this.btnAddUser.TabIndex = 7;
             this.btnAddUser.Text = "Add User";
             this.btnAddUser.UseVisualStyleBackColor = false;
+            this.btnAddUser.Click += new System.EventHandler(this.btnAddUser_Click);
             // 
             // cboRole
             // 
@@ -545,6 +578,7 @@
             this.cboRole.Name = "cboRole";
             this.cboRole.Size = new System.Drawing.Size(120, 25);
             this.cboRole.TabIndex = 6;
+            this.cboRole.SelectedIndexChanged += new System.EventHandler(this.cboRole_SelectedIndexChanged);
             // 
             // lblRole
             // 
@@ -556,6 +590,7 @@
             this.lblRole.Size = new System.Drawing.Size(35, 17);
             this.lblRole.TabIndex = 5;
             this.lblRole.Text = "Role";
+            this.lblRole.Click += new System.EventHandler(this.lblRole_Click);
             // 
             // txtPassword
             // 
@@ -568,6 +603,7 @@
             this.txtPassword.Size = new System.Drawing.Size(306, 26);
             this.txtPassword.TabIndex = 4;
             this.txtPassword.UseSystemPasswordChar = true;
+            this.txtPassword.TextChanged += new System.EventHandler(this.txtPassword_TextChanged);
             // 
             // label3
             // 
@@ -579,6 +615,7 @@
             this.label3.Size = new System.Drawing.Size(66, 17);
             this.label3.TabIndex = 3;
             this.label3.Text = "Password";
+            this.label3.Click += new System.EventHandler(this.label3_Click);
             // 
             // txtUsername
             // 
@@ -590,6 +627,7 @@
             this.txtUsername.Name = "txtUsername";
             this.txtUsername.Size = new System.Drawing.Size(306, 26);
             this.txtUsername.TabIndex = 2;
+            this.txtUsername.TextChanged += new System.EventHandler(this.txtUsername_TextChanged);
             // 
             // label2
             // 
@@ -601,6 +639,7 @@
             this.label2.Size = new System.Drawing.Size(69, 17);
             this.label2.TabIndex = 1;
             this.label2.Text = "Username";
+            this.label2.Click += new System.EventHandler(this.label2_Click);
             // 
             // label1
             // 
@@ -612,6 +651,7 @@
             this.label1.Size = new System.Drawing.Size(162, 30);
             this.label1.TabIndex = 0;
             this.label1.Text = "Add New User";
+            this.label1.Click += new System.EventHandler(this.label1_Click);
             // 
             // panelQuickActions
             // 
@@ -627,6 +667,7 @@
             this.panelQuickActions.Name = "panelQuickActions";
             this.panelQuickActions.Size = new System.Drawing.Size(342, 142);
             this.panelQuickActions.TabIndex = 1;
+            this.panelQuickActions.Paint += new System.Windows.Forms.PaintEventHandler(this.panelQuickActions_Paint);
             // 
             // btnQuickRefresh
             // 
@@ -642,6 +683,7 @@
             this.btnQuickRefresh.TabIndex = 4;
             this.btnQuickRefresh.Text = "Refresh Users";
             this.btnQuickRefresh.UseVisualStyleBackColor = false;
+            this.btnQuickRefresh.Click += new System.EventHandler(this.btnQuickRefresh_Click);
             // 
             // btnQuickHome
             // 
@@ -657,6 +699,7 @@
             this.btnQuickHome.TabIndex = 3;
             this.btnQuickHome.Text = "Open Dashboard";
             this.btnQuickHome.UseVisualStyleBackColor = false;
+            this.btnQuickHome.Click += new System.EventHandler(this.btnQuickHome_Click);
             // 
             // btnQuickPos
             // 
@@ -672,6 +715,7 @@
             this.btnQuickPos.TabIndex = 2;
             this.btnQuickPos.Text = "Open POS";
             this.btnQuickPos.UseVisualStyleBackColor = false;
+            this.btnQuickPos.Click += new System.EventHandler(this.btnQuickPos_Click);
             // 
             // btnQuickStock
             // 
@@ -687,6 +731,7 @@
             this.btnQuickStock.TabIndex = 1;
             this.btnQuickStock.Text = "Manage Stock";
             this.btnQuickStock.UseVisualStyleBackColor = false;
+            this.btnQuickStock.Click += new System.EventHandler(this.btnQuickStock_Click);
             // 
             // lblQuickTitle
             // 
@@ -698,6 +743,7 @@
             this.lblQuickTitle.Size = new System.Drawing.Size(134, 25);
             this.lblQuickTitle.TabIndex = 0;
             this.lblQuickTitle.Text = "Quick Actions";
+            this.lblQuickTitle.Click += new System.EventHandler(this.lblQuickTitle_Click);
             // 
             // panelInfo
             // 
@@ -710,6 +756,7 @@
             this.panelInfo.Name = "panelInfo";
             this.panelInfo.Size = new System.Drawing.Size(342, 184);
             this.panelInfo.TabIndex = 2;
+            this.panelInfo.Paint += new System.Windows.Forms.PaintEventHandler(this.panelInfo_Paint);
             // 
             // lblInfoBody
             // 
@@ -723,6 +770,7 @@
             this.lblInfoBody.Size = new System.Drawing.Size(306, 122);
             this.lblInfoBody.TabIndex = 1;
             this.lblInfoBody.Text = resources.GetString("lblInfoBody.Text");
+            this.lblInfoBody.Click += new System.EventHandler(this.lblInfoBody_Click);
             // 
             // lblInfoTitle
             // 
@@ -734,6 +782,7 @@
             this.lblInfoTitle.Size = new System.Drawing.Size(212, 25);
             this.lblInfoTitle.TabIndex = 0;
             this.lblInfoTitle.Text = "Rules for adding Users";
+            this.lblInfoTitle.Click += new System.EventHandler(this.lblInfoTitle_Click);
             // 
             // panelUsers
             // 
@@ -749,6 +798,7 @@
             this.panelUsers.Name = "panelUsers";
             this.panelUsers.Size = new System.Drawing.Size(474, 624);
             this.panelUsers.TabIndex = 1;
+            this.panelUsers.Paint += new System.Windows.Forms.PaintEventHandler(this.panelUsers_Paint);
             // 
             // flowUserActions
             // 
@@ -762,6 +812,7 @@
             this.flowUserActions.Name = "flowUserActions";
             this.flowUserActions.Size = new System.Drawing.Size(438, 76);
             this.flowUserActions.TabIndex = 4;
+            this.flowUserActions.Paint += new System.Windows.Forms.PaintEventHandler(this.flowUserActions_Paint);
             // 
             // cboRoleChange
             // 
@@ -777,6 +828,7 @@
             this.cboRoleChange.Name = "cboRoleChange";
             this.cboRoleChange.Size = new System.Drawing.Size(120, 25);
             this.cboRoleChange.TabIndex = 0;
+            this.cboRoleChange.SelectedIndexChanged += new System.EventHandler(this.cboRoleChange_SelectedIndexChanged);
             // 
             // btnUpdateRole
             // 
@@ -793,6 +845,7 @@
             this.btnUpdateRole.TabIndex = 1;
             this.btnUpdateRole.Text = "Change Role";
             this.btnUpdateRole.UseVisualStyleBackColor = false;
+            this.btnUpdateRole.Click += new System.EventHandler(this.btnUpdateRole_Click);
             // 
             // btnResetPassword
             // 
@@ -809,6 +862,7 @@
             this.btnResetPassword.TabIndex = 2;
             this.btnResetPassword.Text = "Reset Password";
             this.btnResetPassword.UseVisualStyleBackColor = false;
+            this.btnResetPassword.Click += new System.EventHandler(this.btnResetPassword_Click);
             // 
             // btnDeleteUser
             // 
@@ -825,6 +879,7 @@
             this.btnDeleteUser.TabIndex = 3;
             this.btnDeleteUser.Text = "Delete User";
             this.btnDeleteUser.UseVisualStyleBackColor = false;
+            this.btnDeleteUser.Click += new System.EventHandler(this.btnDeleteUser_Click);
             // 
             // lblSelection
             // 
@@ -837,14 +892,15 @@
             this.lblSelection.Size = new System.Drawing.Size(438, 20);
             this.lblSelection.TabIndex = 3;
             this.lblSelection.Text = "Select a user to manage";
+            this.lblSelection.Click += new System.EventHandler(this.lblSelection_Click);
             // 
             // dgvUsers
             // 
             this.dgvUsers.AllowUserToAddRows = false;
             this.dgvUsers.AllowUserToDeleteRows = false;
             this.dgvUsers.AllowUserToResizeRows = false;
-            dataGridViewCellStyle7.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(248)))), ((int)(((byte)(250)))), ((int)(((byte)(252)))));
-            this.dgvUsers.AlternatingRowsDefaultCellStyle = dataGridViewCellStyle7;
+            dataGridViewCellStyle1.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(248)))), ((int)(((byte)(250)))), ((int)(((byte)(252)))));
+            this.dgvUsers.AlternatingRowsDefaultCellStyle = dataGridViewCellStyle1;
             this.dgvUsers.Anchor = ((System.Windows.Forms.AnchorStyles)((((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Bottom) 
             | System.Windows.Forms.AnchorStyles.Left) 
             | System.Windows.Forms.AnchorStyles.Right)));
@@ -853,27 +909,27 @@
             this.dgvUsers.BorderStyle = System.Windows.Forms.BorderStyle.None;
             this.dgvUsers.CellBorderStyle = System.Windows.Forms.DataGridViewCellBorderStyle.SingleHorizontal;
             this.dgvUsers.ColumnHeadersBorderStyle = System.Windows.Forms.DataGridViewHeaderBorderStyle.None;
-            dataGridViewCellStyle8.Alignment = System.Windows.Forms.DataGridViewContentAlignment.MiddleLeft;
-            dataGridViewCellStyle8.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(52)))), ((int)(((byte)(73)))), ((int)(((byte)(94)))));
-            dataGridViewCellStyle8.Font = new System.Drawing.Font("Segoe UI", 10F, System.Drawing.FontStyle.Bold);
-            dataGridViewCellStyle8.ForeColor = System.Drawing.Color.White;
-            dataGridViewCellStyle8.SelectionBackColor = System.Drawing.SystemColors.Highlight;
-            dataGridViewCellStyle8.SelectionForeColor = System.Drawing.SystemColors.HighlightText;
-            dataGridViewCellStyle8.WrapMode = System.Windows.Forms.DataGridViewTriState.True;
-            this.dgvUsers.ColumnHeadersDefaultCellStyle = dataGridViewCellStyle8;
+            dataGridViewCellStyle2.Alignment = System.Windows.Forms.DataGridViewContentAlignment.MiddleLeft;
+            dataGridViewCellStyle2.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(52)))), ((int)(((byte)(73)))), ((int)(((byte)(94)))));
+            dataGridViewCellStyle2.Font = new System.Drawing.Font("Segoe UI", 9F);
+            dataGridViewCellStyle2.ForeColor = System.Drawing.Color.White;
+            dataGridViewCellStyle2.SelectionBackColor = System.Drawing.SystemColors.Highlight;
+            dataGridViewCellStyle2.SelectionForeColor = System.Drawing.SystemColors.HighlightText;
+            dataGridViewCellStyle2.WrapMode = System.Windows.Forms.DataGridViewTriState.True;
+            this.dgvUsers.ColumnHeadersDefaultCellStyle = dataGridViewCellStyle2;
             this.dgvUsers.ColumnHeadersHeight = 38;
             this.dgvUsers.ColumnHeadersHeightSizeMode = System.Windows.Forms.DataGridViewColumnHeadersHeightSizeMode.DisableResizing;
             this.dgvUsers.Columns.AddRange(new System.Windows.Forms.DataGridViewColumn[] {
             this.colUsername,
             this.colRole});
-            dataGridViewCellStyle9.Alignment = System.Windows.Forms.DataGridViewContentAlignment.MiddleLeft;
-            dataGridViewCellStyle9.BackColor = System.Drawing.SystemColors.Window;
-            dataGridViewCellStyle9.Font = new System.Drawing.Font("Segoe UI", 10F);
-            dataGridViewCellStyle9.ForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(40)))), ((int)(((byte)(55)))), ((int)(((byte)(70)))));
-            dataGridViewCellStyle9.SelectionBackColor = System.Drawing.Color.FromArgb(((int)(((byte)(52)))), ((int)(((byte)(152)))), ((int)(((byte)(219)))));
-            dataGridViewCellStyle9.SelectionForeColor = System.Drawing.Color.White;
-            dataGridViewCellStyle9.WrapMode = System.Windows.Forms.DataGridViewTriState.False;
-            this.dgvUsers.DefaultCellStyle = dataGridViewCellStyle9;
+            dataGridViewCellStyle3.Alignment = System.Windows.Forms.DataGridViewContentAlignment.MiddleLeft;
+            dataGridViewCellStyle3.BackColor = System.Drawing.SystemColors.Window;
+            dataGridViewCellStyle3.Font = new System.Drawing.Font("Segoe UI", 9F);
+            dataGridViewCellStyle3.ForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(40)))), ((int)(((byte)(55)))), ((int)(((byte)(70)))));
+            dataGridViewCellStyle3.SelectionBackColor = System.Drawing.Color.FromArgb(((int)(((byte)(52)))), ((int)(((byte)(152)))), ((int)(((byte)(219)))));
+            dataGridViewCellStyle3.SelectionForeColor = System.Drawing.Color.White;
+            dataGridViewCellStyle3.WrapMode = System.Windows.Forms.DataGridViewTriState.False;
+            this.dgvUsers.DefaultCellStyle = dataGridViewCellStyle3;
             this.dgvUsers.EnableHeadersVisualStyles = false;
             this.dgvUsers.GridColor = System.Drawing.Color.FromArgb(((int)(((byte)(220)))), ((int)(((byte)(225)))), ((int)(((byte)(230)))));
             this.dgvUsers.Location = new System.Drawing.Point(18, 100);
@@ -885,6 +941,7 @@
             this.dgvUsers.SelectionMode = System.Windows.Forms.DataGridViewSelectionMode.FullRowSelect;
             this.dgvUsers.Size = new System.Drawing.Size(438, 394);
             this.dgvUsers.TabIndex = 2;
+            this.dgvUsers.CellContentClick += new System.Windows.Forms.DataGridViewCellEventHandler(this.dgvUsers_CellContentClick);
             // 
             // colUsername
             // 
@@ -917,6 +974,7 @@
             this.btnRefresh.TabIndex = 1;
             this.btnRefresh.Text = "Refresh";
             this.btnRefresh.UseVisualStyleBackColor = false;
+            this.btnRefresh.Click += new System.EventHandler(this.btnRefresh_Click);
             // 
             // lblUsersTitle
             // 
@@ -928,6 +986,7 @@
             this.lblUsersTitle.Size = new System.Drawing.Size(161, 30);
             this.lblUsersTitle.TabIndex = 0;
             this.lblUsersTitle.Text = "User Accounts";
+            this.lblUsersTitle.Click += new System.EventHandler(this.lblUsersTitle_Click);
             // 
             // AdminPanel
             // 
