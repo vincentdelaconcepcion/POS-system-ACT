@@ -34,6 +34,7 @@ namespace POS_system
             Resize += (s, e) => LayoutDashboard();
         }
 
+        // this code is for the forms for the common controls to be auto adjust to the masximum width of the form
         private void LayoutDashboard()
         {
             if (panel2 == null || panel1 == null || panel4 == null || panel5 == null ||
@@ -230,6 +231,13 @@ namespace POS_system
         {
             StockDisplay displaystock = new StockDisplay();
             displaystock.Show();
+            this.Hide();
+        }
+
+        private void btnAdminPanel_Click(object sender, EventArgs e)
+        {
+            AdminPanel adminpanel = new AdminPanel();
+            adminpanel.Show();
             this.Hide();
         }
     }

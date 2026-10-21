@@ -359,6 +359,8 @@
     <value>• Only Administrators can open and use this panel.
 • You cannot change or delete the account you are signed in with.
 • The last remaining Administrator cannot be demoted or deleted.
-• Passwords are validated and stored as SHA-256 hashes.</value>
+• Passwords are validated and stored as Hash Password.
+
+</value>
   </data>
 </root>

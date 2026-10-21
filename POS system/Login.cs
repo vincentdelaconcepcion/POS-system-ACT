@@ -76,6 +76,7 @@ namespace POS_system
                 LayoutLogin();
         }
 
+        // this code is for the forms for the common controls to be auto adjust to the masximum width of the form
         private void LayoutLogin()
         {
             if (panel1 == null || ClientSize.Width <= 0 || ClientSize.Height <= 0)
@@ -137,6 +138,7 @@ namespace POS_system
 
         private void btnLogIn_Click(object sender, EventArgs e)
         {
+            // this area of the code is where the actors are going ot input the text field for logging in to their given account
             string username = txtUsername.Text.Trim();
             string password = txtPassword.Text;
 
