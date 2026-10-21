@@ -18,7 +18,7 @@ namespace POS_system
             InitializeComponent();
 
             DoubleBuffered = true;
-            Resize += Form1_Resize;
+            WindowState = FormWindowState.Maximized;
 
             if (!Session.CanSeeHome)
             {
@@ -30,171 +30,10 @@ namespace POS_system
                 return;
             }
 
-            ApplyRoleAccess();
+           ;
             Session.AddLogoutButton(this, panel2);
-            btnAdminPanel.Click += (s, e) => OpenAdminPanel();
-            LayoutDashboard();
-        }
-
-        private void OpenAdminPanel()
-        {
-            var adminPanel = new AdminPanel { Owner = this };
-            adminPanel.Show();
-            Hide();
-        }
-
-        private void ApplyRoleAccess()
-        {
-            Session.HideUnless(button6, Session.CanManageStock);
-            Session.HideUnless(btnAdminPanel, Session.CanOpenSettings);
-        }
-
-        private void Form1_Resize(object sender, EventArgs e)
-        {
-            if (WindowState != FormWindowState.Minimized)
-                LayoutDashboard();
-        }
-
-        private void LayoutDashboard()
-        {
-            if (panel1 == null || panel2 == null || panel15 == null ||
-                ClientSize.Width <= 0 || ClientSize.Height <= 0)
-                return;
-
-            int width = ClientSize.Width;
-            int height = ClientSize.Height;
-            bool compact = height < 800;
-
-            int headerHeight = compact ? 120 : 140;
-            int footerHeight = compact ? 70 : 86;
-            int statHeight = compact ? 126 : 146;
-            int pageGap = compact ? 12 : 18;
-            int pageMargin = compact ? 16 : 24;
-            int cardGap = compact ? 12 : 18;
-
-            SuspendLayout();
-            panel2.SuspendLayout();
-            panel1.SuspendLayout();
-            panel15.SuspendLayout();
-            panel8.SuspendLayout();
-            panel13.SuspendLayout();
-            panel14.SuspendLayout();
-
-            try
-            {
-                panel2.Width = 300;
-                int contentLeft = panel2.Width;
-                int contentWidth = Math.Max(320, width - contentLeft);
-
-                panel1.Location = new Point(contentLeft, 0);
-                panel1.Size = new Size(contentWidth, headerHeight);
-                FitBannerImage(pictureBox1, panel1, compact ? 30 : 60);
-
-                int statsTop = panel1.Bottom + pageGap;
-                int usableWidth = contentWidth - (pageMargin * 2);
-                int statWidth = Math.Max(150, (usableWidth - (cardGap * 3)) / 4);
-                Panel[] statCards = { panel4, panel5, panel6, panel7 };
-
-                for (int i = 0; i < statCards.Length; i++)
-                {
-                    Panel card = statCards[i];
-                    card.Location = new Point(
-                        contentLeft + pageMargin + i * (statWidth + cardGap),
-                        statsTop);
-                    card.Size = new Size(statWidth, statHeight);
-                    LayoutMetricCard(card);
-                }
-
-                int footerTop = height - footerHeight;
-                panel15.Location = new Point(contentLeft, footerTop);
-                panel15.Size = new Size(contentWidth, footerHeight);
-
-                label32.Top = Math.Max(6, (footerHeight - label32.Height - label31.Height - 8) / 2);
-                label31.Top = label32.Bottom + 2;
-                FitBannerImage(pictureBox2, panel15, compact ? 24 : 48);
-
-                int largeTop = statsTop + statHeight + pageGap;
-                int largeHeight = Math.Max(180, footerTop - pageGap - largeTop);
-                int largeGap = cardGap;
-                int leftWidth = (int)((usableWidth - largeGap) * 0.54);
-                int rightWidth = usableWidth - largeGap - leftWidth;
-
-                panel8.BackColor = BackColor;
-                panel8.Location = new Point(contentLeft + pageMargin, largeTop);
-                panel8.Size = new Size(leftWidth, largeHeight);
-                panel13.BackColor = BackColor;
-                panel13.Location = new Point(panel8.Right + largeGap, largeTop);
-                panel13.Size = new Size(rightWidth, largeHeight);
-
-                LayoutMetricGrid();
-                LayoutTotalSalesCard();
-                LayoutSidebar();
-            }
-            finally
-            {
-                panel14.ResumeLayout();
-                panel13.ResumeLayout();
-                panel8.ResumeLayout();
-                panel15.ResumeLayout();
-                panel1.ResumeLayout();
-                panel2.ResumeLayout();
-                ResumeLayout();
-            }
-        }
-
-        private void LayoutMetricGrid()
-        {
-            int padding = panel8.Width < 500 ? 14 : 18;
-            int gap = panel8.Width < 500 ? 10 : 14;
-            int cellWidth = Math.Max(120, (panel8.ClientSize.Width - (padding * 2) - gap) / 2);
-            int cellHeight = Math.Max(110, (panel8.ClientSize.Height - (padding * 2) - gap) / 2);
-
-            panel9.Location = new Point(padding, padding);
-            panel9.Size = new Size(cellWidth, cellHeight);
-
-            panel11.Location = new Point(padding + cellWidth + gap, padding);
-            panel11.Size = new Size(cellWidth, cellHeight);
-
-            panel10.Location = new Point(padding, padding + cellHeight + gap);
-            panel10.Size = new Size(cellWidth, cellHeight);
-
-            panel12.Location = new Point(padding + cellWidth + gap, padding + cellHeight + gap);
-            panel12.Size = new Size(cellWidth, cellHeight);
-
-            LayoutMetricCard(panel9);
-            LayoutMetricCard(panel10);
-            LayoutMetricCard(panel11);
-            LayoutMetricCard(panel12);
-        }
-
-        private static void LayoutMetricCard(Panel card)
-        {
-            var labels = card.Controls.OfType<Label>().OrderBy(l => l.Top).ToList();
-            if (labels.Count < 3)
-                return;
-
-            int top = card.Height < 140 ? 12 : 18;
-            int gap = card.Height < 140 ? 36 : 42;
-            int left = Math.Max(16, Math.Min(24, card.Width / 12));
-
-            labels[0].Location = new Point(left, top);
-            labels[1].Location = new Point(left, top + gap);
-            labels[2].Location = new Point(left, top + (gap * 2));
-        }
-
-        private void LayoutTotalSalesCard()
-        {
-            panel14.Location = new Point(18, 18);
-            panel14.Size = new Size(
-                Math.Max(120, panel13.ClientSize.Width - 36),
-                Math.Max(120, panel13.ClientSize.Height - 36));
-
-            int centerX = panel14.ClientSize.Width / 2;
-            int centerY = panel14.ClientSize.Height / 2;
-
-            label30.Location = new Point(Math.Max(8, centerX - (label30.Width / 2)), Math.Max(8, centerY - 66));
-            label29.Location = new Point(Math.Max(8, centerX - (label29.Width / 2)), Math.Max(8, centerY - 22));
-            label28.Location = new Point(Math.Max(8, centerX - (label28.Width / 2)), Math.Max(8, centerY + 22));
+            
+           
         }
 
         private void LayoutSidebar()
@@ -314,7 +153,7 @@ namespace POS_system
 
         private void Form1_Load(object sender, EventArgs e)
         {
-            LayoutDashboard();
+           
         }
 
         private void flowLayoutPanel10_Paint(object sender, PaintEventArgs e)
