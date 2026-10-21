@@ -4,7 +4,6 @@ using System.ComponentModel;
 using System.Data;
 using System.Drawing;
 using System.Drawing.Drawing2D;
-using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using System.Windows.Forms;
@@ -46,10 +45,9 @@ namespace POS_system
             if (width <= 0 || height <= 0)
                 return;
 
-            int sidebarWidth = Math.Max(200, Math.Min(300, width / 5));
+            const int sidebarWidth = 300;
             panel2.Location = Point.Empty;
             panel2.Size = new Size(sidebarWidth, height);
-            LayoutSidebar();
 
             int headerHeight = Math.Max(90, Math.Min(150, height / 7));
             panel1.Location = new Point(sidebarWidth, 0);
@@ -100,57 +98,6 @@ namespace POS_system
             value.Location = new Point(
                 Math.Max(18, (card.ClientSize.Width - value.Width) / 2),
                 Math.Max(title.Bottom + 4, (card.ClientSize.Height - value.Height) / 2 + 8));
-        }
-
-        private void LayoutSidebar()
-        {
-            if (panel2 == null || panel3 == null)
-                return;
-
-            int sidebarWidth = panel2.ClientSize.Width;
-            if (sidebarWidth <= 0)
-                return;
-
-            int logoWidth = Math.Max(60, Math.Min(sidebarWidth - 56, 130));
-            int logoHeight = (pictureBox7 != null && pictureBox7.BackgroundImage != null)
-                ? (int)(logoWidth * (double)pictureBox7.BackgroundImage.Height / pictureBox7.BackgroundImage.Width)
-                : (int)(logoWidth * 0.775);
-            if (pictureBox7 != null)
-            {
-                pictureBox7.Size = new Size(logoWidth, logoHeight);
-                pictureBox7.Location = new Point((sidebarWidth - logoWidth) / 2, 20);
-            }
-
-            panel3.Size = new Size(sidebarWidth, Math.Max(140, (pictureBox7 != null ? pictureBox7.Bottom : 113) + 24));
-
-            int buttonWidth = Math.Max(120, sidebarWidth - 40);
-            int buttonHeight = Math.Max(36, Math.Min(56, panel2.ClientSize.Height / 16));
-            int buttonGap = Math.Max(10, Math.Min(20, buttonHeight / 3));
-
-            Control logout = panel2.Controls["btnLogout"];
-            if (logout != null)
-            {
-                logout.Anchor = AnchorStyles.Top | AnchorStyles.Left;
-                logout.Size = new Size(buttonWidth, 48);
-                logout.Left = (sidebarWidth - buttonWidth) / 2;
-                logout.Top = Math.Max(panel3.Bottom + 20, panel2.ClientSize.Height - logout.Height - 20);
-            }
-
-            Button[] navButtons = { button1, btnStockDisplay, button6, btnAdminPanel };
-            var visibleButtons = navButtons.Where(b => b != null && b.Visible).ToArray();
-            if (visibleButtons.Length == 0)
-                return;
-
-            int groupHeight = (visibleButtons.Length * buttonHeight) + ((visibleButtons.Length - 1) * buttonGap);
-            int topLimit = panel3.Bottom + 20;
-            int bottomLimit = logout != null ? logout.Top - 16 : panel2.ClientSize.Height - 16;
-            int startY = topLimit + Math.Max(10, (bottomLimit - topLimit - groupHeight) / 2);
-
-            for (int i = 0; i < visibleButtons.Length; i++)
-            {
-                visibleButtons[i].Location = new Point((sidebarWidth - buttonWidth) / 2, startY + i * (buttonHeight + buttonGap));
-                visibleButtons[i].Size = new Size(buttonWidth, buttonHeight);
-            }
         }
 
         private static void FitBannerImage(PictureBox picture, Panel banner, int rightMargin)

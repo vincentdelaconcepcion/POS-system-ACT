@@ -355,4 +355,10 @@
         wEX+wKRL9m080jL3/AVJLNkrOxPmioBnB+ZRm4YJSe6dxq2J4SQ6wX7/APjP/9k=
 </value>
   </data>
+  <data name="lblInfoBody.Text" xml:space="preserve">
+    <value>• Only Administrators can open and use this panel.
+• You cannot change or delete the account you are signed in with.
+• The last remaining Administrator cannot be demoted or deleted.
+• Passwords are validated and stored as SHA-256 hashes.</value>
+  </data>
 </root>
