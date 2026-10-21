@@ -10,6 +10,63 @@ BEGIN
 END
 GO
 
+IF EXISTS (SELECT 1 FROM sys.check_constraints WHERE name = 'CK_Orders_PaymentMethod')
+BEGIN
+    ALTER TABLE dbo.Orders DROP CONSTRAINT CK_Orders_PaymentMethod;
+END
+GO
+
+IF COL_LENGTH('dbo.Orders', 'PaymentMethod') IS NULL
+BEGIN
+    ALTER TABLE dbo.Orders
+        ADD PaymentMethod NVARCHAR(50) NOT NULL
+        CONSTRAINT DF_Orders_PaymentMethod DEFAULT N'Cash';
+END
+ELSE
+BEGIN
+    ALTER TABLE dbo.Orders ALTER COLUMN PaymentMethod NVARCHAR(50) NOT NULL;
+END
+GO
+
+IF OBJECT_ID('dbo.PaymentMethods', 'U') IS NULL
+BEGIN
+    CREATE TABLE dbo.PaymentMethods
+    (
+        PaymentMethodID INT IDENTITY(1, 1) NOT NULL,
+        Name NVARCHAR(50) NOT NULL,
+        IsActive BIT NOT NULL CONSTRAINT DF_PaymentMethods_IsActive DEFAULT 1,
+        CONSTRAINT PK_PaymentMethods PRIMARY KEY (PaymentMethodID),
+        CONSTRAINT UQ_PaymentMethods_Name UNIQUE (Name)
+    );
+END
+GO
+
+IF NOT EXISTS (SELECT 1 FROM dbo.PaymentMethods WHERE Name = N'Cash')
+BEGIN
+    INSERT INTO dbo.PaymentMethods (Name) VALUES (N'Cash');
+END
+GO
+
+IF NOT EXISTS (SELECT 1 FROM dbo.PaymentMethods WHERE Name = N'Card')
+BEGIN
+    INSERT INTO dbo.PaymentMethods (Name) VALUES (N'Card');
+END
+GO
+
+IF NOT EXISTS
+(
+    SELECT 1
+    FROM sys.foreign_keys
+    WHERE name = 'FK_Orders_PaymentMethods'
+      AND parent_object_id = OBJECT_ID('dbo.Orders')
+)
+BEGIN
+    ALTER TABLE dbo.Orders
+        ADD CONSTRAINT FK_Orders_PaymentMethods
+        FOREIGN KEY (PaymentMethod) REFERENCES dbo.PaymentMethods(Name);
+END
+GO
+
 IF NOT EXISTS
 (
     SELECT 1
@@ -44,11 +101,12 @@ SELECT
     o.OrderID,
     o.OrderDate,
     ISNULL(NULLIF(LTRIM(RTRIM(o.Cashier)), ''), 'Unassigned') AS Cashier,
+    o.PaymentMethod,
     o.TotalAmount,
     ISNULL(SUM(oi.Quantity), 0) AS ItemCount
 FROM dbo.Orders o
 LEFT JOIN dbo.OrderItems oi ON oi.OrderID = o.OrderID
-GROUP BY o.OrderID, o.OrderDate, o.Cashier, o.TotalAmount;
+GROUP BY o.OrderID, o.OrderDate, o.Cashier, o.PaymentMethod, o.TotalAmount;
 GO
 
 IF OBJECT_ID('dbo.sp_GetSalesReport', 'P') IS NOT NULL
@@ -69,6 +127,7 @@ BEGIN
         OrderID,
         OrderDate,
         Cashier,
+        PaymentMethod,
         TotalAmount,
         ItemCount
     FROM dbo.vw_SalesReport
@@ -100,6 +159,7 @@ BEGIN
         o.OrderID,
         o.OrderDate,
         ISNULL(NULLIF(LTRIM(RTRIM(o.Cashier)), ''), 'Unassigned') AS Cashier,
+        o.PaymentMethod,
         o.TotalAmount,
         oi.OrderItemID,
         oi.StockID,

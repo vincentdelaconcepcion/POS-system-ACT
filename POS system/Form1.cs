@@ -29,6 +29,7 @@ namespace POS_system
                 return;
             }
 
+            Session.HideUnless(btnAdminPanel, Session.CanOpenSettings);
             Session.AddLogoutButton(this, panel2);
             LayoutDashboard();
             Resize += (s, e) => LayoutDashboard();

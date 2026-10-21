@@ -27,6 +27,8 @@ namespace POS_system
         private Label lblProductTitle;
         private Label lblNoProducts;
         private Button btnAddProduct;
+        private Label lblPaymentMethod;
+        private ComboBox cboPaymentMethod;
 
         private static readonly Color InStockColor = Color.FromArgb(46, 125, 50);
         private static readonly Color OutOfStockColor = Color.FromArgb(198, 40, 40);
@@ -80,7 +82,29 @@ namespace POS_system
             Controls.Add(btnAddProduct);
             btnAddProduct.BringToFront();
 
+            lblPaymentMethod = new Label
+            {
+                Text = "Payment Method",
+                Font = new Font("Segoe UI", 10F, FontStyle.Bold),
+                ForeColor = Color.White,
+                BackColor = Color.Transparent,
+                AutoSize = true
+            };
+            cboPaymentMethod = new ComboBox
+            {
+                DropDownStyle = ComboBoxStyle.DropDownList,
+                Font = new Font("Segoe UI", 10F),
+                BackColor = Color.White,
+                ForeColor = Color.FromArgb(35, 52, 70),
+                FlatStyle = FlatStyle.Flat
+            };
+            panel42.Controls.Add(lblPaymentMethod);
+            panel42.Controls.Add(cboPaymentMethod);
+            lblPaymentMethod.BringToFront();
+            cboPaymentMethod.BringToFront();
+
             ApplyRoleAccess();
+            LoadPaymentMethods();
             Session.AddLogoutButton(this, panel2);
             btnAdminPanel.Click += (s, e) =>
             {
@@ -127,6 +151,52 @@ namespace POS_system
             Session.HideUnless(button6, Session.CanManageStock);
             Session.HideUnless(btnAdminPanel, Session.CanOpenSettings);
             Session.HideUnless(btnAddProduct, Session.CanManageStock);
+        }
+
+        private void LoadPaymentMethods()
+        {
+            try
+            {
+                cboPaymentMethod.Items.Clear();
+
+                using (SqlConnection conn = new SqlConnection(db.Connection.ConnectionString))
+                using (SqlCommand cmd = new SqlCommand(
+                    "SELECT Name FROM dbo.PaymentMethods WHERE IsActive = 1 ORDER BY PaymentMethodID",
+                    conn))
+                {
+                    conn.Open();
+                    using (SqlDataReader reader = cmd.ExecuteReader())
+                    {
+                        while (reader.Read())
+                        {
+                            if (!reader.IsDBNull(0))
+                                cboPaymentMethod.Items.Add(reader.GetString(0));
+                        }
+                    }
+                }
+
+                cboPaymentMethod.SelectedIndex = cboPaymentMethod.Items.Count > 0 ? 0 : -1;
+                cboPaymentMethod.Enabled = cboPaymentMethod.Items.Count > 0;
+
+                if (cboPaymentMethod.Items.Count == 0)
+                {
+                    MessageBox.Show(
+                        "No active payment methods are configured.",
+                        "Payment Methods",
+                        MessageBoxButtons.OK,
+                        MessageBoxIcon.Warning);
+                }
+            }
+            catch (Exception ex)
+            {
+                cboPaymentMethod.Items.Clear();
+                cboPaymentMethod.Enabled = false;
+                MessageBox.Show(
+                    "Unable to load payment methods:\n\n" + ex.Message,
+                    "Payment Methods",
+                    MessageBoxButtons.OK,
+                    MessageBoxIcon.Error);
+            }
         }
 
         private void LoadStockStatus()
@@ -626,14 +696,21 @@ namespace POS_system
         private void LayoutCartPanel()
         {
             if (panel42 == null || lstCart == null || lblTotal == null ||
-                btnCheckout == null || label77 == null)
+                btnCheckout == null || label77 == null ||
+                lblPaymentMethod == null || cboPaymentMethod == null)
                 return;
 
             const int margin = 18;
-            const int listTop = 80;
+            const int listTop = 126;
             const int bottomArea = 100;
 
             label77.Location = new Point(24, 20);
+
+            lblPaymentMethod.Location = new Point(margin, 58);
+            cboPaymentMethod.Location = new Point(margin, 82);
+            cboPaymentMethod.Size = new Size(
+                Math.Max(180, panel42.ClientSize.Width - (margin * 2)),
+                30);
 
             lstCart.Anchor = AnchorStyles.None;
             lstCart.Location = new Point(margin, listTop);
@@ -944,11 +1021,19 @@ namespace POS_system
 
             decimal totalAmount = cart.Sum(i => i.Subtotal);
             int itemCount = cart.Sum(i => i.Quantity);
+            string paymentMethod = Convert.ToString(cboPaymentMethod.SelectedItem);
+            if (string.IsNullOrWhiteSpace(paymentMethod))
+            {
+                MessageBox.Show("Select a payment method before checking out.", "Payment Method Required",
+                    MessageBoxButtons.OK, MessageBoxIcon.Warning);
+                return;
+            }
+            paymentMethod = paymentMethod.Trim();
 
             DialogResult confirm = MessageBox.Show(
                 string.Format(CultureInfo.CurrentCulture,
-                    "Complete this sale?\n\nItems: {0}\nTotal: {1}{2:N2}",
-                    itemCount, Peso, totalAmount),
+                    "Complete this sale?\n\nItems: {0}\nTotal: {1}{2:N2}\nPayment: {3}",
+                    itemCount, Peso, totalAmount, paymentMethod),
                 "Confirm Checkout", MessageBoxButtons.YesNo, MessageBoxIcon.Question);
 
             if (confirm != DialogResult.Yes)
@@ -959,15 +1044,17 @@ namespace POS_system
 
             try
             {
-                int orderId = SaveOrder();
+                int orderId = SaveOrder(paymentMethod);
 
                 MessageBox.Show(
                     string.Format(CultureInfo.CurrentCulture,
-                        "Sale completed successfully.\n\nOrder #: {0}\nTotal: {1}{2:N2}",
-                        orderId, Peso, totalAmount),
+                        "Sale completed successfully.\n\nOrder #: {0}\nTotal: {1}{2:N2}\nPayment: {3}",
+                        orderId, Peso, totalAmount, paymentMethod),
                     "Checkout Complete", MessageBoxButtons.OK, MessageBoxIcon.Information);
 
                 cart.Clear();
+                if (cboPaymentMethod.Items.Count > 0)
+                    cboPaymentMethod.SelectedIndex = 0;
                 RefreshCart();
                 LoadStockStatus();
             }
@@ -984,9 +1071,10 @@ namespace POS_system
             }
         }
 
-        private int SaveOrder()
+        private int SaveOrder(string paymentMethod)
         {
             decimal totalAmount = cart.Sum(i => i.Subtotal);
+            paymentMethod = (paymentMethod ?? string.Empty).Trim();
 
             using (SqlConnection conn = new SqlConnection(db.Connection.ConnectionString))
             {
@@ -997,10 +1085,27 @@ namespace POS_system
                     try
                     {
                         bool hasCashier = ColumnExists(conn, tx, "dbo.Orders", "Cashier");
+                        bool hasPaymentMethod = ColumnExists(conn, tx, "dbo.Orders", "PaymentMethod");
 
-                        string insertOrder = hasCashier
-                            ? "INSERT INTO dbo.Orders (OrderDate, TotalAmount, Cashier) VALUES (GETDATE(), @TotalAmount, @Cashier); SELECT CAST(SCOPE_IDENTITY() AS INT);"
-                            : "INSERT INTO dbo.Orders (OrderDate, TotalAmount) VALUES (GETDATE(), @TotalAmount); SELECT CAST(SCOPE_IDENTITY() AS INT);";
+                        var columns = new List<string> { "OrderDate", "TotalAmount" };
+                        var values = new List<string> { "GETDATE()", "@TotalAmount" };
+
+                        if (hasCashier)
+                        {
+                            columns.Add("Cashier");
+                            values.Add("@Cashier");
+                        }
+
+                        if (hasPaymentMethod)
+                        {
+                            columns.Add("PaymentMethod");
+                            values.Add("@PaymentMethod");
+                        }
+
+                        string insertOrder =
+                            "INSERT INTO dbo.Orders (" + string.Join(", ", columns) + ") " +
+                            "VALUES (" + string.Join(", ", values) + "); " +
+                            "SELECT CAST(SCOPE_IDENTITY() AS INT);";
 
                         int orderId;
 
@@ -1014,6 +1119,11 @@ namespace POS_system
                                     string.IsNullOrWhiteSpace(Session.Username)
                                         ? (object)DBNull.Value
                                         : Session.Username.Trim();
+                            }
+
+                            if (hasPaymentMethod)
+                            {
+                                cmd.Parameters.Add("@PaymentMethod", SqlDbType.NVarChar, 20).Value = paymentMethod;
                             }
 
                             orderId = Convert.ToInt32(cmd.ExecuteScalar());

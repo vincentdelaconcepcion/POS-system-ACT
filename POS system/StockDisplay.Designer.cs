@@ -2850,7 +2850,7 @@
             this.btnCheckout.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
             this.btnCheckout.Font = new System.Drawing.Font("Segoe UI", 12F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.btnCheckout.ForeColor = System.Drawing.Color.White;
-            this.btnCheckout.Location = new System.Drawing.Point(209, 653);
+            this.btnCheckout.Location = new System.Drawing.Point(209, 651);
             this.btnCheckout.Name = "btnCheckout";
             this.btnCheckout.Size = new System.Drawing.Size(136, 40);
             this.btnCheckout.TabIndex = 121;
@@ -2883,7 +2883,7 @@
             this.lstCart.ItemHeight = 20;
             this.lstCart.Location = new System.Drawing.Point(18, 85);
             this.lstCart.Name = "lstCart";
-            this.lstCart.Size = new System.Drawing.Size(327, 545);
+            this.lstCart.Size = new System.Drawing.Size(327, 482);
             this.lstCart.TabIndex = 0;
             // 
             // txtsearch
