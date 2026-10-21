@@ -45,7 +45,9 @@
     <Reference Include="System.Windows.Forms" />
     <Reference Include="System.Xml" />
     <Reference Include="System.Data.Linq" />
-    <Reference Include="System.Configuration" />
+    <Reference Include="System.Configuration">
+      <Private>True</Private>
+    </Reference>
   </ItemGroup>
   <ItemGroup>
     <Compile Include="AdminPanel.cs">
@@ -122,15 +124,8 @@
     <EmbeddedResource Include="StockDisplay.resx">
       <DependentUpon>StockDisplay.cs</DependentUpon>
     </EmbeddedResource>
-    <None Include="Properties\Settings.settings">
-      <Generator>SettingsSingleFileGenerator</Generator>
-      <LastGenOutput>Settings.Designer.cs</LastGenOutput>
-    </None>
-    <Compile Include="Properties\Settings.Designer.cs">
-      <AutoGen>True</AutoGen>
-      <DependentUpon>Settings.settings</DependentUpon>
-      <DesignTimeSharedInput>True</DesignTimeSharedInput>
-    </Compile>
+    <None Include="Properties\Settings.settings" />
+    <Compile Include="Properties\Settings.Designer.cs" />
     <None Include="TEMPODataSet.xsc">
       <DependentUpon>TEMPODataSet.xsd</DependentUpon>
     </None>
