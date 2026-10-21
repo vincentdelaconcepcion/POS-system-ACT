@@ -61,10 +61,13 @@
             this.flowLayoutPanel9 = new System.Windows.Forms.FlowLayoutPanel();
             this.panelBottom = new System.Windows.Forms.Panel();
             this.labelSearch = new System.Windows.Forms.Label();
+            this.btnChooseImage = new System.Windows.Forms.Button();
+            this.picProductImage = new System.Windows.Forms.PictureBox();
             ((System.ComponentModel.ISupportInitialize)(this.dgtStock)).BeginInit();
             this.panel2.SuspendLayout();
             this.panel3.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.pictureBox7)).BeginInit();
+            ((System.ComponentModel.ISupportInitialize)(this.picProductImage)).BeginInit();
             this.panelBottom.SuspendLayout();
             this.SuspendLayout();
             // 
@@ -209,6 +212,34 @@
             this.btnBack.Text = "Back";
             this.btnBack.UseVisualStyleBackColor = false;
             this.btnBack.Click += new System.EventHandler(this.btnBack_Click);
+            // 
+            // btnChooseImage
+            // 
+            this.btnChooseImage.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Right)));
+            this.btnChooseImage.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(0)))), ((int)(((byte)(0)))), ((int)(((byte)(128)))));
+            this.btnChooseImage.FlatAppearance.BorderSize = 0;
+            this.btnChooseImage.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
+            this.btnChooseImage.Font = new System.Drawing.Font("Segoe UI", 9.5F, System.Drawing.FontStyle.Bold);
+            this.btnChooseImage.ForeColor = System.Drawing.Color.White;
+            this.btnChooseImage.Location = new System.Drawing.Point(1036, 77);
+            this.btnChooseImage.Name = "btnChooseImage";
+            this.btnChooseImage.Size = new System.Drawing.Size(90, 32);
+            this.btnChooseImage.TabIndex = 22;
+            this.btnChooseImage.Text = "Image...";
+            this.btnChooseImage.UseVisualStyleBackColor = false;
+            this.btnChooseImage.Click += new System.EventHandler(this.btnChooseImage_Click);
+            // 
+            // picProductImage
+            // 
+            this.picProductImage.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Right)));
+            this.picProductImage.BackColor = System.Drawing.Color.White;
+            this.picProductImage.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle;
+            this.picProductImage.Location = new System.Drawing.Point(1036, 114);
+            this.picProductImage.Name = "picProductImage";
+            this.picProductImage.Size = new System.Drawing.Size(90, 66);
+            this.picProductImage.SizeMode = System.Windows.Forms.PictureBoxSizeMode.Zoom;
+            this.picProductImage.TabIndex = 23;
+            this.picProductImage.TabStop = false;
             // 
             // dgtStock
             // 
@@ -482,6 +513,8 @@
             this.panelBottom.Controls.Add(this.btnRestore);
             this.panelBottom.Controls.Add(this.btnUpdate);
             this.panelBottom.Controls.Add(this.btnBack);
+            this.panelBottom.Controls.Add(this.btnChooseImage);
+            this.panelBottom.Controls.Add(this.picProductImage);
             this.panelBottom.Location = new System.Drawing.Point(300, 555);
             this.panelBottom.Name = "panelBottom";
             this.panelBottom.Size = new System.Drawing.Size(1143, 309);
@@ -518,6 +551,7 @@
             this.panel3.ResumeLayout(false);
             this.panel3.PerformLayout();
             ((System.ComponentModel.ISupportInitialize)(this.pictureBox7)).EndInit();
+            ((System.ComponentModel.ISupportInitialize)(this.picProductImage)).EndInit();
             this.panelBottom.ResumeLayout(false);
             this.panelBottom.PerformLayout();
             this.ResumeLayout(false);
@@ -558,5 +592,7 @@
         private System.Windows.Forms.FlowLayoutPanel flowLayoutPanel9;
         private System.Windows.Forms.Panel panelBottom;
         private System.Windows.Forms.Label labelSearch;
+        private System.Windows.Forms.Button btnChooseImage;
+        private System.Windows.Forms.PictureBox picProductImage;
     }
 }

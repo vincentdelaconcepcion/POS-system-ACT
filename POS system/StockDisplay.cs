@@ -5,6 +5,7 @@ using System.Data;
 using System.Data.SqlClient;
 using System.Drawing;
 using System.Globalization;
+using System.IO;
 using System.Linq;
 using System.Runtime.InteropServices;
 using System.Text;
@@ -286,7 +287,7 @@ namespace POS_system
             {
                 Name = "pictureBoxProduct" + product.StockID,
                 BackColor = Color.FromArgb(247, 243, 237),
-                Image = CreatePlaceholderImage(productName),
+                Image = CreateProductImage(product.ImageData, productName),
                 SizeMode = PictureBoxSizeMode.Zoom,
                 TabStop = false
             };
@@ -373,6 +374,25 @@ namespace POS_system
             categoryOriginalY[newHeader] = int.MaxValue;
 
             return newHeader;
+        }
+
+        private static Image CreateProductImage(byte[] imageData, string productName)
+        {
+            if (imageData == null || imageData.Length == 0)
+                return CreatePlaceholderImage(productName);
+
+            try
+            {
+                using (MemoryStream stream = new MemoryStream(imageData))
+                using (Image source = Image.FromStream(stream))
+                {
+                    return new Bitmap(source);
+                }
+            }
+            catch
+            {
+                return CreatePlaceholderImage(productName);
+            }
         }
 
         private static Image CreatePlaceholderImage(string productName)

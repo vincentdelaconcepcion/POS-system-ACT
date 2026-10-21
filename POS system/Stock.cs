@@ -5,6 +5,7 @@
     using System.Data.SqlClient;
     using System.Drawing;
     using System.Drawing.Drawing2D;
+    using System.IO;
     using System.Runtime.InteropServices;
     using System.Linq;
     using System.Text;
@@ -47,6 +48,7 @@
         private List<sp_SearchResult> allStock; // displays all stock items in memory for filtering
         private int selectedStockId = -1;
         private bool isViewArchived = false;
+        private byte[] selectedProductImage;
 
         private readonly Font gridHeaderFont = new Font("Segoe UI", 12F, FontStyle.Bold);
         private readonly Font gridFont = new Font("Segoe UI", 11F);
@@ -110,6 +112,8 @@
         {
             if (dgtStock.Columns.Contains("StockID"))
                 dgtStock.Columns["StockID"].Visible = false;
+            if (dgtStock.Columns.Contains("ImageData"))
+                dgtStock.Columns["ImageData"].Visible = false;
             if (dgtStock.Columns.Contains("ProductName"))
             {
                 dgtStock.Columns["ProductName"].HeaderText = "Product Name";
@@ -175,7 +179,8 @@
                             UnitPrice = Convert.ToDecimal(reader["UnitPrice"]),
                             Material = reader["Material"] == DBNull.Value ? null : reader["Material"].ToString(),
                             DateAdded = Convert.ToDateTime(reader["DateAdded"]),
-                            Quantity = Convert.ToInt32(reader["Quantity"])
+                            Quantity = Convert.ToInt32(reader["Quantity"]),
+                            ImageData = reader["ImageData"] == DBNull.Value ? null : (byte[])reader["ImageData"]
                         });
                     }
                 }
@@ -289,7 +294,8 @@
                     Convert.ToDecimal(txtunitPrice.Text),
                     txtMaterial.Text,
                     dtpDateAdded.Value,
-                    ParseQuantity()
+                    ParseQuantity(),
+                    selectedProductImage
                 );
                 LoadStock();
                 ClearInputs();
@@ -309,6 +315,88 @@
             txtMaterial.Clear();
             txtQuantity.Clear();
             dtpDateAdded.Value = DateTime.Now;
+            SetProductImage(null);
+        }
+
+        private void btnChooseImage_Click(object sender, EventArgs e)
+        {
+            using (OpenFileDialog dialog = new OpenFileDialog())
+            {
+                dialog.Title = "Select Product Image";
+                dialog.Filter = "Image files (*.jpg;*.jpeg;*.png;*.bmp;*.gif)|*.jpg;*.jpeg;*.png;*.bmp;*.gif|All files (*.*)|*.*";
+                dialog.CheckFileExists = true;
+                dialog.Multiselect = false;
+
+                if (dialog.ShowDialog(this) != DialogResult.OK)
+                    return;
+
+                try
+                {
+                    FileInfo file = new FileInfo(dialog.FileName);
+                    if (file.Length > 5 * 1024 * 1024)
+                    {
+                        MessageBox.Show("Please choose an image smaller than 5 MB.",
+                            "Image Too Large", MessageBoxButtons.OK, MessageBoxIcon.Warning);
+                        return;
+                    }
+
+                    SetProductImage(File.ReadAllBytes(dialog.FileName));
+
+                    if (selectedProductImage == null)
+                    {
+                        MessageBox.Show("The selected file is not a valid image.",
+                            "Invalid Image", MessageBoxButtons.OK, MessageBoxIcon.Warning);
+                    }
+                }
+                catch (Exception ex)
+                {
+                    MessageBox.Show("Error loading image:\n\n" + ex.Message,
+                        "Image Error", MessageBoxButtons.OK, MessageBoxIcon.Error);
+                }
+            }
+        }
+
+        private void SetProductImage(byte[] imageData)
+        {
+            Image preview = CreateImagePreview(imageData);
+            selectedProductImage = preview == null ? null : imageData;
+
+            Image previous = picProductImage.Image;
+            picProductImage.Image = preview;
+            if (previous != null)
+                previous.Dispose();
+        }
+
+        private static Image CreateImagePreview(byte[] imageData)
+        {
+            if (imageData == null || imageData.Length == 0)
+                return null;
+
+            try
+            {
+                using (MemoryStream stream = new MemoryStream(imageData))
+                using (Image source = Image.FromStream(stream))
+                {
+                    return new Bitmap(source);
+                }
+            }
+            catch
+            {
+                return null;
+            }
+        }
+
+        private void SaveProductImage(int stockId, byte[] imageData)
+        {
+            using (SqlConnection conn = new SqlConnection(db.Connection.ConnectionString))
+            using (SqlCommand cmd = new SqlCommand("UPDATE dbo.Stock SET ImageData = @ImageData WHERE StockID = @StockID", conn))
+            {
+                cmd.Parameters.AddWithValue("@ImageData", (object)imageData ?? DBNull.Value);
+                cmd.Parameters.AddWithValue("@StockID", stockId);
+
+                conn.Open();
+                cmd.ExecuteNonQuery();
+            }
         }
 
         private void btnBack_Click(object sender, EventArgs e)
@@ -343,6 +431,7 @@
             txtMaterial.Text = selected.Material ?? string.Empty;
             txtQuantity.Text = selected.Quantity.ToString();
             dtpDateAdded.Value = selected.DateAdded;
+            SetProductImage(selected.ImageData);
 
             if (!isViewArchived)
             {
@@ -443,6 +532,10 @@
                     selectedStockId,
                     ParseQuantity()
                 );
+
+                if (selectedProductImage != null)
+                    SaveProductImage(selectedStockId, selectedProductImage);
+
                 LoadStock();
                 selectedStockId = -1;
                 ClearInputs();
@@ -599,6 +692,7 @@
             txtMaterial.Text = selected.Material ?? string.Empty;
             txtQuantity.Text = selected.Quantity.ToString();
             dtpDateAdded.Value = selected.DateAdded;
+            SetProductImage(selected.ImageData);
         }
 
         private void btnHome_Click(object sender, EventArgs e)

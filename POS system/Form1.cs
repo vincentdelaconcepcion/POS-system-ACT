@@ -1,9 +1,12 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.ComponentModel;
+using System.Configuration;
 using System.Data;
+using System.Data.SqlClient;
 using System.Drawing;
 using System.Drawing.Drawing2D;
+using System.Globalization;
 using System.Text;
 using System.Threading.Tasks;
 using System.Windows.Forms;
@@ -12,6 +15,8 @@ namespace POS_system
 {
     public partial class Form1 : Form
     {
+        private const string Peso = "\u20B1";
+
         public Form1()
         {
             InitializeComponent();
@@ -102,6 +107,139 @@ namespace POS_system
                 Math.Max(title.Bottom + 4, (card.ClientSize.Height - value.Height) / 2 + 8));
         }
 
+        private void LoadDashboardData()
+        {
+            try
+            {
+                using (SqlConnection conn = new SqlConnection(GetConnectionString(
+                    "POS_system.Properties.Settings.StockDBConnectionString3")))
+                {
+                    conn.Open();
+
+                    label8.Text = Convert.ToInt32(ExecuteScalar(conn,
+                        "SELECT COUNT(*) FROM dbo.Stock WHERE IsArchived = 0"))
+                        .ToString("N0", CultureInfo.CurrentCulture);
+
+                    label4.Text = Convert.ToInt32(ExecuteScalar(conn,
+                        "SELECT COUNT(*) FROM dbo.Orders"))
+                        .ToString("N0", CultureInfo.CurrentCulture);
+
+                    decimal totalSales = Convert.ToDecimal(ExecuteScalar(conn,
+                        "SELECT ISNULL(SUM(TotalAmount), 0) FROM dbo.Orders"));
+                    label13.Text = Peso + totalSales.ToString("N2", CultureInfo.CurrentCulture);
+
+                    DataTable sales = new DataTable();
+                    using (SqlCommand cmd = new SqlCommand(
+                        "SELECT TOP (20) OrderID, OrderDate, Cashier, PaymentMethod, ItemCount, TotalAmount " +
+                        "FROM dbo.vw_SalesReport ORDER BY OrderDate DESC, OrderID DESC",
+                        conn))
+                    using (SqlDataAdapter adapter = new SqlDataAdapter(cmd))
+                    {
+                        adapter.Fill(sales);
+                    }
+
+                    dataGridView1.DataSource = sales;
+                    ConfigureSalesGrid();
+                }
+            }
+            catch
+            {
+                label8.Text = "-";
+                label4.Text = "-";
+                label13.Text = "-";
+                dataGridView1.DataSource = null;
+            }
+
+            try
+            {
+                using (SqlConnection conn = new SqlConnection(GetConnectionString(
+                    "LogInConnectionString")))
+                {
+                    conn.Open();
+                    label10.Text = Convert.ToInt32(ExecuteScalar(conn,
+                        "SELECT COUNT(*) FROM dbo.[User]"))
+                        .ToString("N0", CultureInfo.CurrentCulture);
+                }
+            }
+            catch
+            {
+                label10.Text = "-";
+            }
+
+            LayoutDashboard();
+        }
+
+        private void ConfigureSalesGrid()
+        {
+            dataGridView1.ReadOnly = true;
+            dataGridView1.AllowUserToAddRows = false;
+            dataGridView1.AllowUserToDeleteRows = false;
+            dataGridView1.RowHeadersVisible = false;
+            dataGridView1.MultiSelect = false;
+            dataGridView1.SelectionMode = DataGridViewSelectionMode.FullRowSelect;
+            dataGridView1.AutoSizeColumnsMode = DataGridViewAutoSizeColumnsMode.Fill;
+
+            DataGridViewColumn column = dataGridView1.Columns["OrderID"];
+            if (column != null)
+            {
+                column.HeaderText = "Order #";
+                column.FillWeight = 12;
+            }
+
+            column = dataGridView1.Columns["OrderDate"];
+            if (column != null)
+            {
+                column.HeaderText = "Date";
+                column.DefaultCellStyle.Format = "g";
+                column.FillWeight = 22;
+            }
+
+            column = dataGridView1.Columns["Cashier"];
+            if (column != null)
+                column.FillWeight = 18;
+
+            column = dataGridView1.Columns["PaymentMethod"];
+            if (column != null)
+            {
+                column.HeaderText = "Payment";
+                column.FillWeight = 15;
+            }
+
+            column = dataGridView1.Columns["ItemCount"];
+            if (column != null)
+            {
+                column.HeaderText = "Items";
+                column.FillWeight = 10;
+                column.DefaultCellStyle.Alignment = DataGridViewContentAlignment.MiddleRight;
+            }
+
+            column = dataGridView1.Columns["TotalAmount"];
+            if (column != null)
+            {
+                column.HeaderText = "Total";
+                column.DefaultCellStyle.Format = "N2";
+                column.DefaultCellStyle.Alignment = DataGridViewContentAlignment.MiddleRight;
+                column.FillWeight = 15;
+            }
+        }
+
+        private static object ExecuteScalar(SqlConnection connection, string commandText)
+        {
+            using (SqlCommand cmd = new SqlCommand(commandText, connection))
+            {
+                return cmd.ExecuteScalar();
+            }
+        }
+
+        private static string GetConnectionString(string name)
+        {
+            ConnectionStringSettings setting = ConfigurationManager.ConnectionStrings[name];
+            if (setting == null || string.IsNullOrWhiteSpace(setting.ConnectionString))
+                throw new InvalidOperationException(name + " is missing from App.config");
+
+            return setting.ConnectionString;
+        }
+
         private static void FitBannerImage(PictureBox picture, Panel banner, int rightMargin)
         {
             if (picture == null || picture.Image == null)
@@ -189,6 +327,7 @@ namespace POS_system
         private void Form1_Load(object sender, EventArgs e)
         {
             LayoutDashboard();
+            LoadDashboardData();
         }
 
         private void flowLayoutPanel10_Paint(object sender, PaintEventArgs e)

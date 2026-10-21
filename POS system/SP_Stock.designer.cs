@@ -85,9 +85,9 @@ namespace POS_system
 		}
 		
 		[global::System.Data.Linq.Mapping.FunctionAttribute(Name="dbo.sp_Stock")]
-		public ISingleResult<sp_StockResult> sp_Stock([global::System.Data.Linq.Mapping.ParameterAttribute(Name="ProductName", DbType="VarChar(100)")] string productName, [global::System.Data.Linq.Mapping.ParameterAttribute(Name="Category", DbType="VarChar(50)")] string category, [global::System.Data.Linq.Mapping.ParameterAttribute(Name="UnitPrice", DbType="Decimal(10,2)")] System.Nullable<decimal> unitPrice, [global::System.Data.Linq.Mapping.ParameterAttribute(Name="Material", DbType="NVarChar(100)")] string material, [global::System.Data.Linq.Mapping.ParameterAttribute(Name="DateAdded", DbType="DateTime")] System.Nullable<System.DateTime> dateAdded, [global::System.Data.Linq.Mapping.ParameterAttribute(Name="Quantity", DbType="Int")] System.Nullable<int> quantity)
+		public ISingleResult<sp_StockResult> sp_Stock([global::System.Data.Linq.Mapping.ParameterAttribute(Name="ProductName", DbType="VarChar(100)")] string productName, [global::System.Data.Linq.Mapping.ParameterAttribute(Name="Category", DbType="VarChar(50)")] string category, [global::System.Data.Linq.Mapping.ParameterAttribute(Name="UnitPrice", DbType="Decimal(10,2)")] System.Nullable<decimal> unitPrice, [global::System.Data.Linq.Mapping.ParameterAttribute(Name="Material", DbType="NVarChar(100)")] string material, [global::System.Data.Linq.Mapping.ParameterAttribute(Name="DateAdded", DbType="DateTime")] System.Nullable<System.DateTime> dateAdded, [global::System.Data.Linq.Mapping.ParameterAttribute(Name="Quantity", DbType="Int")] System.Nullable<int> quantity, [global::System.Data.Linq.Mapping.ParameterAttribute(Name="ImageData", DbType="VarBinary(MAX)")] byte[] imageData)
 		{
-			IExecuteResult result = this.ExecuteMethodCall(this, ((MethodInfo)(MethodInfo.GetCurrentMethod())), productName, category, unitPrice, material, dateAdded, quantity);
+			IExecuteResult result = this.ExecuteMethodCall(this, ((MethodInfo)(MethodInfo.GetCurrentMethod())), productName, category, unitPrice, material, dateAdded, quantity, imageData);
 			return ((ISingleResult<sp_StockResult>)(result.ReturnValue));
 		}
 		
@@ -345,6 +345,8 @@ namespace POS_system
 		
 		private int _Quantity;
 		
+		private byte[] _ImageData;
+		
 		public sp_SearchResult()
 		{
 		}
@@ -457,6 +459,22 @@ namespace POS_system
 				if ((this._Quantity != value))
 				{
 					this._Quantity = value;
+				}
+			}
+		}
+		
+		[global::System.Data.Linq.Mapping.ColumnAttribute(Storage="_ImageData", DbType="VarBinary(MAX)")]
+		public byte[] ImageData
+		{
+			get
+			{
+				return this._ImageData;
+			}
+			set
+			{
+				if ((this._ImageData != value))
+				{
+					this._ImageData = value;
 				}
 			}
 		}
