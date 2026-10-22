@@ -77,7 +77,7 @@ namespace POS_system
             };
             btnAddProduct.FlatAppearance.BorderSize = 0;
 
-            // Adding of new product button in the stockdisplay and navigate the user to the stock.cs form
+            // Adding of new product button in the 
             btnAddProduct.Click += (s, e) =>
             {
                 StockForm stockForm = new StockForm();
@@ -86,7 +86,6 @@ namespace POS_system
             };
             Controls.Add(btnAddProduct);
             btnAddProduct.BringToFront();
-
 
             lblPaymentMethod = new Label
             {
