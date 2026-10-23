@@ -44,7 +44,7 @@ namespace POS_system
         private void LayoutDashboard()
         {
             if (panel2 == null || panel1 == null || panel4 == null || panel5 == null ||
-                panel6 == null || panel7 == null || dataGridView1 == null || label12 == null)
+                panel6 == null || panel7 == null || panel8 == null || lbllowstock == null)
                 return;
 
             int width = ClientSize.Width;
@@ -72,13 +72,12 @@ namespace POS_system
 
             int gridHeight = Math.Max(80, Math.Min(220, (bottom - top) / 4));
             int gridTop = bottom - gridHeight;
-            label12.Location = new Point(left, gridTop - 38);
-            dataGridView1.Location = new Point(left, gridTop);
-            dataGridView1.Size = new Size(contentWidth, gridHeight);
+            lbllowstock.Location = new Point(left, gridTop - 38);
+            
 
             int gap = 16;
             int cardWidth = Math.Max(160, (contentWidth - gap) / 2);
-            int cardsBottom = label12.Top - 20;
+            int cardsBottom = lbllowstock.Top - 20;
             int cardHeight = Math.Max(90, (cardsBottom - top - gap) / 2);
 
             panel4.Location = new Point(left, top);
@@ -89,6 +88,9 @@ namespace POS_system
             panel6.Size = new Size(cardWidth, cardHeight);
             panel7.Location = new Point(left + cardWidth + gap, top + cardHeight + gap);
             panel7.Size = new Size(cardWidth, cardHeight);
+            panel8.Location = new Point(panel6.Left, panel6.Bottom + gap);
+            panel8.Size = new Size(cardWidth, cardHeight);
+
 
             LayoutStatCard(panel4, label3, label8);
             LayoutStatCard(panel5, label5, label4);
@@ -124,6 +126,8 @@ namespace POS_system
                         "SELECT COUNT(*) FROM dbo.Orders"))
                         .ToString("N0", CultureInfo.CurrentCulture);
 
+                    
+
                     decimal totalSales = Convert.ToDecimal(ExecuteScalar(conn,
                         "SELECT ISNULL(SUM(TotalAmount), 0) FROM dbo.Orders"));
                     label13.Text = Peso + totalSales.ToString("N2", CultureInfo.CurrentCulture);
@@ -138,8 +142,7 @@ namespace POS_system
                         adapter.Fill(sales);
                     }
 
-                    dataGridView1.DataSource = sales;
-                    ConfigureSalesGrid();
+                    
                 }
             }
             catch
@@ -147,7 +150,7 @@ namespace POS_system
                 label8.Text = "-";
                 label4.Text = "-";
                 label13.Text = "-";
-                dataGridView1.DataSource = null;
+                
             }
 
             try
@@ -169,59 +172,7 @@ namespace POS_system
             LayoutDashboard();
         }
 
-        private void ConfigureSalesGrid()
-        {
-            dataGridView1.ReadOnly = true;
-            dataGridView1.AllowUserToAddRows = false;
-            dataGridView1.AllowUserToDeleteRows = false;
-            dataGridView1.RowHeadersVisible = false;
-            dataGridView1.MultiSelect = false;
-            dataGridView1.SelectionMode = DataGridViewSelectionMode.FullRowSelect;
-            dataGridView1.AutoSizeColumnsMode = DataGridViewAutoSizeColumnsMode.Fill;
-
-            DataGridViewColumn column = dataGridView1.Columns["OrderID"];
-            if (column != null)
-            {
-                column.HeaderText = "Order #";
-                column.FillWeight = 12;
-            }
-
-            column = dataGridView1.Columns["OrderDate"];
-            if (column != null)
-            {
-                column.HeaderText = "Date";
-                column.DefaultCellStyle.Format = "g";
-                column.FillWeight = 22;
-            }
-
-            column = dataGridView1.Columns["Cashier"];
-            if (column != null)
-                column.FillWeight = 18;
-
-            column = dataGridView1.Columns["PaymentMethod"];
-            if (column != null)
-            {
-                column.HeaderText = "Payment";
-                column.FillWeight = 15;
-            }
-
-            column = dataGridView1.Columns["ItemCount"];
-            if (column != null)
-            {
-                column.HeaderText = "Items";
-                column.FillWeight = 10;
-                column.DefaultCellStyle.Alignment = DataGridViewContentAlignment.MiddleRight;
-            }
-
-            column = dataGridView1.Columns["TotalAmount"];
-            if (column != null)
-            {
-                column.HeaderText = "Total";
-                column.DefaultCellStyle.Format = "N2";
-                column.DefaultCellStyle.Alignment = DataGridViewContentAlignment.MiddleRight;
-                column.FillWeight = 15;
-            }
-        }
+        
 
         private static object ExecuteScalar(SqlConnection connection, string commandText)
         {
@@ -380,5 +331,7 @@ namespace POS_system
             adminpanel.Show();
             this.Hide();
         }
+
+        
     }
 }

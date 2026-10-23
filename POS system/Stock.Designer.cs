@@ -67,8 +67,8 @@
             this.panel2.SuspendLayout();
             this.panel3.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.pictureBox7)).BeginInit();
-            ((System.ComponentModel.ISupportInitialize)(this.picProductImage)).BeginInit();
             this.panelBottom.SuspendLayout();
+            ((System.ComponentModel.ISupportInitialize)(this.picProductImage)).BeginInit();
             this.SuspendLayout();
             // 
             // txtProductname
@@ -212,34 +212,6 @@
             this.btnBack.Text = "Back";
             this.btnBack.UseVisualStyleBackColor = false;
             this.btnBack.Click += new System.EventHandler(this.btnBack_Click);
-            // 
-            // btnChooseImage
-            // 
-            this.btnChooseImage.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Right)));
-            this.btnChooseImage.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(0)))), ((int)(((byte)(0)))), ((int)(((byte)(128)))));
-            this.btnChooseImage.FlatAppearance.BorderSize = 0;
-            this.btnChooseImage.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
-            this.btnChooseImage.Font = new System.Drawing.Font("Segoe UI", 9.5F, System.Drawing.FontStyle.Bold);
-            this.btnChooseImage.ForeColor = System.Drawing.Color.White;
-            this.btnChooseImage.Location = new System.Drawing.Point(1036, 77);
-            this.btnChooseImage.Name = "btnChooseImage";
-            this.btnChooseImage.Size = new System.Drawing.Size(90, 32);
-            this.btnChooseImage.TabIndex = 22;
-            this.btnChooseImage.Text = "Image...";
-            this.btnChooseImage.UseVisualStyleBackColor = false;
-            this.btnChooseImage.Click += new System.EventHandler(this.btnChooseImage_Click);
-            // 
-            // picProductImage
-            // 
-            this.picProductImage.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Right)));
-            this.picProductImage.BackColor = System.Drawing.Color.White;
-            this.picProductImage.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle;
-            this.picProductImage.Location = new System.Drawing.Point(1036, 114);
-            this.picProductImage.Name = "picProductImage";
-            this.picProductImage.Size = new System.Drawing.Size(90, 66);
-            this.picProductImage.SizeMode = System.Windows.Forms.PictureBoxSizeMode.Zoom;
-            this.picProductImage.TabIndex = 23;
-            this.picProductImage.TabStop = false;
             // 
             // dgtStock
             // 
@@ -410,7 +382,7 @@
             this.button6.Name = "button6";
             this.button6.Size = new System.Drawing.Size(248, 65);
             this.button6.TabIndex = 114;
-            this.button6.Text = "Stock";
+            this.button6.Text = "Product";
             this.button6.UseVisualStyleBackColor = false;
             // 
             // btnStockDisplay
@@ -424,7 +396,7 @@
             this.btnStockDisplay.Name = "btnStockDisplay";
             this.btnStockDisplay.Size = new System.Drawing.Size(248, 65);
             this.btnStockDisplay.TabIndex = 113;
-            this.btnStockDisplay.Text = "Stock Display";
+            this.btnStockDisplay.Text = "Purchase Product";
             this.btnStockDisplay.UseVisualStyleBackColor = false;
             this.btnStockDisplay.Click += new System.EventHandler(this.btnStockDisplay_Click);
             // 
@@ -531,6 +503,34 @@
             this.labelSearch.TabIndex = 21;
             this.labelSearch.Text = "Search";
             // 
+            // btnChooseImage
+            // 
+            this.btnChooseImage.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Right)));
+            this.btnChooseImage.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(0)))), ((int)(((byte)(0)))), ((int)(((byte)(128)))));
+            this.btnChooseImage.FlatAppearance.BorderSize = 0;
+            this.btnChooseImage.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
+            this.btnChooseImage.Font = new System.Drawing.Font("Segoe UI", 9.5F, System.Drawing.FontStyle.Bold);
+            this.btnChooseImage.ForeColor = System.Drawing.Color.White;
+            this.btnChooseImage.Location = new System.Drawing.Point(1036, 77);
+            this.btnChooseImage.Name = "btnChooseImage";
+            this.btnChooseImage.Size = new System.Drawing.Size(90, 32);
+            this.btnChooseImage.TabIndex = 22;
+            this.btnChooseImage.Text = "Image...";
+            this.btnChooseImage.UseVisualStyleBackColor = false;
+            this.btnChooseImage.Click += new System.EventHandler(this.btnChooseImage_Click);
+            // 
+            // picProductImage
+            // 
+            this.picProductImage.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Right)));
+            this.picProductImage.BackColor = System.Drawing.Color.White;
+            this.picProductImage.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle;
+            this.picProductImage.Location = new System.Drawing.Point(1036, 114);
+            this.picProductImage.Name = "picProductImage";
+            this.picProductImage.Size = new System.Drawing.Size(90, 66);
+            this.picProductImage.SizeMode = System.Windows.Forms.PictureBoxSizeMode.Zoom;
+            this.picProductImage.TabIndex = 23;
+            this.picProductImage.TabStop = false;
+            // 
             // StockForm
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
@@ -551,9 +551,9 @@
             this.panel3.ResumeLayout(false);
             this.panel3.PerformLayout();
             ((System.ComponentModel.ISupportInitialize)(this.pictureBox7)).EndInit();
-            ((System.ComponentModel.ISupportInitialize)(this.picProductImage)).EndInit();
             this.panelBottom.ResumeLayout(false);
             this.panelBottom.PerformLayout();
+            ((System.ComponentModel.ISupportInitialize)(this.picProductImage)).EndInit();
             this.ResumeLayout(false);
 
         }

@@ -26,8 +26,6 @@
             this.panel3 = new System.Windows.Forms.Panel();
             this.pictureBox7 = new System.Windows.Forms.PictureBox();
             this.flowLayoutPanel9 = new System.Windows.Forms.FlowLayoutPanel();
-            this.label12 = new System.Windows.Forms.Label();
-            this.dataGridView1 = new System.Windows.Forms.DataGridView();
             this.panel6 = new System.Windows.Forms.Panel();
             this.label15 = new System.Windows.Forms.Label();
             this.label13 = new System.Windows.Forms.Label();
@@ -48,16 +46,20 @@
             this.label2 = new System.Windows.Forms.Label();
             this.label1 = new System.Windows.Forms.Label();
             this.pictureBox1 = new System.Windows.Forms.PictureBox();
+            this.panel8 = new System.Windows.Forms.Panel();
+            this.label7 = new System.Windows.Forms.Label();
+            this.lbllowstock = new System.Windows.Forms.Label();
+            this.label17 = new System.Windows.Forms.Label();
             this.panel2.SuspendLayout();
             this.panel3.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.pictureBox7)).BeginInit();
-            ((System.ComponentModel.ISupportInitialize)(this.dataGridView1)).BeginInit();
             this.panel6.SuspendLayout();
             this.panel7.SuspendLayout();
             this.panel5.SuspendLayout();
             this.panel4.SuspendLayout();
             this.panel1.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.pictureBox1)).BeginInit();
+            this.panel8.SuspendLayout();
             this.SuspendLayout();
             // 
             // panel2
@@ -100,7 +102,7 @@
             this.button6.Name = "button6";
             this.button6.Size = new System.Drawing.Size(248, 65);
             this.button6.TabIndex = 114;
-            this.button6.Text = "Stock";
+            this.button6.Text = "Add Product";
             this.button6.UseVisualStyleBackColor = false;
             this.button6.Click += new System.EventHandler(this.button6_Click_1);
             // 
@@ -115,7 +117,7 @@
             this.btnStockDisplay.Name = "btnStockDisplay";
             this.btnStockDisplay.Size = new System.Drawing.Size(248, 65);
             this.btnStockDisplay.TabIndex = 113;
-            this.btnStockDisplay.Text = "Stock Display";
+            this.btnStockDisplay.Text = "Purchase Product ";
             this.btnStockDisplay.UseVisualStyleBackColor = false;
             this.btnStockDisplay.Click += new System.EventHandler(this.btnStockDisplay_Click);
             // 
@@ -162,26 +164,6 @@
             this.flowLayoutPanel9.Size = new System.Drawing.Size(0, 0);
             this.flowLayoutPanel9.TabIndex = 110;
             this.flowLayoutPanel9.Visible = false;
-            // 
-            // label12
-            // 
-            this.label12.AutoSize = true;
-            this.label12.Font = new System.Drawing.Font("Segoe UI", 16F, System.Drawing.FontStyle.Bold);
-            this.label12.ForeColor = System.Drawing.Color.Navy;
-            this.label12.Location = new System.Drawing.Point(313, 366);
-            this.label12.Name = "label12";
-            this.label12.Size = new System.Drawing.Size(150, 30);
-            this.label12.TabIndex = 137;
-            this.label12.Text = "Current Sales";
-            // 
-            // dataGridView1
-            // 
-            this.dataGridView1.BackgroundColor = System.Drawing.SystemColors.GradientActiveCaption;
-            this.dataGridView1.ColumnHeadersHeightSizeMode = System.Windows.Forms.DataGridViewColumnHeadersHeightSizeMode.AutoSize;
-            this.dataGridView1.Location = new System.Drawing.Point(313, 399);
-            this.dataGridView1.Name = "dataGridView1";
-            this.dataGridView1.Size = new System.Drawing.Size(660, 247);
-            this.dataGridView1.TabIndex = 136;
             // 
             // panel6
             // 
@@ -399,6 +381,50 @@
             this.pictureBox1.TabIndex = 0;
             this.pictureBox1.TabStop = false;
             // 
+            // panel8
+            // 
+            this.panel8.BackColor = System.Drawing.Color.MidnightBlue;
+            this.panel8.Controls.Add(this.label7);
+            this.panel8.Controls.Add(this.lbllowstock);
+            this.panel8.Controls.Add(this.label17);
+            this.panel8.Location = new System.Drawing.Point(318, 366);
+            this.panel8.Name = "panel8";
+            this.panel8.Size = new System.Drawing.Size(320, 110);
+            this.panel8.TabIndex = 136;
+            // 
+            // label7
+            // 
+            this.label7.AutoSize = true;
+            this.label7.Font = new System.Drawing.Font("Segoe UI", 12.75F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.label7.ForeColor = System.Drawing.Color.White;
+            this.label7.Location = new System.Drawing.Point(11, 67);
+            this.label7.Name = "label7";
+            this.label7.Size = new System.Drawing.Size(155, 23);
+            this.label7.TabIndex = 132;
+            this.label7.Text = "Current Low Stocks";
+            // 
+            // lbllowstock
+            // 
+            this.lbllowstock.AutoSize = true;
+            this.lbllowstock.Font = new System.Drawing.Font("Segoe UI", 32F, System.Drawing.FontStyle.Bold);
+            this.lbllowstock.ForeColor = System.Drawing.Color.White;
+            this.lbllowstock.Location = new System.Drawing.Point(220, 31);
+            this.lbllowstock.Name = "lbllowstock";
+            this.lbllowstock.Size = new System.Drawing.Size(50, 59);
+            this.lbllowstock.TabIndex = 3;
+            this.lbllowstock.Text = "0";
+            // 
+            // label17
+            // 
+            this.label17.AutoSize = true;
+            this.label17.Font = new System.Drawing.Font("Segoe UI", 18F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.label17.ForeColor = System.Drawing.Color.White;
+            this.label17.Location = new System.Drawing.Point(9, 35);
+            this.label17.Name = "label17";
+            this.label17.Size = new System.Drawing.Size(139, 32);
+            this.label17.TabIndex = 0;
+            this.label17.Text = "Low Stocks";
+            // 
             // Form1
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
@@ -406,8 +432,7 @@
             this.BackColor = System.Drawing.Color.White;
             this.BackgroundImageLayout = System.Windows.Forms.ImageLayout.Stretch;
             this.ClientSize = new System.Drawing.Size(1000, 701);
-            this.Controls.Add(this.label12);
-            this.Controls.Add(this.dataGridView1);
+            this.Controls.Add(this.panel8);
             this.Controls.Add(this.panel6);
             this.Controls.Add(this.panel7);
             this.Controls.Add(this.panel5);
@@ -422,7 +447,6 @@
             this.panel2.ResumeLayout(false);
             this.panel3.ResumeLayout(false);
             ((System.ComponentModel.ISupportInitialize)(this.pictureBox7)).EndInit();
-            ((System.ComponentModel.ISupportInitialize)(this.dataGridView1)).EndInit();
             this.panel6.ResumeLayout(false);
             this.panel6.PerformLayout();
             this.panel7.ResumeLayout(false);
@@ -434,8 +458,9 @@
             this.panel1.ResumeLayout(false);
             this.panel1.PerformLayout();
             ((System.ComponentModel.ISupportInitialize)(this.pictureBox1)).EndInit();
+            this.panel8.ResumeLayout(false);
+            this.panel8.PerformLayout();
             this.ResumeLayout(false);
-            this.PerformLayout();
 
         }
 
@@ -449,8 +474,6 @@
         private System.Windows.Forms.Panel panel3;
         private System.Windows.Forms.PictureBox pictureBox7;
         private System.Windows.Forms.FlowLayoutPanel flowLayoutPanel9;
-        private System.Windows.Forms.Label label12;
-        private System.Windows.Forms.DataGridView dataGridView1;
         private System.Windows.Forms.Panel panel6;
         private System.Windows.Forms.Label label15;
         private System.Windows.Forms.Label label13;
@@ -471,5 +494,9 @@
         private System.Windows.Forms.Label label2;
         private System.Windows.Forms.Label label1;
         private System.Windows.Forms.PictureBox pictureBox1;
+        private System.Windows.Forms.Panel panel8;
+        private System.Windows.Forms.Label label7;
+        private System.Windows.Forms.Label lbllowstock;
+        private System.Windows.Forms.Label label17;
     }
 }
