@@ -32,6 +32,13 @@ namespace POS_system
             }
 
             WireNavigation();
+
+            var btnRecovery = CreateButton("Recovery Setup", DarkButtonColor, Color.White, 34);
+            btnRecovery.Width = 150;
+            btnRecovery.Click += (s, e) => SetupRecovery();
+            flowUserActions.Controls.Add(btnRecovery);
+
+
             Session.AddLogoutButton(this, panel2);
             UpdateActionState();
             Shown += (s, e) => ReloadUsers();
@@ -333,7 +340,85 @@ namespace POS_system
             SetStatus(message);
             MessageBox.Show(this, message, title, MessageBoxButtons.OK, MessageBoxIcon.Error);
         }
+        private void SetupRecovery()
+        {
+            using (var dlg = new RecoverySetupDialog())
+            {
+                if (dlg.ShowDialog(this) != DialogResult.OK)
+                    return;
 
+                try
+                {
+                    string code = PasswordRecovery.SaveRecovery(Session.Username, dlg.Question, dlg.Answer);
+
+                    MessageBox.Show(this,
+                        "Your recovery code is:\n\n" + code +
+                        "\n\nWrite it down and keep it safe. It will not be shown again.",
+                        "Recovery Code", MessageBoxButtons.OK, MessageBoxIcon.Information);
+
+                    SetStatus("Recovery set up for " + Session.Username + ".");
+                }
+                catch (Exception ex)
+                {
+                    ShowError(ex.Message, "Recovery Setup");
+                }
+            }
+        }
+
+        private sealed class RecoverySetupDialog : Form
+        {
+            private readonly TextBox txtQuestion;
+            private readonly TextBox txtAnswer;
+
+            public string Question { get { return txtQuestion.Text.Trim(); } }
+            public string Answer { get { return txtAnswer.Text.Trim(); } }
+
+            public RecoverySetupDialog()
+            {
+                Text = "Recovery Setup";
+                StartPosition = FormStartPosition.CenterParent;
+                FormBorderStyle = FormBorderStyle.FixedDialog;
+                MaximizeBox = false;
+                MinimizeBox = false;
+                ShowInTaskbar = false;
+                ClientSize = new Size(410, 230);
+                BackColor = Color.White;
+                Font = new Font("Segoe UI", 9.5F);
+
+                Controls.Add(new Label { Text = "Security question", AutoSize = true, Location = new Point(20, 20) });
+                txtQuestion = new TextBox { Location = new Point(20, 42), Width = 370 };
+                Controls.Add(txtQuestion);
+
+                Controls.Add(new Label { Text = "Answer", AutoSize = true, Location = new Point(20, 82) });
+                txtAnswer = new TextBox { Location = new Point(20, 104), Width = 370, UseSystemPasswordChar = true };
+                Controls.Add(txtAnswer);
+
+                var btnOk = CreateButton("Save", Color.FromArgb(193, 154, 107), Color.White, 34);
+                btnOk.Location = new Point(210, 170);
+                btnOk.Size = new Size(85, 34);
+                btnOk.Click += (s, e) =>
+                {
+                    if (Question.Length == 0 || Answer.Length == 0)
+                    {
+                        MessageBox.Show(this, "Enter both a question and an answer.", "Recovery Setup",
+                            MessageBoxButtons.OK, MessageBoxIcon.Warning);
+                        return;
+                    }
+                    DialogResult = DialogResult.OK;
+                    Close();
+                };
+
+                var btnCancel = CreateButton("Cancel", Color.FromArgb(108, 122, 137), Color.White, 34);
+                btnCancel.Location = new Point(305, 170);
+                btnCancel.Size = new Size(85, 34);
+                btnCancel.DialogResult = DialogResult.Cancel;
+
+                AcceptButton = btnOk;
+                CancelButton = btnCancel;
+                Controls.Add(btnOk);
+                Controls.Add(btnCancel);
+            }
+        }
         private sealed class PasswordResetDialog : Form
         {
             private readonly TextBox txtPassword;
@@ -747,5 +832,6 @@ namespace POS_system
         {
 
         }
+
     }
 }

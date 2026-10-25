@@ -19,6 +19,9 @@ namespace POS_system
         {
             InitializeComponent();
 
+            lblForgotPassword.Cursor = Cursors.Hand;
+            lblForgotPassword.Click += lblForgotPassword_Click;
+
             DoubleBuffered = true;
             Resize += Login_Resize;
 
@@ -175,6 +178,46 @@ namespace POS_system
             catch (Exception ex)
             {
                 MessageBox.Show("Could not reach the LogIn database.\n\n" + ex.Message, "Login", MessageBoxButtons.OK, MessageBoxIcon.Error);
+            }
+        }
+
+        private void lblForgotPassword_Click(object sender, EventArgs e)
+        {
+            string username = txtUsername.Text.Trim();
+
+            if (txtUsername.Text == UsernamePlaceholder || username.Length == 0)
+            {
+                MessageBox.Show("Enter your username first, then click Forgot Password.",
+                    "Forgot Password", MessageBoxButtons.OK, MessageBoxIcon.Information);
+                txtUsername.Focus();
+                return;
+            }
+
+            try
+            {
+                string role = PasswordRecovery.GetRole(username);
+
+                if (role == null)
+                {
+                    MessageBox.Show("Username not found.", "Forgot Password",
+                        MessageBoxButtons.OK, MessageBoxIcon.Warning);
+                    return;
+                }
+
+                if (!PasswordRecovery.IsAdmin(role))
+                {
+                    MessageBox.Show("Can't Change Password. Ask the Admin.", "Forgot Password",
+                        MessageBoxButtons.OK, MessageBoxIcon.Information);
+                    return;
+                }
+
+                using (var form = new ForgotPasswordForm(username))
+                    form.ShowDialog(this);
+            }
+            catch (Exception ex)
+            {
+                MessageBox.Show("Could not reach the LogIn database.\n\n" + ex.Message,
+                    "Forgot Password", MessageBoxButtons.OK, MessageBoxIcon.Error);
             }
         }
     }

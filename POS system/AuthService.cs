@@ -14,7 +14,7 @@ namespace POS_system
 
     internal static class AuthService
     {
-        private static string ConnectionString
+        internal static string ConnectionString
         {
             get
             {

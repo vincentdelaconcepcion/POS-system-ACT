@@ -37,12 +37,14 @@
             this.txtUsername = new System.Windows.Forms.TextBox();
             this.label2 = new System.Windows.Forms.Label();
             this.label1 = new System.Windows.Forms.Label();
+            this.lblForgotPassword = new System.Windows.Forms.Label();
             this.panel1.SuspendLayout();
             this.SuspendLayout();
             // 
             // panel1
             // 
             this.panel1.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(12)))), ((int)(((byte)(32)))), ((int)(((byte)(72)))));
+            this.panel1.Controls.Add(this.lblForgotPassword);
             this.panel1.Controls.Add(this.btnLogIn);
             this.panel1.Controls.Add(this.checkBox1);
             this.panel1.Controls.Add(this.txtPassword);
@@ -80,7 +82,7 @@
             this.checkBox1.ForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(210)))), ((int)(((byte)(220)))), ((int)(((byte)(240)))));
             this.checkBox1.Location = new System.Drawing.Point(48, 258);
             this.checkBox1.Name = "checkBox1";
-            this.checkBox1.Size = new System.Drawing.Size(108, 21);
+            this.checkBox1.Size = new System.Drawing.Size(118, 21);
             this.checkBox1.TabIndex = 2;
             this.checkBox1.Text = "Show Password";
             this.checkBox1.UseVisualStyleBackColor = true;
@@ -103,7 +105,7 @@
             this.label3.ForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(210)))), ((int)(((byte)(220)))), ((int)(((byte)(240)))));
             this.label3.Location = new System.Drawing.Point(45, 184);
             this.label3.Name = "label3";
-            this.label3.Size = new System.Drawing.Size(69, 19);
+            this.label3.Size = new System.Drawing.Size(73, 19);
             this.label3.TabIndex = 6;
             this.label3.Text = "Password";
             this.label3.Click += new System.EventHandler(this.label3_Click);
@@ -127,13 +129,12 @@
             this.label2.ForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(210)))), ((int)(((byte)(220)))), ((int)(((byte)(240)))));
             this.label2.Location = new System.Drawing.Point(45, 108);
             this.label2.Name = "label2";
-            this.label2.Size = new System.Drawing.Size(73, 19);
+            this.label2.Size = new System.Drawing.Size(76, 19);
             this.label2.TabIndex = 5;
             this.label2.Text = "Username";
             // 
             // label1
             // 
-            this.label1.AutoSize = false;
             this.label1.BackColor = System.Drawing.Color.Transparent;
             this.label1.Font = new System.Drawing.Font("Segoe UI", 24F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.label1.ForeColor = System.Drawing.Color.White;
@@ -144,6 +145,18 @@
             this.label1.Text = "LOGIN";
             this.label1.TextAlign = System.Drawing.ContentAlignment.MiddleCenter;
             this.label1.Click += new System.EventHandler(this.label1_Click);
+            // 
+            // lblForgotPassword
+            // 
+            this.lblForgotPassword.AutoSize = true;
+            this.lblForgotPassword.Font = new System.Drawing.Font("Segoe UI", 10F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.lblForgotPassword.ForeColor = System.Drawing.Color.RoyalBlue;
+            this.lblForgotPassword.Location = new System.Drawing.Point(254, 260);
+            this.lblForgotPassword.Name = "lblForgotPassword";
+            this.lblForgotPassword.Size = new System.Drawing.Size(128, 19);
+            this.lblForgotPassword.TabIndex = 7;
+            this.lblForgotPassword.Text = "Forgot Password?";
+            this.lblForgotPassword.Click += new System.EventHandler(this.lblForgotPassword_Click);
             // 
             // Login
             // 
@@ -177,5 +190,6 @@
         private System.Windows.Forms.Label label3;
         private System.Windows.Forms.TextBox txtUsername;
         private System.Windows.Forms.Button btnLogIn;
+        private System.Windows.Forms.Label lblForgotPassword;
     }
 }
