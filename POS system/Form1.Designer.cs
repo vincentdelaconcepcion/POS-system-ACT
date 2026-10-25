@@ -46,10 +46,6 @@
             this.label2 = new System.Windows.Forms.Label();
             this.label1 = new System.Windows.Forms.Label();
             this.pictureBox1 = new System.Windows.Forms.PictureBox();
-            this.panel8 = new System.Windows.Forms.Panel();
-            this.label7 = new System.Windows.Forms.Label();
-            this.lbllowstock = new System.Windows.Forms.Label();
-            this.label17 = new System.Windows.Forms.Label();
             this.panel2.SuspendLayout();
             this.panel3.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.pictureBox7)).BeginInit();
@@ -59,7 +55,6 @@
             this.panel4.SuspendLayout();
             this.panel1.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.pictureBox1)).BeginInit();
-            this.panel8.SuspendLayout();
             this.SuspendLayout();
             // 
             // panel2
@@ -381,50 +376,6 @@
             this.pictureBox1.TabIndex = 0;
             this.pictureBox1.TabStop = false;
             // 
-            // panel8
-            // 
-            this.panel8.BackColor = System.Drawing.Color.MidnightBlue;
-            this.panel8.Controls.Add(this.label7);
-            this.panel8.Controls.Add(this.lbllowstock);
-            this.panel8.Controls.Add(this.label17);
-            this.panel8.Location = new System.Drawing.Point(318, 366);
-            this.panel8.Name = "panel8";
-            this.panel8.Size = new System.Drawing.Size(320, 110);
-            this.panel8.TabIndex = 136;
-            // 
-            // label7
-            // 
-            this.label7.AutoSize = true;
-            this.label7.Font = new System.Drawing.Font("Segoe UI", 12.75F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.label7.ForeColor = System.Drawing.Color.White;
-            this.label7.Location = new System.Drawing.Point(11, 67);
-            this.label7.Name = "label7";
-            this.label7.Size = new System.Drawing.Size(155, 23);
-            this.label7.TabIndex = 132;
-            this.label7.Text = "Current Low Stocks";
-            // 
-            // lbllowstock
-            // 
-            this.lbllowstock.AutoSize = true;
-            this.lbllowstock.Font = new System.Drawing.Font("Segoe UI", 32F, System.Drawing.FontStyle.Bold);
-            this.lbllowstock.ForeColor = System.Drawing.Color.White;
-            this.lbllowstock.Location = new System.Drawing.Point(220, 31);
-            this.lbllowstock.Name = "lbllowstock";
-            this.lbllowstock.Size = new System.Drawing.Size(50, 59);
-            this.lbllowstock.TabIndex = 3;
-            this.lbllowstock.Text = "0";
-            // 
-            // label17
-            // 
-            this.label17.AutoSize = true;
-            this.label17.Font = new System.Drawing.Font("Segoe UI", 18F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.label17.ForeColor = System.Drawing.Color.White;
-            this.label17.Location = new System.Drawing.Point(9, 35);
-            this.label17.Name = "label17";
-            this.label17.Size = new System.Drawing.Size(139, 32);
-            this.label17.TabIndex = 0;
-            this.label17.Text = "Low Stocks";
-            // 
             // Form1
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
@@ -432,7 +383,6 @@
             this.BackColor = System.Drawing.Color.White;
             this.BackgroundImageLayout = System.Windows.Forms.ImageLayout.Stretch;
             this.ClientSize = new System.Drawing.Size(1000, 701);
-            this.Controls.Add(this.panel8);
             this.Controls.Add(this.panel6);
             this.Controls.Add(this.panel7);
             this.Controls.Add(this.panel5);
@@ -458,8 +408,6 @@
             this.panel1.ResumeLayout(false);
             this.panel1.PerformLayout();
             ((System.ComponentModel.ISupportInitialize)(this.pictureBox1)).EndInit();
-            this.panel8.ResumeLayout(false);
-            this.panel8.PerformLayout();
             this.ResumeLayout(false);
 
         }
@@ -494,9 +442,5 @@
         private System.Windows.Forms.Label label2;
         private System.Windows.Forms.Label label1;
         private System.Windows.Forms.PictureBox pictureBox1;
-        private System.Windows.Forms.Panel panel8;
-        private System.Windows.Forms.Label label7;
-        private System.Windows.Forms.Label lbllowstock;
-        private System.Windows.Forms.Label label17;
     }
 }
