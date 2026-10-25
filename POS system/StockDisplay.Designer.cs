@@ -356,7 +356,7 @@
             this.button6.Name = "button6";
             this.button6.Size = new System.Drawing.Size(248, 65);
             this.button6.TabIndex = 114;
-            this.button6.Text = "Stock";
+            this.button6.Text = "Add Product";
             this.button6.UseVisualStyleBackColor = false;
             this.button6.Click += new System.EventHandler(this.btnStockDisplay_Click);
             // 
@@ -371,7 +371,7 @@
             this.btnStockDisplay.Name = "btnStockDisplay";
             this.btnStockDisplay.Size = new System.Drawing.Size(248, 65);
             this.btnStockDisplay.TabIndex = 113;
-            this.btnStockDisplay.Text = "Stock Display";
+            this.btnStockDisplay.Text = "Purchase Product";
             this.btnStockDisplay.UseVisualStyleBackColor = false;
             // 
             // btnHome
