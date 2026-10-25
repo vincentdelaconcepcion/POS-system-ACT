@@ -725,32 +725,53 @@ namespace POS_system
                 return;
 
             const int margin = 18;
-            const int listTop = 126;
-            const int bottomArea = 100;
+            const int listTop = 72;          // list now starts right under the title
+            const int buttonWidth = 150;
+            const int buttonGap = 8;
+
+            int fullWidth = Math.Max(180, panel42.ClientSize.Width - (margin * 2));
 
             label77.Location = new Point(24, 20);
 
-            lblPaymentMethod.Location = new Point(margin, 58);
-            cboPaymentMethod.Location = new Point(margin, 82);
-            cboPaymentMethod.Size = new Size(
-                Math.Max(180, panel42.ClientSize.Width - (margin * 2)),
-                30);
+            // positions measured from the bottom up
+            int bottomY = panel42.ClientSize.Height - 58;   // Total + Checkout row
+            int rowY = bottomY - 42;                        // Remove 1 + Delete row
+            int comboY = rowY - 38;                         // Payment method dropdown
+            int labelY = comboY - 24;                       // "Payment Method" label
 
+            // cart list fills the space between the title and the payment method
             lstCart.Anchor = AnchorStyles.None;
             lstCart.Location = new Point(margin, listTop);
-            lstCart.Size = new Size(
-                Math.Max(180, panel42.ClientSize.Width - (margin * 2)),
-                Math.Max(160, panel42.ClientSize.Height - listTop - bottomArea));
+            lstCart.Size = new Size(fullWidth, Math.Max(160, labelY - 8 - listTop));
 
-            int bottomY = panel42.ClientSize.Height - 58;
+            // payment method, directly above Remove 1 / Delete
+            lblPaymentMethod.Location = new Point(margin, labelY);
+            cboPaymentMethod.Location = new Point(margin, comboY);
+            cboPaymentMethod.Size = new Size(fullWidth, 30);
+
+            // Remove 1 + Delete side by side
+            if (btnRemoveItem != null && btnRemoveall_Items != null)
+            {
+                int halfWidth = (fullWidth - buttonGap) / 2;
+
+                btnRemoveItem.Anchor = AnchorStyles.None;
+                btnRemoveItem.Size = new Size(halfWidth, 34);
+                btnRemoveItem.Location = new Point(margin, rowY);
+
+                btnRemoveall_Items.Anchor = AnchorStyles.None;
+                btnRemoveall_Items.Size = new Size(halfWidth, 34);
+                btnRemoveall_Items.Location = new Point(margin + halfWidth + buttonGap, rowY);
+            }
+
+            // Total + Checkout
+            int rightX = Math.Max(margin, panel42.ClientSize.Width - margin - buttonWidth);
+
             lblTotal.Anchor = AnchorStyles.None;
             lblTotal.Location = new Point(margin, bottomY + 7);
 
             btnCheckout.Anchor = AnchorStyles.None;
-            btnCheckout.Size = new Size(150, 44);
-            btnCheckout.Location = new Point(
-                Math.Max(margin, panel42.ClientSize.Width - margin - btnCheckout.Width),
-                bottomY);
+            btnCheckout.Size = new Size(buttonWidth, 44);
+            btnCheckout.Location = new Point(rightX, bottomY);
         }
 
         private void LayoutProductGrid()
@@ -1255,6 +1276,62 @@ namespace POS_system
             public decimal UnitPrice { get; set; }
             public int Quantity { get; set; }
             public decimal Subtotal { get { return UnitPrice * Quantity; } }
+        }
+
+        private void btnRemoveItem_Click(object sender, EventArgs e)
+        {
+            RemoveSelectedCartItem();
+        }
+
+        private void RemoveSelectedCartItem()
+        {
+            int index = lstCart.SelectedIndex;
+
+            if (index < 0 || index >= cart.Count)
+            {
+                MessageBox.Show("Select an item in the cart to remove.", "Remove Item"
+                    , MessageBoxButtons.OK, MessageBoxIcon.Information);
+                return;
+            }
+
+            //cart.RemoveAt(index);
+            //IF need i usa2 i delete ang sayup na selected products uncomment below and comment the cart.RemoveAt(index);
+
+            CartItem selected = cart[index];
+            if (selected.Quantity > 1)
+                selected.Quantity--;
+            else
+                cart.RemoveAt(index);
+
+            RefreshCart();
+
+            if (lstCart.Items.Count > 0)
+                lstCart.SelectedIndex = Math.Min(index, lstCart.Items.Count - 1);
+
+        }
+
+        private void RemoveAllSelectedCartItem()
+        {
+            int index = lstCart.SelectedIndex;
+
+            if (index < 0 || index >= cart.Count)
+            {
+                MessageBox.Show("Select an item in the cart to remove.", "Remove Item"
+                    , MessageBoxButtons.OK, MessageBoxIcon.Information);
+                return;
+            }
+
+            cart.RemoveAt(index);
+            RefreshCart();
+
+            if (lstCart.Items.Count > 0)
+                lstCart.SelectedIndex = Math.Min(index, lstCart.Items.Count - 1);
+
+        }
+
+        private void btnRemoveall_Items_Click(object sender, EventArgs e)
+        {
+            RemoveAllSelectedCartItem();
         }
     }
 }

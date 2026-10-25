@@ -235,6 +235,8 @@
             this.label76 = new System.Windows.Forms.Label();
             this.panel42 = new System.Windows.Forms.Panel();
             this.label77 = new System.Windows.Forms.Label();
+            this.btnRemoveItem = new System.Windows.Forms.Button();
+            this.btnRemoveall_Items = new System.Windows.Forms.Button();
             this.panel2.SuspendLayout();
             this.panel3.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.pictureBox7)).BeginInit();
@@ -2850,9 +2852,9 @@
             this.btnCheckout.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
             this.btnCheckout.Font = new System.Drawing.Font("Segoe UI", 12F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.btnCheckout.ForeColor = System.Drawing.Color.White;
-            this.btnCheckout.Location = new System.Drawing.Point(209, 651);
+            this.btnCheckout.Location = new System.Drawing.Point(244, 651);
             this.btnCheckout.Name = "btnCheckout";
-            this.btnCheckout.Size = new System.Drawing.Size(136, 40);
+            this.btnCheckout.Size = new System.Drawing.Size(103, 40);
             this.btnCheckout.TabIndex = 121;
             this.btnCheckout.Text = "Checkout";
             this.btnCheckout.UseVisualStyleBackColor = false;
@@ -2864,7 +2866,7 @@
             this.lblTotal.AutoSize = true;
             this.lblTotal.Font = new System.Drawing.Font("Microsoft Sans Serif", 15.75F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.lblTotal.ForeColor = System.Drawing.Color.White;
-            this.lblTotal.Location = new System.Drawing.Point(18, 658);
+            this.lblTotal.Location = new System.Drawing.Point(8, 659);
             this.lblTotal.Name = "lblTotal";
             this.lblTotal.Size = new System.Drawing.Size(128, 25);
             this.lblTotal.TabIndex = 1;
@@ -2908,6 +2910,8 @@
             // panel42
             // 
             this.panel42.BackColor = System.Drawing.Color.Navy;
+            this.panel42.Controls.Add(this.btnRemoveall_Items);
+            this.panel42.Controls.Add(this.btnRemoveItem);
             this.panel42.Controls.Add(this.btnCheckout);
             this.panel42.Controls.Add(this.lblTotal);
             this.panel42.Controls.Add(this.label77);
@@ -2929,6 +2933,38 @@
             this.label77.Size = new System.Drawing.Size(305, 37);
             this.label77.TabIndex = 125;
             this.label77.Text = "CHECKOUT CART";
+            // 
+            // btnRemoveItem
+            // 
+            this.btnRemoveItem.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Right)));
+            this.btnRemoveItem.BackColor = System.Drawing.Color.Red;
+            this.btnRemoveItem.FlatAppearance.BorderSize = 0;
+            this.btnRemoveItem.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
+            this.btnRemoveItem.Font = new System.Drawing.Font("Segoe UI", 12F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.btnRemoveItem.ForeColor = System.Drawing.Color.White;
+            this.btnRemoveItem.Location = new System.Drawing.Point(141, 651);
+            this.btnRemoveItem.Name = "btnRemoveItem";
+            this.btnRemoveItem.Size = new System.Drawing.Size(95, 40);
+            this.btnRemoveItem.TabIndex = 126;
+            this.btnRemoveItem.Text = "Remove 1";
+            this.btnRemoveItem.UseVisualStyleBackColor = false;
+            this.btnRemoveItem.Click += new System.EventHandler(this.btnRemoveItem_Click);
+            // 
+            // btnRemoveall_Items
+            // 
+            this.btnRemoveall_Items.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Right)));
+            this.btnRemoveall_Items.BackColor = System.Drawing.Color.Red;
+            this.btnRemoveall_Items.FlatAppearance.BorderSize = 0;
+            this.btnRemoveall_Items.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
+            this.btnRemoveall_Items.Font = new System.Drawing.Font("Segoe UI", 12F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.btnRemoveall_Items.ForeColor = System.Drawing.Color.White;
+            this.btnRemoveall_Items.Location = new System.Drawing.Point(141, 591);
+            this.btnRemoveall_Items.Name = "btnRemoveall_Items";
+            this.btnRemoveall_Items.Size = new System.Drawing.Size(125, 40);
+            this.btnRemoveall_Items.TabIndex = 127;
+            this.btnRemoveall_Items.Text = "Delete";
+            this.btnRemoveall_Items.UseVisualStyleBackColor = false;
+            this.btnRemoveall_Items.Click += new System.EventHandler(this.btnRemoveall_Items_Click);
             // 
             // StockDisplay
             // 
@@ -3274,5 +3310,7 @@
         private System.Windows.Forms.Label label76;
         private System.Windows.Forms.Panel panel42;
         private System.Windows.Forms.Label label77;
+        private System.Windows.Forms.Button btnRemoveItem;
+        private System.Windows.Forms.Button btnRemoveall_Items;
     }
 }
