@@ -16,7 +16,9 @@ namespace POS_system
     public partial class Form1 : Form
     {
         private const string Peso = "\u20B1";
-
+        private Panel panelLow;
+        private Label lblLowTitle;
+        private Label lblLowValue;
         public Form1()
         {
             InitializeComponent();
@@ -44,8 +46,8 @@ namespace POS_system
         private void LayoutDashboard()
         {
             if (panel2 == null || panel1 == null || panel4 == null || panel5 == null ||
-                panel6 == null || panel7 == null || panel8 == null || lbllowstock == null)
-                return;
+                panel6 == null || panel7 == null)
+                return;   // this was missing
 
             int width = ClientSize.Width;
             int height = ClientSize.Height;
@@ -70,15 +72,9 @@ namespace POS_system
             int bottom = height - 20;
             int contentWidth = Math.Max(200, right - left);
 
-            int gridHeight = Math.Max(80, Math.Min(220, (bottom - top) / 4));
-            int gridTop = bottom - gridHeight;
-            lbllowstock.Location = new Point(left, gridTop - 38);
-            
-
             int gap = 16;
             int cardWidth = Math.Max(160, (contentWidth - gap) / 2);
-            int cardsBottom = lbllowstock.Top - 20;
-            int cardHeight = Math.Max(90, (cardsBottom - top - gap) / 2);
+            int cardHeight = Math.Max(90, Math.Min(220, (bottom - top - gap) / 2));
 
             panel4.Location = new Point(left, top);
             panel4.Size = new Size(cardWidth, cardHeight);
@@ -88,9 +84,6 @@ namespace POS_system
             panel6.Size = new Size(cardWidth, cardHeight);
             panel7.Location = new Point(left + cardWidth + gap, top + cardHeight + gap);
             panel7.Size = new Size(cardWidth, cardHeight);
-            panel8.Location = new Point(panel6.Left, panel6.Bottom + gap);
-            panel8.Size = new Size(cardWidth, cardHeight);
-
 
             LayoutStatCard(panel4, label3, label8);
             LayoutStatCard(panel5, label5, label4);
@@ -98,6 +91,36 @@ namespace POS_system
             LayoutStatCard(panel7, label11, label10);
         }
 
+        private void CreateLowStockCard()
+        {
+            panelLow = new Panel
+            {
+                BackColor = panel7.BackColor,
+                BorderStyle = panel7.BorderStyle
+            };
+
+            lblLowTitle = new Label
+            {
+                Text = "Low Stocks",
+                AutoSize = true,
+                ForeColor = label11.ForeColor,
+                Font = label11.Font,
+                BackColor = Color.Transparent
+            };
+
+            lblLowValue = new Label
+            {
+                Text = "0",
+                AutoSize = true,
+                ForeColor = label10.ForeColor,
+                Font = label10.Font,
+                BackColor = Color.Transparent
+            };
+
+            panelLow.Controls.Add(lblLowTitle);
+            panelLow.Controls.Add(lblLowValue);
+            Controls.Add(panelLow);
+        }
         private static void LayoutStatCard(Panel card, Label title, Label value)
         {
             if (card == null || title == null || value == null)
