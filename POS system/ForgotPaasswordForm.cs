@@ -10,14 +10,18 @@ namespace POS_system
         private string question;
         private bool hasCode;
         private int attempts;
-        private bool useQuestion;
 
-        private readonly Panel pnlMethod = new Panel { Dock = DockStyle.Fill };
-        private readonly Panel pnlVerify = new Panel { Dock = DockStyle.Fill, Visible = false };
-        private readonly Panel pnlReset = new Panel { Dock = DockStyle.Fill, Visible = false };
+        private string method;          // "question", "code" or "otp"
+        private string otpCode;
+        private DateTime otpExpires;
+
+        private readonly Panel pnlMethod = new Panel { Location = new Point(0, 0), Size = new Size(390, 190) };
+        private readonly Panel pnlVerify = new Panel { Location = new Point(0, 0), Size = new Size(390, 190), Visible = false };
+        private readonly Panel pnlReset = new Panel { Location = new Point(0, 0), Size = new Size(390, 190), Visible = false };
 
         private readonly RadioButton rbQuestion = new RadioButton { AutoSize = true, Location = new Point(20, 60) };
         private readonly RadioButton rbCode = new RadioButton { AutoSize = true, Location = new Point(20, 95), Text = "Use my recovery code" };
+        private readonly RadioButton rbOtp = new RadioButton { AutoSize = true, Location = new Point(20, 130), Text = "Send a code to my email (OTP)" };
         private readonly Label lblPrompt = new Label { AutoSize = false, Location = new Point(20, 20), Size = new Size(340, 45) };
         private readonly TextBox txtAnswer = new TextBox { Location = new Point(20, 70), Width = 340 };
         private readonly TextBox txtNew = new TextBox { Location = new Point(20, 45), Width = 340, UseSystemPasswordChar = true };
@@ -34,10 +38,13 @@ namespace POS_system
             StartPosition = FormStartPosition.CenterParent;
             MaximizeBox = false;
             MinimizeBox = false;
-            ClientSize = new Size(390, 230);
+            ClientSize = new Size(390, 250);
             Font = new Font("Segoe UI", 10F);
 
             PasswordRecovery.GetRecoveryInfo(username, out question, out hasCode);
+
+            string email = null;
+            try { email = PasswordRecovery.GetEmail(username); } catch { }
 
             pnlMethod.Controls.Add(new Label
             {
@@ -45,13 +52,19 @@ namespace POS_system
                 AutoSize = true,
                 Location = new Point(20, 20)
             });
+
             rbQuestion.Text = "Answer my security question";
             rbQuestion.Enabled = question != null;
             rbCode.Enabled = hasCode;
+            rbOtp.Enabled = !string.IsNullOrWhiteSpace(email);
+
             rbQuestion.Checked = question != null;
             rbCode.Checked = question == null && hasCode;
+            rbOtp.Checked = question == null && !hasCode && rbOtp.Enabled;
+
             pnlMethod.Controls.Add(rbQuestion);
             pnlMethod.Controls.Add(rbCode);
+            pnlMethod.Controls.Add(rbOtp);
 
             pnlVerify.Controls.Add(lblPrompt);
             pnlVerify.Controls.Add(txtAnswer);
@@ -73,6 +86,9 @@ namespace POS_system
 
             btnCancel.Click += (s, e) => Close();
             btnNext.Click += BtnNext_Click;
+
+            AcceptButton = btnNext;
+            CancelButton = btnCancel;
         }
 
         private void BtnNext_Click(object sender, EventArgs e)
@@ -81,17 +97,35 @@ namespace POS_system
             {
                 if (pnlMethod.Visible)
                 {
-                    if (!rbQuestion.Checked && !rbCode.Checked)
+                    if (!rbQuestion.Checked && !rbCode.Checked && !rbOtp.Checked)
                     {
                         MessageBox.Show(
-                            "Recovery has not been set up for this account.\n" +
+                            "No recovery option is available for this account.\n" +
                             "An admin must open Admin Panel > Recovery Setup first.",
                             "Forgot Password", MessageBoxButtons.OK, MessageBoxIcon.Information);
                         return;
                     }
 
-                    useQuestion = rbQuestion.Checked;
-                    lblPrompt.Text = useQuestion ? "Security question:\n" + question : "Enter your recovery code:";
+                    if (rbOtp.Checked)
+                    {
+                        method = "otp";
+                        string email = PasswordRecovery.GetEmail(username);
+                        otpCode = OtpHelper.Generate();
+                        otpExpires = DateTime.UtcNow.AddMinutes(5);
+                        OtpHelper.SendEmail(email, otpCode);
+                        lblPrompt.Text = "Enter the 6-digit code sent to\n" + OtpHelper.MaskEmail(email);
+                    }
+                    else if (rbQuestion.Checked)
+                    {
+                        method = "question";
+                        lblPrompt.Text = "Security question:\n" + question;
+                    }
+                    else
+                    {
+                        method = "code";
+                        lblPrompt.Text = "Enter your recovery code:";
+                    }
+
                     pnlMethod.Visible = false;
                     pnlVerify.Visible = true;
                     pnlVerify.BringToFront();
@@ -99,9 +133,22 @@ namespace POS_system
                 }
                 else if (pnlVerify.Visible)
                 {
-                    bool ok = useQuestion
-                        ? PasswordRecovery.VerifyAnswer(username, txtAnswer.Text)
-                        : PasswordRecovery.VerifyCode(username, txtAnswer.Text);
+                    bool ok;
+                    if (method == "otp")
+                    {
+                        if (DateTime.UtcNow > otpExpires)
+                        {
+                            MessageBox.Show("That code has expired. Close this window and request a new one.",
+                                "Forgot Password", MessageBoxButtons.OK, MessageBoxIcon.Warning);
+                            Close();
+                            return;
+                        }
+                        ok = txtAnswer.Text.Trim() == otpCode;
+                    }
+                    else if (method == "question")
+                        ok = PasswordRecovery.VerifyAnswer(username, txtAnswer.Text);
+                    else
+                        ok = PasswordRecovery.VerifyCode(username, txtAnswer.Text);
 
                     if (!ok)
                     {

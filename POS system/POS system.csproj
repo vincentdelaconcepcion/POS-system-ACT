@@ -74,6 +74,7 @@
       <DependentUpon>Login.cs</DependentUpon>
     </Compile>
     <Compile Include="AuthService.cs" />
+    <Compile Include="OtpHelper.cs" />
     <Compile Include="PasswordRecovery.cs" />
     <Compile Include="Session.cs" />
     <Compile Include="Program.cs" />

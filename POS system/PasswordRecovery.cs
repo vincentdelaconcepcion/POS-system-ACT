@@ -136,5 +136,18 @@ namespace POS_system
             using (var kdf = new Rfc2898DeriveBytes(text, salt, 100000))
                 return kdf.GetBytes(32).SequenceEqual(expected);
         }
+        public static string GetEmail(string username)
+        {
+            using (var conn = new SqlConnection(AuthService.ConnectionString))
+            using (var cmd = new SqlCommand("SELECT Email FROM [User] WHERE USERNAME = @u", conn))
+            {
+                cmd.Parameters.Add("@u", SqlDbType.VarChar, 50).Value = username;
+                conn.Open();
+                object r = cmd.ExecuteScalar();
+                return (r == null || r == DBNull.Value) ? null : Convert.ToString(r).Trim();
+            }
+        }
+
+
     }
 }
