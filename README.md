@@ -14,5 +14,5 @@ This a POS System made by a group of 5 students for our Finals Project in Asian 
 <img width="1919" height="1055" alt="image" src="https://github.com/user-attachments/assets/1be798bd-900b-4053-9814-4c0b0442a846" />
 
 
-#Admin Panel (Admin)
+# Admin Panel (Admin)
 <img width="1919" height="1055" alt="image" src="https://github.com/user-attachments/assets/3507d6cd-18e3-436e-af6a-126cd7a39bbc" />
